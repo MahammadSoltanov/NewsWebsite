@@ -4,7 +4,7 @@
     ViewBag.Title = "Hashtag Details";
 }
 
-@using Domain.Entities;
+@using Application.Common.Models;
 <div style="margin: 10px;">
     <div class="card">
         <div class="card-header">
@@ -13,18 +13,14 @@
                 Details
             </h3>
         </div>
-        <!-- /.card-header -->
         <div class="card-body">
             <dl>
-                @foreach (var property in typeof(Hashtag).GetProperties())
+                @foreach (var property in typeof(HashtagDto).GetProperties())
                 {
                     <dt>@property.Name</dt>
                     <dd>@property.GetValue(Model.Hashtag)</dd>
                 }
             </dl>
         </div>
-        <!-- /.card-body -->
     </div>
-    <!-- /.card -->
 </div>
-<!-- ./col -->

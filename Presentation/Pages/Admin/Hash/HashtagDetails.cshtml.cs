@@ -1,17 +1,23 @@
-using Domain.Entities;
+using Application.Common.Models;
+using Application.CQRS.Hashtags.Queries.GetHashtagById;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Presentation.Pages.Admin.Hash
 {
     public class HashtagDetailsModel : PageModel
     {
-        public HashtagDetailsModel()
+        private readonly IMediator _mediator;
+
+        public HashtagDetailsModel(IMediator mediator)
         {
-            Hashtag = new Hashtag();
+            _mediator = mediator;
         }
-        public Hashtag Hashtag{ get; set; }
-        public void OnGet()
+
+        public HashtagDto Hashtag{ get; set; }
+        public async Task OnGetAsync(int Id)
         {
+            Hashtag = await _mediator.Send(new GetHashtagByIdQuery(Id));
         }
     }
 }

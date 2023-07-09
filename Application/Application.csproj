@@ -21,7 +21,7 @@
   <ItemGroup>
     <Folder Include="Common\Behaviours\" />
     <Folder Include="Common\Security\" />
-    <Folder Include="CQRS\Categories\" />
+    <Folder Include="CQRS\Categories\Commands\" />
     <Folder Include="CQRS\PostHashtags\" />
     <Folder Include="CQRS\PostTranslations\" />
     <Folder Include="CQRS\CategoryTranslations\" />

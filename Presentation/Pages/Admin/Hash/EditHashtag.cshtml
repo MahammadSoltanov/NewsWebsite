@@ -16,18 +16,21 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="form-group">
-                <label for="inputName">Title</label>
-                <input type="text" id="inputName" class="form-control">
-            </div>
+            <form method="post" asp-page-handler="Update">
+                <input type="hidden" asp-for="Hashtag.Id" />
+                <div class="form-group">
+                    <label for="inputName">Title</label>
+                    <input type="text" asp-for="Hashtag.Title" class="form-control">
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <a href="#" class="btn btn-secondary">Cancel</a>
+                        <input type="submit" value="Save Changes" class="btn btn-success float-right">
+                    </div>
+                </div>
+            </form>
         </div>
         <!-- /.card-body -->
     </div>
     <!-- /.card -->
-    <div class="row">
-        <div class="col-12">
-            <a href="#" class="btn btn-secondary">Cancel</a>
-            <input type="submit" value="Save Changes" class="btn btn-success float-right">
-        </div>
-    </div>
 </section>

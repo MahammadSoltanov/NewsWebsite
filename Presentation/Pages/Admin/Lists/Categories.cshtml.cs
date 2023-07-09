@@ -1,3 +1,5 @@
+using Application.Common.Models;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -5,8 +7,18 @@ namespace Presentation.Pages.Admin.Lists
 {
     public class CategoriesModel : PageModel
     {
-        public void OnGet()
+        private readonly IMediator _mediator;
+
+        public CategoriesModel(IMediator mediator)
         {
+            _mediator = mediator;
+        }
+
+        public List<CategoryDto> Categories { get; set; }
+
+        public async Task OnGetAsync()
+        {
+
         }
     }
 }

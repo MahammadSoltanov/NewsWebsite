@@ -12,5 +12,7 @@ public class MappingProfile : Profile
         CreateMap<User, UserDto>();
         CreateMap<Role, RoleDto>();
         CreateMap<Hashtag, HashtagDto>();
+        CreateMap<Category, CategoryDto>();
+        CreateMap<CategoryTranslation, CategoryTranslationDto>();
     }
 }
