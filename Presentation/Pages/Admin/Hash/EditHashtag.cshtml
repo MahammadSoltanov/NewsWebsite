@@ -1,0 +1,33 @@
+﻿@page
+@model Presentation.Pages.Admin.Hash.EditHashtagModel
+@{
+    ViewBag.Title = "Edit Hashtag";
+}
+<!-- Main content -->
+<section class="content">
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">General</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label for="inputName">Title</label>
+                <input type="text" id="inputName" class="form-control">
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+    <div class="row">
+        <div class="col-12">
+            <a href="#" class="btn btn-secondary">Cancel</a>
+            <input type="submit" value="Save Changes" class="btn btn-success float-right">
+        </div>
+    </div>
+</section>

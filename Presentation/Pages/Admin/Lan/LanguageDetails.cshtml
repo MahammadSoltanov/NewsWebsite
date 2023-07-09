@@ -1,0 +1,30 @@
+﻿@page
+@model Presentation.Pages.Admin.Lan.LanguageDetailsModel
+@{
+    ViewBag.Title = "Language Details";
+}
+@using Application.Common.Models;
+@using Domain.Entities;
+<div style="margin: 10px;">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-text-width"></i>
+                Details
+            </h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <dl>
+                @foreach (var property in typeof(LanguageDto).GetProperties())
+                {                    
+                    <dt>@property.Name</dt>
+                    <dd>@property.GetValue(Model.Language)</dd>
+                }
+            </dl>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+</div>
+<!-- ./col -->

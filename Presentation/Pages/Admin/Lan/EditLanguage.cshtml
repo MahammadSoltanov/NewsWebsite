@@ -1,0 +1,41 @@
+﻿
+@page
+@model Presentation.Pages.Admin.Lan.EditLanguageModel
+@{
+    ViewBag.Title = "Edit Language";
+}
+
+<!-- Main content -->
+<section class="content">
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">General</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <form method="post" asp-page-handler="Put">
+                <input type="hidden" asp-for="Language.Id" class="form-control" />
+                <div class="form-group">
+                    <label for="inputDescription">Title</label>
+                    <input type="text" asp-for="Language.Title" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="inputName">Code</label>
+                    <input type="text" asp-for="Language.Code" class="form-control">
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <a href="#" class="btn btn-secondary">Cancel</a>
+                        <input type="submit" value="Save Changes" class="btn btn-success float-right">
+                    </div>
+                </div>
+            </form>
+            <!-- /.card-body -->
+        </div>
+    </div>
+</section>

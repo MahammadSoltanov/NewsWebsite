@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Presentation</title>
+    <link rel="stylesheet" href="~/lib/blogy-1.0.0/css/components/style.css"/>
+    <link rel="stylesheet" href="~/Presentation.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <a href="~/Admin/Lists/Languages">Admin</a>
+    <div class="container">        
+        @RenderBody()
+    </div>   
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/blogy-1.0.0/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/blogy-1.0.0/js/aos.js"></script>
+    <script src="~/lib/blogy-1.0.0/js/counter.js"></script>
+    <script src="~/lib/blogy-1.0.0/js/custom.js"></script>
+    <script src="~/lib/blogy-1.0.0/js/flatpickr.min.js"></script>
+    <script src="~/lib/blogy-1.0.0/js/glightbox.min.js"></script>
+    <script src="~/lib/blogy-1.0.0/js/navbar.js"></script>
+    <script src="~/lib/blogy-1.0.0/js/tiny-slider.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

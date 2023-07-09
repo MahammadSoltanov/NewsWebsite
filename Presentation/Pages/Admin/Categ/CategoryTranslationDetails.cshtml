@@ -1,0 +1,29 @@
+﻿@page
+@model Presentation.Pages.Admin.Categ.CategoryTranslationDetailsModel
+@{
+    ViewBag.Title = "Category Translation Details";
+}
+@using Domain.Entities;
+<div style="margin: 10px;">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-text-width"></i>
+                Details
+            </h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <dl>
+                @foreach (var property in typeof(CategoryTranslation).GetProperties())
+                {
+                    <dt>@property.Name</dt>
+                    <dd>@property.GetValue(Model.CategoryTranslation)</dd>
+                }
+            </dl>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+</div>
+<!-- ./col -->

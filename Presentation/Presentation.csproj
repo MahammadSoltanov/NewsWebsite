@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Pages\AdminLTE\**" />
+    <Compile Remove="Pages\Site\**" />
+    <Compile Remove="wwwroot\admin-lte\**" />
+    <Content Remove="Pages\AdminLTE\**" />
+    <Content Remove="Pages\Site\**" />
+    <Content Remove="wwwroot\admin-lte\**" />
+    <EmbeddedResource Remove="Pages\AdminLTE\**" />
+    <EmbeddedResource Remove="Pages\Site\**" />
+    <EmbeddedResource Remove="wwwroot\admin-lte\**" />
+    <None Remove="Pages\AdminLTE\**" />
+    <None Remove="Pages\Site\**" />
+    <None Remove="wwwroot\admin-lte\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>
