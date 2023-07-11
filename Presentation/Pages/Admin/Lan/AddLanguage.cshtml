@@ -21,10 +21,12 @@
                 <div class="form-group">
                     <label for="inputDescription">Title</label>
                     <input type="text" class="form-control" asp-for="Title">
+                    <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label for="inputName">Code</label>
                     <input type="text" id="inputName" class="form-control" asp-for="Code">
+                    <span asp-validation-for="Code" class="text-danger"></span>
                 </div>
                 <div class="row">
                     <div class="col-12">
