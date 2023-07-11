@@ -24,20 +24,7 @@ public class GetCategoriesQueryHandler : IRequestHandler<GetCategoriesQuery, Lis
     {
         List<Category> categories = await _context.Categories.ToListAsync(cancellationToken);
         List<CategoryDto> categoryDtos = _mapper.Map<List<CategoryDto>>(categories);
-
-        List<CategoryTranslation> categoryTranslations = await _context.CategoryTranslations.ToListAsync(cancellationToken);
-
-        foreach(CategoryDto categoryDto in categoryDtos) 
-        {
-            var transaltionsForCategory = categoryTranslations
-                .Where(t => t.Id == categoryDto.Id)
-                .ToList();
-
-            var translationDtos = _mapper.Map<List<CategoryTranslationDto>>(transaltionsForCategory);
-            
-            categoryDto.CategoryTranslationDtos = translationDtos;
-        }
-
+        return categoryDtos;
     }
 
 }

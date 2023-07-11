@@ -1,4 +1,5 @@
 using Application.Common.Models;
+using Application.CQRS.Categories.Queries.GetCategories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -18,7 +19,7 @@ namespace Presentation.Pages.Admin.Lists
 
         public async Task OnGetAsync()
         {
-
+            Categories = await _mediator.Send(new GetCategoriesQuery());   
         }
     }
 }

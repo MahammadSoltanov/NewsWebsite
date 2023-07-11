@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Categories";
 }
-@using Domain.Entities;
+@using Application.Common.Models;
 <!-- Main content -->
 <section class="content">
 
@@ -26,7 +26,7 @@
             <table class="table table-striped projects">
                 <thead>
                     <tr>
-                        @foreach (var property in typeof(Category).GetProperties())
+                        @foreach (var property in typeof(CategoryDto).GetProperties())
                         {
                             if (property.Name != "Id")
                             {
@@ -38,36 +38,37 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
-                    <tr>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td>1</td>
-                        <td class="project-actions text-right">
-                            <a href="~/Admin/Category/AddCategoryTranslation" class="btn btn-info btn-sm">
-                                <i class="fas fa-plus"></i>
-                                Add translation
-                            </a>
-                            <a class="btn btn-primary btn-sm" href="~/Admin/Category/CategoryDetails">
-                                <i class="fas fa-folder"></i>
-                                View
-                            </a>
-                            <a class="btn btn-info btn-sm" href="~/Admin/Category/EditCategory">
-                                <i class="fas fa-pencil-alt"></i>
-                                Edit
-                            </a>
-                            <a class="btn btn-danger btn-sm" href="#">
-                                <i class="fas fa-trash"></i>
-                                Delete
-                            </a>
-                        </td>
-                    </tr>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <tr>
+                            @foreach (var property in typeof(CategoryDto).GetProperties())
+                            {
+                                if (property.Name != "Id")
+                                {
+                                    <td>@property.GetValue(category)</td>
+                                }
+                            }
+                            <td class="project-actions text-right">
+                                <a class="btn btn-primary btn-sm" asp-page="/Admin/Categ/CategoryDetails">
+                                    <i class="fas fa-folder"></i>
+                                    View
+                                </a>
+                                <a class="btn btn-info btn-sm" asp-page="/Admin/Categ/EditCategory">
+                                    <i class="fas fa-pencil-alt"></i>
+                                    Edit
+                                </a>
+                                <button class="btn btn-danger btn-sm"
+                                        type="submit"
+                                        asp-page-handler="Delete"
+                                        asp-route-id="@category.Id">
+                                    <i class="fas fa-trash">
+                                    </i>
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+
+                    }
                 </tbody>
             </table>
         </div>
@@ -92,7 +93,7 @@
 @section Links
     {
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="~/lib/admin-lte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" asp-page="/lib/admin-lte/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="~/lib/admin-lte/dist/css/adminlte.min.css">
+    <link rel="stylesheet" asp-page="/lib/admin-lte/dist/css/adminlte.min.css">
 }

@@ -8,12 +8,12 @@ namespace Application.CQRS.Languages.Queries.GetLanguages;
 
 public record GetLanguagesQuery : IRequest<List<LanguageDto>>;
 
-public class GetLanguagesQueryHahndler : IRequestHandler<GetLanguagesQuery, List<LanguageDto>>
+public class GetLanguagesQueryHandler : IRequestHandler<GetLanguagesQuery, List<LanguageDto>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
 
-    public GetLanguagesQueryHahndler(IApplicationDbContext context, IMapper mapper)
+    public GetLanguagesQueryHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
