@@ -1,6 +1,9 @@
 using Application.Common.Models;
 using Application.CQRS.Hashtags.Commands.UpdateHashtag;
 using Application.CQRS.Hashtags.Queries.GetHashtagById;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,26 +13,40 @@ namespace Presentation.Pages.Admin.Hash
     public class EditHashtagModel : PageModel
     {
         private readonly IMediator _mediator;
+        private readonly IValidator<UpdateHashtagCommand> _validator;
 
-        public EditHashtagModel(IMediator mediator)
+        public EditHashtagModel(IMediator mediator, IValidator<UpdateHashtagCommand> validator)
         {
             _mediator = mediator;
+            _validator = validator;
         }
         [BindProperty]
-        public HashtagDto Hashtag { get; set; }
+        public int Id { get; set; }
+        [BindProperty]
+        public string Title { get; set; }
+
         
-        public async Task OnGetAsync(int Id)
+        public async Task OnGetAsync(int id)
         {
-            Hashtag = await _mediator.Send(new GetHashtagByIdQuery(Id));
+            HashtagDto hashtag = await _mediator.Send(new GetHashtagByIdQuery(id));
         }
 
-        public async Task<IActionResult> OnPostUpdateAsync()
+        public async Task<ActionResult> OnPostUpdateAsync()
         {
             UpdateHashtagCommand command = new UpdateHashtagCommand()
             {
-                Id = Hashtag.Id,
-                Title = Hashtag.Title
+                Id = Id,
+                Title = Title
             };
+
+            ValidationResult result = await _validator.ValidateAsync(command);
+
+            if (!result.IsValid)
+            {
+                result.AddToModelState(this.ModelState);
+
+                return Page();
+            }
 
             await _mediator.Send(command);
             string _message = $"Hashtag with Id = {command.Id} was updated successfully";

@@ -2,6 +2,9 @@ using Application.Common.Models;
 using Application.CQRS.Roles.Queries.GetRoles;
 using Application.CQRS.Users.Commands.UpdateUser;
 using Application.CQRS.Users.Queries.GetUserById;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,17 +14,36 @@ namespace Presentation.Pages.Admin.Usr
     public class EditUserModel : PageModel
     {
         private readonly IMediator _mediator;
+        private readonly IValidator<UpdateUserCommand> _validator;
 
-        public EditUserModel(IMediator mediator)
+        public EditUserModel(IMediator mediator, IValidator<UpdateUserCommand> validator)
         {
             _mediator = mediator;
+            _validator = validator;
         }
+
         [BindProperty]
-        public UserDto UserP { get; set; }
+        public int Id { get; set; }
+        [BindProperty]
+        public string Name { get; set; }
+        [BindProperty]
+        public string Surname { get; set; }
+        [BindProperty]
+        public string Password { get; set; }
+        [BindProperty]
+        public string Email { get; set; }
+        [BindProperty]
+        public int RoleId { get; set; }
         public List<RoleDto> Roles { get; set; }
-        public async Task OnGetAsync(int Id)
+        public async Task OnGetAsync(int id)
         {
-            UserP = await _mediator.Send(new GetUserByIdQuery(Id));
+            UserDto user = await _mediator.Send(new GetUserByIdQuery(id));
+            Id = user.Id;
+            Name = user.Name;
+            Surname = user.Surname;
+            Password = user.Password;
+            Email = user.Email;
+
             Roles = await _mediator.Send(new GetRolesQuery());
         }
 
@@ -29,16 +51,27 @@ namespace Presentation.Pages.Admin.Usr
         {
             UpdateUserCommand command = new UpdateUserCommand()
             {
-                Id = UserP.Id,
-                Name = UserP.Name,
-                Surname = UserP.Surname,
-                Email = UserP.Email,
-                RoleId = UserP.RoleId,
+                Id = Id,
+                Name = Name,
+                Surname = Surname,
+                Password = Password,
+                Email = Email,
+                RoleId = RoleId,
             };
+
+            ValidationResult result = await _validator.ValidateAsync(command);
+
+            if (!result.IsValid)
+            {
+                result.AddToModelState(this.ModelState);
+                Roles = await _mediator.Send(new GetRolesQuery());
+
+                return Page();
+            }
 
             await _mediator.Send(command);
 
-            string _message = $"User details with Id = {UserP.Id} were successfully updated";
+            string _message = $"User details with Id = {Id} were successfully updated";
 
             return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "User" });
         }

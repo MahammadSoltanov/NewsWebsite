@@ -18,22 +18,30 @@
         </div>
         <div class="card-body">
             <form method="post" asp-page-handler="Update">
-                <input type="hidden" asp-for="UserP.Id" />
+                <input type="hidden" asp-for="Id" />
                 <div class="form-group">
                     <label for="inputDescription">Name</label>
-                    <input type="text" asp-for="UserP.Name" class="form-control">
+                    <input type="text" asp-for="Name" class="form-control">
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label for="inputName">Surname</label>
-                    <input type="text" asp-for="UserP.Surname" class="form-control">
+                    <input type="text" asp-for="Surname" class="form-control">
+                    <span asp-validation-for="Surname" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="inputName">Password</label>
+                    <input type="password" asp-for="Password" class="form-control">
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label for="inputName">Email</label>
-                    <input type="email" asp-for="UserP.Email" class="form-control">
+                    <input type="email" asp-for="Email" class="form-control">
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label for="inputName">Role ID</label>
-                    <select id="inputStatus" asp-for="UserP.RoleId" class="form-control custom-select">
+                    <select id="inputStatus" asp-for="RoleId" class="form-control custom-select">
                         <option selected disabled>Select one</option>
                         @foreach (RoleDto role in Model.Roles)
                         {

@@ -17,10 +17,12 @@
         </div>
         <div class="card-body">
             <form method="post" asp-page-handler="Update">
-                <input type="hidden" asp-for="Hashtag.Id" />
+                <input type="hidden" asp-for="Id" />
+                
                 <div class="form-group">
                     <label for="inputName">Title</label>
-                    <input type="text" asp-for="Hashtag.Title" class="form-control">
+                    <input type="text" asp-for="Title" class="form-control">
+                    <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
                 <div class="row">
                     <div class="col-12">

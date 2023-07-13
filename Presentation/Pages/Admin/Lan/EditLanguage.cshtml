@@ -19,14 +19,16 @@
         </div>
         <div class="card-body">
             <form method="post" asp-page-handler="Put">
-                <input type="hidden" asp-for="Language.Id" class="form-control" />
+                <input type="hidden" asp-for="Id" class="form-control" />
                 <div class="form-group">
                     <label for="inputDescription">Title</label>
-                    <input type="text" asp-for="Language.Title" class="form-control">
+                    <input type="text" asp-for="Title" class="form-control">
+                    <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label for="inputName">Code</label>
-                    <input type="text" asp-for="Language.Code" class="form-control">
+                    <input type="text" asp-for="Code" class="form-control">
+                    <span asp-validation-for="Code" class="text-danger"></span>
                 </div>
                 <div class="row">
                     <div class="col-12">

@@ -11,6 +11,7 @@ public record UpdateUserCommand : IRequest<Unit>
     public string Name { get; set; }
     public string Surname { get; set; }
     public string Email { get; set; }
+    public string Password { get; set; }
     public int RoleId { get; set; }
 }
 
@@ -35,6 +36,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Unit>
         entity.Name = request.Name;
         entity.Surname = request.Surname;
         entity.Email = request.Email;   
+        entity.Password = request.Password;   
         entity.RoleId = request.RoleId;
 
         await _context.SaveChangesAsync(cancellationToken);
