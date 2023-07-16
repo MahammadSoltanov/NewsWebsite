@@ -25,11 +25,13 @@ public class GetLanguageByIdQueryHandler : IRequestHandler<GetLanguageByIdQuery,
     public async Task<LanguageDto> Handle(GetLanguageByIdQuery request, CancellationToken cancellationToken)
     {
         var entity = await _context.Languages.FindAsync(new object[] { request.Id }, cancellationToken);            
+        
         if(entity == null) 
         {
             throw new NotFoundException(nameof(Language), request.Id);
         }
 
+        
         var languageDto = _mapper.Map<LanguageDto>(entity);
         return languageDto;
     }

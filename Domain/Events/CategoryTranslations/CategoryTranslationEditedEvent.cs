@@ -1,14 +1,12 @@
 ﻿namespace Domain.Events.CategoryTranslations
 {
-    public class CategoryTranslationEditedEvent : BaseEvent
+    public class CategoryTranslationCreatedEvent : BaseEvent
     {
-        public CategoryTranslationEditedEvent(CategoryTranslation oldVersion, CategoryTranslation newVersion) 
+        public CategoryTranslationCreatedEvent(CategoryTranslation categoryTranslation) 
         {
-            OldVersion = oldVersion; 
-            NewVersion = newVersion;
+            CategoryTranslation = categoryTranslation;
         }
-
-        public CategoryTranslation OldVersion { get; private set; }
-        public CategoryTranslation NewVersion { get; private set; }
+        
+        public CategoryTranslation CategoryTranslation{ get; }
     }
 }

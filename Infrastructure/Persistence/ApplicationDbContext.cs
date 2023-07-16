@@ -16,6 +16,9 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<Category>()
                 .HasKey(c => c.Id);
             modelBuilder.Entity<Category>()
+                .HasIndex(c => c.Description)
+                .IsUnique();
+            modelBuilder.Entity<Category>()
                 .Property(c => c.Id)
                 .UseIdentityColumn(1, 1);
             modelBuilder.Entity<Category>()
@@ -28,7 +31,12 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<CategoryTranslation>()
                 .Property(c => c.Id)
                 .UseIdentityColumn(1, 1);
-
+            modelBuilder.Entity<CategoryTranslation>()
+                .Property(ct => ct.Title)
+                .HasMaxLength(200);
+            modelBuilder.Entity<CategoryTranslation>()
+                .HasIndex(ct => ct.Title)
+                .IsUnique();
             modelBuilder.Entity<CategoryTranslation>()
                 .HasOne(ct => ct.Category)
                 .WithMany(c => c.CategoryTranslations)
@@ -47,6 +55,9 @@ namespace Infrastructure.Persistence
                 .Property(h => h.Title)
                 .HasMaxLength(50)
                 .HasColumnType("VARCHAR");
+            modelBuilder.Entity<Hashtag>()
+                .HasIndex(h => h.Title)
+                .IsUnique();
 
             modelBuilder.Entity<Language>()
                 .HasKey(l => l.Id);
@@ -57,6 +68,12 @@ namespace Infrastructure.Persistence
                 .Property(l => l.Code)
                 .HasMaxLength(5)
                 .HasColumnType("VARCHAR");
+            modelBuilder.Entity<Language>()
+                .HasIndex(l => l.Code)
+                .IsUnique();
+            modelBuilder.Entity<Language>()
+                .HasIndex(l => l.Title)
+                .IsUnique();
 
             modelBuilder.Entity<Post>()
                 .HasKey(p => p.Id);
@@ -75,6 +92,10 @@ namespace Infrastructure.Persistence
                 .IsRequired()
                 .HasMaxLength(20)
                 .HasColumnType("VARCHAR");
+            modelBuilder.Entity<Post>()
+                .HasIndex(p => p.Title)
+                .IsUnique();
+
 
             modelBuilder.Entity<PostHashtag>()
                 .HasKey(ph => new { ph.PostId, ph.HashtagId });
@@ -107,6 +128,9 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<PostTranslation>()
                 .Property(pt => pt.Content)
                 .HasColumnType("text");
+            modelBuilder.Entity<PostTranslation>()
+                .HasIndex(pt => pt.Title)
+                .IsUnique();
 
             modelBuilder.Entity<Role>()
                 .HasKey(r => r.Id);
@@ -118,6 +142,9 @@ namespace Infrastructure.Persistence
                 .HasMaxLength(50)
                 .HasColumnType("VARCHAR")
                 .IsRequired();
+            modelBuilder.Entity<Role>()
+                .HasIndex(r => r.Title)
+                .IsUnique();
 
             modelBuilder.Entity<User>()
                 .HasKey(u => u.Id);
@@ -148,6 +175,9 @@ namespace Infrastructure.Persistence
                 .HasColumnType("VARCHAR")
                 .HasMaxLength(50)
                 .IsRequired();
+            modelBuilder.Entity<User>()
+                .HasIndex(p => p.Email)
+                .IsUnique();
         }
 
         public DbSet<Category> Categories { get; set; }

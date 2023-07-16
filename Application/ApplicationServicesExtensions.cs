@@ -1,4 +1,5 @@
 ﻿using Application.Common.Mappings;
+using Application.CQRS.Categories.Commands.CreateCategory;
 using Application.CQRS.Hashtags.Commands.CreateHashtag;
 using Application.CQRS.Hashtags.Commands.UpdateHashtag;
 using Application.CQRS.Languages.Commands.CreateLanguage;
@@ -28,6 +29,7 @@ namespace Application
             services.AddScoped<IValidator<UpdateLanguageCommand>, UpdateLanguageCommandValidator>();
             services.AddScoped<IValidator<CreateUserCommand>, CreateUserCommandValidator>();
             services.AddScoped<IValidator<UpdateUserCommand>, UpdateUserCommandValidator>();
+            services.AddScoped<IValidator<CreateCategoryCommand>, CreateCategoryCommandValidator>();
 
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationServicesExtensions).Assembly));
