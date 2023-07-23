@@ -1,18 +1,26 @@
-using Domain.Entities;
-using Microsoft.AspNetCore.Mvc;
+using Application.Common.Models;
+using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationByCategoryId;
+using MediatR;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Presentation.Pages.Admin.Categ
 {
     public class CategoryDetailsModel : PageModel
     {
-        public CategoryDetailsModel()
+        private readonly IMediator _mediator;
+
+        public CategoryDetailsModel(IMediator mediator)
         {
-            Category = new Category();
+            _mediator = mediator;
         }
-        public Category Category { get; set; }
-        public void OnGet()
+
+        public List<CategoryTranslationDto> Translations{ get; set; }
+        public int CategoryId { get; set; }
+
+        public async Task OnGetAsync(int id)
         {
+            Translations = await _mediator.Send(new GetCategoryTranslationsByCategoryIdQuery(id));
+            CategoryId = id;
         }
     }
 }

@@ -2,6 +2,8 @@ using Application.Common.Models;
 using Application.CQRS.Categories.Commands.DeleteCategory;
 using Application.CQRS.Categories.Queries.GetCategories;
 using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslations;
+using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationsByLanguageId;
+using Application.CQRS.Languages.Queries.GetLanguageByCode;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -21,7 +23,8 @@ namespace Presentation.Pages.Admin.Lists
 
         public async Task OnGetAsync()
         {
-            Categories = await _mediator.Send(new GetCategoryTranslationsQuery());
+            var defaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
+            Categories = await _mediator.Send(new GetCategoryTranslationsByLanguageIdQuery(defaultLanguage.Id));
         }
 
         public async Task<ActionResult> OnPostDeleteAsync(int id)
