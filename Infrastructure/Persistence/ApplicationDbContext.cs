@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application;
+using Application.Common.Interfaces;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +9,7 @@ namespace Infrastructure.Persistence
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-RKJKQSG\SQLEXPRESS; Database=NewsDB; Trusted_Connection=True; Encrypt=False;");
+            optionsBuilder.UseSqlServer(PrivateInformation.ConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -5,10 +5,8 @@ using MediatR;
 
 namespace Application.CQRS.Categories.Commands.CreateCategory;
 
-public record CreateCategoryCommand : IRequest<int>
-{
-    public string Description { get; set; }
-}
+public record CreateCategoryCommand : IRequest<int>;
+
 
 public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, int>
 {
@@ -21,10 +19,7 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
 
     public async Task<int> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
-        var entity = new Category()
-        {
-            Description = request.Description
-        };
+        var entity = new Category();
 
         entity.AddDomainEvent(new CategoryCreatedEvent(entity));
 

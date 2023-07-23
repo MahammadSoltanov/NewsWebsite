@@ -5,8 +5,5 @@ public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCo
 {
     public CreateCategoryCommandValidator()
     {
-        RuleFor(c => c.Description)
-            .MaximumLength(200)
-            .NotEmpty();
     }
 }

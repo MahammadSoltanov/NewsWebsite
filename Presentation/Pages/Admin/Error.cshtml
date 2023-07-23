@@ -1,0 +1,46 @@
+﻿@page
+@model Presentation.Pages.Admin.ErrorModel
+@{
+}
+
+<style>
+    .error-container {
+        text-align: center;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .error-title {
+        font-size: 24px;
+        color: #ff0000;
+        margin-bottom: 10px;
+    }
+
+    .error-message {
+        font-size: 18px;
+        color: #333333;
+        margin-bottom: 20px;
+    }
+
+    .back-link {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #333333;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .back-link:hover {
+        background-color: #555555;
+    }
+</style>
+
+<div class="error-container">
+    <h1 class="error-title">Error</h1>
+    <p class="error-message">@ViewData["Message"]</p>
+    <a class="back-link" asp-page="/Admin/Lists/@ViewData["EntityName"]s">Go Back to List</a>
+</div>

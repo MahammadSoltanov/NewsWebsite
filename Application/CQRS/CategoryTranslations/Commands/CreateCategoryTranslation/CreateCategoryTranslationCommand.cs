@@ -24,11 +24,12 @@ public class CreateCategoryTranslationCommandHandler : IRequestHandler<CreateCat
     public async Task<int> Handle(CreateCategoryTranslationCommand request,  CancellationToken cancellationToken)
     {
         var entity = new CategoryTranslation()
-        { 
+        {
             Title = request.Title,
             LanguageId = request.LanguageId,
             CategoryId = request.CategoryId,
             InsertDate = DateTime.Now,
+            Status = "Pending"
         };
 
         entity.AddDomainEvent(new CategoryTranslationCreatedEvent(entity));

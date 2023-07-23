@@ -4,6 +4,7 @@ using Application.Common.Models;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CQRS.Languages.Queries.GetLanguageByCode;
 
@@ -22,7 +23,7 @@ public class GetLanguageByCodeQueryHandler : IRequestHandler<GetLanguageByCodeQu
 
     public async Task<LanguageDto> Handle(GetLanguageByCodeQuery request,  CancellationToken cancellationToken)
     {
-        var language = await _context.Languages.FindAsync(new object[] { request.Code }, cancellationToken);
+        var language = await _context.Languages.FirstOrDefaultAsync(l => l.Code == request.Code);
         
         if (language == null) 
         {

@@ -9,6 +9,5 @@ public class CreateCategoryTranslationCommandValidator : AbstractValidator<Creat
         RuleFor(c => c.Title)
             .MaximumLength(200)
             .NotEmpty();
-
     }
 }
