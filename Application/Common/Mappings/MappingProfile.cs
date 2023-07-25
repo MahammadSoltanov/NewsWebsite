@@ -14,5 +14,7 @@ public class MappingProfile : Profile
         CreateMap<Hashtag, HashtagDto>();
         CreateMap<Category, CategoryDto>();
         CreateMap<CategoryTranslation, CategoryTranslationDto>();
+        CreateMap<Post, PostDto>();
+        CreateMap<PostTranslation, PostTranslationDto>();
     }
 }

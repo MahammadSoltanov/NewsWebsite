@@ -5,184 +5,87 @@
 }
 <!-- Main content -->
 <section class="content">
-
-    <div class="card card-primary">
-        <div class="card-header">
-            <h3 class="card-title">General</h3>
-
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
+    <form method="post">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Post information</h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                </div>
             </div>
-        </div>
-        <div class="card-body">
-            <form>
+
+            <div class="card-body">
                 <div class="form-group">
                     <label for="inputDescription">Title</label>
                     <input type="text" class="form-control" />
                 </div>
                 <div class="form-group">
                     <label for="inputName">Category ID</label>
-                    <input type="number" id="inputName" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="inputStatus">Status</label>
-                    <select id="inputStatus" class="form-control custom-select">
-                        <option selected disabled>Select one</option>
-                        <option>Published</option>
-                        <option>Editing</option>
-                        <option>Pending</option>
-                    </select>
+                    <input type="number" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="inputClientCompany">Insert Date</label>
                     <input type="date" id="inputClientCompany" class="form-control">
                 </div>
-            </form>
+            </div>
+            <!-- /.card-body -->
         </div>
-        <!-- /.card-body -->
-    </div>
-    <br />
-    <div class="card card-info">
-        <div class="card-header">
-            <h3 class="card-title">Translations</h3>
+        <br />
+        <div class="card card-info">
+            <div class="card-header">
+                <h3 class="card-title">Default @Model.DefaultLanguage.Code translation</h3>
 
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
-            </div>
-        </div>
-        <div class="card card-primary card-outline card-outline-tabs">
-            <div class="card-header p-0 border-bottom-0">
-                <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-home" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">AZE</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">RUS</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#custom-tabs-four-messages" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">ENG</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="card-body">
-                <div class="tab-content" id="custom-tabs-four-tabContent">
-                    <!--AZE-->
-                    <div class="tab-pane fade show active" id="custom-tabs-four-home" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
-                        <div class="card-body">
-                            <form>
-                                <div class="form-group">
-                                    <label for="inputName">Title</label>
-                                    <input type="text" id="inputName" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputDescription">Content</label>
-                                    <div class="summernote">AZE Editor</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputName">Language ID</label>
-                                    <input type="number" id="inputName" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputName">Author ID</label>
-                                    <input type="number" id="inputName" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputStatus">Status</label>
-                                    <select id="inputStatus" class="form-control custom-select">
-                                        <option>Published</option>
-                                        <option>Editing</option>
-                                        <option>Pending</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputDescription">Insert Date</label>
-                                    <input type="date" id="inputClientCompany" class="form-control">
-                                </div>
-                            </form>
-                        </div>
-                        <!-- /.card-body -->
-                    </div>
-                    <!--RUS-->
-                    <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
-                        <div class="card-body">
-                            <form>
-                                <div class="form-group">
-                                    <label for="inputName">Title</label>
-                                    <input type="text" id="inputName" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputDescription">Content</label>
-                                    <div class="summernote">RUS Editor</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputName">Language ID</label>
-                                    <input type="number" id="inputName" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputName">Author ID</label>
-                                    <input type="number" id="inputName" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputStatus">Status</label>
-                                    <select id="inputStatus" class="form-control custom-select">
-                                        <option>Published</option>
-                                        <option>Editing</option>
-                                        <option>Pending</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputDescription">Insert Date</label>
-                                    <input type="date" id="inputClientCompany" class="form-control">
-                                </div>
-                            </form>
-                        </div>
-                        <!-- /.card-body -->
-                    </div>
-                    <!--ENG-->
-                    <div class="tab-pane fade" id="custom-tabs-four-messages" role="tabpanel" aria-labelledby="custom-tabs-four-messages-tab">
-                        <div class="card-body">
-                            <form>
-                                <div class="form-group">
-                                    <label for="inputName">Title</label>
-                                    <input type="text" id="inputName" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputDescription">Content</label>
-                                    <div class="summernote">ENG Editor</div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputName">Language ID</label>
-                                    <input type="number" id="inputName" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputName">Author ID</label>
-                                    <input type="number" id="inputName" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputStatus">Status</label>
-                                    <select id="inputStatus" class="form-control custom-select">
-                                        <option>Published</option>
-                                        <option>Editing</option>
-                                        <option>Pending</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputDescription">Insert Date</label>
-                                    <input type="date" id="inputClientCompany" class="form-control">
-                                </div>
-                            </form>
-                        </div>
-                        <!-- /.card-body -->
-                    </div>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
                 </div>
             </div>
-            <!-- /.card -->
+
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="inputName">Title</label>
+                    <input type="text" asp-for="Title" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="inputDescription">Content</label>
+                    <div class="summernote">Editor</div>
+                </div>
+                <div class="form-group">
+                    <label for="inputName">Language ID</label>
+                    <select asp-for="LanguageId" class="form-control custom-select">
+                        <option selected disabled>Select one</option>
+                        @foreach (var language in Model.Languages)
+                        {
+                            <option value="@language.Id">
+                                <div>@language.Id - @language.Title</div>
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inputName">Author ID</label>
+                    <select asp-for="AuthorId" class="form-control custom-select">
+                        <option selected disabled>Select one</option>
+                        @foreach (var author in Model.Users)
+                        {
+                            <option value="@author.Id">
+                                <div> @author.Id - @author.Name @author.Surname</div>
+                            </option>
+                        }
+                    </select>
+                </div>
+            </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-12">
+                <a asp-page="/Admin/Lists/Posts" class="btn btn-secondary">Cancel</a>
+                <input asp-page-handler="Create" type="submit" value="Save Changes" class="btn btn-success float-right">
+            </div>
+        </div>
+    </form>
 </section>
 
 @section Scripts

@@ -6,6 +6,8 @@ using Application.CQRS.Hashtags.Commands.CreateHashtag;
 using Application.CQRS.Hashtags.Commands.UpdateHashtag;
 using Application.CQRS.Languages.Commands.CreateLanguage;
 using Application.CQRS.Languages.Commands.UpdateLanguage;
+using Application.CQRS.Posts.Commands.CreatePost;
+using Application.CQRS.PostTranslations.Commands.CreatePostTranslation;
 using Application.CQRS.Users.Commands.CreateUser;
 using Application.CQRS.Users.Commands.UpdateUser;
 using AutoMapper;
@@ -37,6 +39,8 @@ namespace Application
             services.AddScoped<IValidator<CreateCategoryCommand>, CreateCategoryCommandValidator>();
             services.AddScoped<IValidator<CreateCategoryTranslationCommand>, CreateCategoryTranslationCommandValidator>();
             services.AddScoped<IValidator<UpdateCategoryTranslationCommand>, UpdateCategoryTranslationCommandValidator>();
+            services.AddScoped<IValidator<CreatePostCommand>, CreatePostCommandValidator>();
+            services.AddScoped<IValidator<CreatePostTranslationCommand>, CreatePostTranslationCommandValidator>();
 
             return services;
         }

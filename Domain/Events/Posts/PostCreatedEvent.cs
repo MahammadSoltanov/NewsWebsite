@@ -1,8 +1,8 @@
 ﻿namespace Domain.Events.Posts
 {
-    public class PostPublishedEvent : BaseEvent
+    public class PostCreatedEvent : BaseEvent
     {
-        public PostPublishedEvent(Post post)
+        public PostCreatedEvent(Post post)
         {
             Post = post;
         }
