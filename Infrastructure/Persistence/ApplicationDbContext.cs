@@ -86,17 +86,10 @@ namespace Infrastructure.Persistence
                 .WithMany(c => c.Posts)
                 .HasForeignKey(p => p.CategoryId);
             modelBuilder.Entity<Post>()
-                .Property(p => p.Title)
-                .IsRequired();
-            modelBuilder.Entity<Post>()
                 .Property(p => p.Status)
                 .IsRequired()
                 .HasMaxLength(20)
                 .HasColumnType("VARCHAR");
-            modelBuilder.Entity<Post>()
-                .HasIndex(p => p.Title)
-                .IsUnique();
-
 
             modelBuilder.Entity<PostHashtag>()
                 .HasKey(ph => new { ph.PostId, ph.HashtagId });

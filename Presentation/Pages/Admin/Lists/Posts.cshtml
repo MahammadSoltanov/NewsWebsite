@@ -27,7 +27,7 @@
             <table class="table table-striped projects">
                 <thead>
                     <tr>
-                        @foreach (var property in typeof(PostDto).GetProperties())
+                        @foreach (var property in typeof(PostTranslationDto).GetProperties())
                         {
                             if (property.Name != "Id")
                             {
@@ -39,10 +39,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (PostDto post in Model.Posts)
+                    @foreach (PostTranslationDto post in Model.Posts)
                     {
                         <tr>
-                            @foreach (var property in typeof(PostDto).GetProperties())
+                            @foreach (var property in typeof(PostTranslationDto).GetProperties())
                             {
                                 if (property.Name != "Id")
                                 {
@@ -97,7 +97,7 @@
 @section Links
     {
     <!-- Font Awesome -->
-    <link rel="stylesheet" asp-page="~/lib/admin-lte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="~/lib/admin-lte/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" asp-page="~/lib/admin-lte/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="~/lib/admin-lte/dist/css/adminlte.min.css">
 }

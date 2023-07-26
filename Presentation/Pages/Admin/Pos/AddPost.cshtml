@@ -18,16 +18,17 @@
 
             <div class="card-body">
                 <div class="form-group">
-                    <label for="inputDescription">Title</label>
-                    <input type="text" class="form-control" />
-                </div>
-                <div class="form-group">
                     <label for="inputName">Category ID</label>
-                    <input type="number" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="inputClientCompany">Insert Date</label>
-                    <input type="date" id="inputClientCompany" class="form-control">
+                    <select asp-for="CategoryId" class="form-control custom-select">
+                        <option selected disabled>Select one</option>
+                        @foreach (var categoryTranslation in Model.Categories)
+                        {
+                            <option value="@categoryTranslation.CategoryId">
+                                <div> @categoryTranslation.CategoryId - @categoryTranslation.Title</div>
+                            </option>
+                        }
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
                 </div>
             </div>
             <!-- /.card-body -->
@@ -48,23 +49,15 @@
                 <div class="form-group">
                     <label for="inputName">Title</label>
                     <input type="text" asp-for="Title" class="form-control">
+                    <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
                 <div class="form-group">
+                    <input type="hidden" asp-for="TranslationContent" id="editorInput" />
                     <label for="inputDescription">Content</label>
-                    <div class="summernote">Editor</div>
+                    <div id="summernote">Editor</div>
+                    <span asp-validation-for="TranslationContent" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label for="inputName">Language ID</label>
-                    <select asp-for="LanguageId" class="form-control custom-select">
-                        <option selected disabled>Select one</option>
-                        @foreach (var language in Model.Languages)
-                        {
-                            <option value="@language.Id">
-                                <div>@language.Id - @language.Title</div>
-                            </option>
-                        }
-                    </select>
-                </div>
+                <input type="hidden" asp-for="LanguageId" />
                 <div class="form-group">
                     <label for="inputName">Author ID</label>
                     <select asp-for="AuthorId" class="form-control custom-select">
@@ -93,11 +86,31 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="summernote-bs5.js"></script>
     <script type="text/javascript" src="cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript">
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script>
+        // Initialize the Summernote editor
         $(document).ready(function () {
-            $('.summernote').summernote();
+            $('#summernote').summernote({
+                callbacks: {
+                    onChange: function () {
+                        syncContent();
+                    }
+                }
+            });
         });
+
+        // Function to synchronize the content between the div and the hidden input
+        function syncContent() {
+            // Get the content from the Summernote editor
+            const content = $('#summernote').summernote('code');
+            // Set the content as the value of the hidden input
+            $('#editorInput').val(content);
+        }
+
+        // Call the function initially to set the initial content
+        syncContent();
     </script>
+
 }
 
 @section Links
@@ -105,3 +118,4 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" />
     <link href="summernote-bs5.css" rel="stylesheet">
 }
+

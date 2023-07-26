@@ -8,7 +8,6 @@ namespace Application.CQRS.Posts.Commands.CreatePost;
 public record CreatePostCommand : IRequest<int>
 {
     public int CategoryId { get; set; }
-    public string Title { get; set; }
 }
 
 public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, int>
@@ -24,7 +23,6 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, int>
     {
         var entity = new Post()
         {
-            Title = request.Title,
             Status = "Pending",
             CategoryId = request.CategoryId,
         };

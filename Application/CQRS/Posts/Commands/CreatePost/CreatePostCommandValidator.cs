@@ -6,7 +6,7 @@ public class CreatePostCommandValidator : AbstractValidator<CreatePostCommand>
 {
     public CreatePostCommandValidator()
     {
-        RuleFor(p => p.Title)
+        RuleFor(p => p.CategoryId)
             .NotEmpty();
     }
 }

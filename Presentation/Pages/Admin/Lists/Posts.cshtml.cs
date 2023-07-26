@@ -1,5 +1,6 @@
 using Application.Common.Models;
 using Application.CQRS.Posts.Queries.GetPosts;
+using Application.CQRS.PostTranslations.Queries.GetPostTranslations;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -15,15 +16,16 @@ namespace Presentation.Pages.Admin.Lists
             _mediator = mediator;
         }
 
-        public List<PostDto> Posts{ get; set; }
+        public List<PostTranslationDto> Posts{ get; set; }
 
         public async Task OnGetAsync()
         {
-            Posts = await _mediator.Send(new GetPostsQuery());
+            Posts = await _mediator.Send(new GetPostTranslationsQuery());
         }
 
         public async Task<ActionResult> OnPostDeleteAsync()
         {
+            
             return Page();
         }
     }
