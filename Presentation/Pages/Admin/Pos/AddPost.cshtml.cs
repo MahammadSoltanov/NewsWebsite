@@ -15,6 +15,7 @@ using System.Transactions;
 
 namespace Presentation.Pages.Admin.Pos
 {
+
     public class AddPostModel : PageModel
     {
         private readonly IMediator _mediator;
@@ -29,12 +30,12 @@ namespace Presentation.Pages.Admin.Pos
         }
 
         public List<UserDto> Users { get; set; }
-        public List<CategoryTranslationDto> Categories{ get; set; }
+        public List<CategoryTranslationDto> Categories { get; set; }
         public LanguageDto DefaultLanguage { get; set; }
         //Post info
         [BindProperty]
         public int CategoryId { get; set; }
-        
+
         //Translation info
         [BindProperty]
         public string Title { get; set; }
@@ -67,7 +68,7 @@ namespace Presentation.Pages.Admin.Pos
 
                     ValidationResult resultPost = await _validatorPost.ValidateAsync(createPostCommand);
 
-                    if(!resultPost.IsValid)
+                    if (!resultPost.IsValid)
                     {
                         resultPost.AddToModelState(this.ModelState);
                         Users = await _mediator.Send(new GetUsersQuery());
@@ -80,7 +81,7 @@ namespace Presentation.Pages.Admin.Pos
 
                     postId = await _mediator.Send(createPostCommand);
 
-                        CreatePostTranslationCommand createPostTranslationCommand = new CreatePostTranslationCommand()
+                    CreatePostTranslationCommand createPostTranslationCommand = new CreatePostTranslationCommand()
                     {
                         Title = Title,
                         PostId = postId,
@@ -91,7 +92,7 @@ namespace Presentation.Pages.Admin.Pos
 
                     ValidationResult resultPostTranslation = await _validatorPostTranslation.ValidateAsync(createPostTranslationCommand);
 
-                    if(!resultPostTranslation.IsValid) 
+                    if (!resultPostTranslation.IsValid)
                     {
                         resultPostTranslation.AddToModelState(this.ModelState);
                         Users = await _mediator.Send(new GetUsersQuery());
@@ -112,6 +113,7 @@ namespace Presentation.Pages.Admin.Pos
 
                 scope.Complete();
             }
+                
             DefaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
             string _message = $"Post with Id = {postId} and " +
                 $"default {DefaultLanguage.Code} translation with " +

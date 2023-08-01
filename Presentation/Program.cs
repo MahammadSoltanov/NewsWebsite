@@ -1,6 +1,6 @@
 using Application;
-using AutoMapper;
 using Infrastructure;
+using Presentation.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +24,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseMiddleware<AdminAuthenticationMiddleware>();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();

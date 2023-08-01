@@ -1,19 +1,27 @@
 ﻿using Application;
 using Application.Common.Interfaces;
 using Domain.Entities;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence
 {
-    public class ApplicationDbContext : DbContext, IApplicationDbContext
+    public class ApplicationDbContext : IdentityDbContext<User, Role, int>, IApplicationDbContext
     {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
+        {
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(PrivateInformation.ConnectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Category>()
                 .HasKey(c => c.Id);
             modelBuilder.Entity<Category>()
@@ -148,7 +156,9 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Role)
                 .WithMany(r => r.Users)
-                .HasForeignKey(u => u.RoleId);
+                .HasForeignKey(u => u.RoleId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             modelBuilder.Entity<User>()
                 .Property(u => u.Name)
                 .HasColumnType("VARCHAR")
@@ -181,7 +191,5 @@ namespace Infrastructure.Persistence
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostHashtag> PostHashtags { get; set; }
         public DbSet<PostTranslation> PostTranslations { get; set; }
-        public DbSet<Role> Roles { get; set; }
-        public DbSet<User> Users { get; set; }
     }
 }

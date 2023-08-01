@@ -5,12 +5,14 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Presentation.Pages.Admin.Usr
 {
+    [AllowAnonymous]
     public class AddUserModel : PageModel
     {
         private readonly IMediator _mediator;

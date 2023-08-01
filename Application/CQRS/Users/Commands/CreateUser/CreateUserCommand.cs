@@ -34,12 +34,10 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
             RoleId = request.RoleId
         };
 
-        entity.AddDomainEvent(new UserCreatedEvent(entity));
-
         _context.Users.Add(entity);
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return entity.Id;
+        return Convert.ToInt32(entity.Id); 
     }
 }

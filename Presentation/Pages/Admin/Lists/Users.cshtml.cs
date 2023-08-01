@@ -2,11 +2,13 @@ using Application.Common.Models;
 using Application.CQRS.Users.Commands.DeleteUser;
 using Application.CQRS.Users.Queries.GetUsers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Presentation.Pages.Admin.Lists
 {
+    [AllowAnonymous]
     public class UsersModel : PageModel
     {
         private readonly IMediator _mediator;

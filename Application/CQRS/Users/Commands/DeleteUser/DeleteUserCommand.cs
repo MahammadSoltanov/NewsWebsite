@@ -29,8 +29,6 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Unit>
         
         _context.Users.Remove(entity);
 
-        entity.AddDomainEvent(new UserDeletedEvent(entity));
-
         await _context.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
