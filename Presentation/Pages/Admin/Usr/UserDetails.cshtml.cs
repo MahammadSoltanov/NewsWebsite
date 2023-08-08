@@ -2,11 +2,13 @@ using Application.Common.Models;
 using Application.CQRS.Users.Queries.GetUserById;
 using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Presentation.Pages.Admin.Usr
 {
+    [Authorize(Roles = "Admin")]
     public class UserDetailsModel : PageModel
     {
         private readonly IMediator _mediator;

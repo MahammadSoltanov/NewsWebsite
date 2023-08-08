@@ -5,11 +5,13 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Presentation.Pages.Admin.Categ
 {
+    [Authorize(Roles = "Admin")]
     public class EditCategoryModel : PageModel
     {
         private readonly IMediator _mediator;

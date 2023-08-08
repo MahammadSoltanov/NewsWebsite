@@ -5,11 +5,13 @@ using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslations;
 using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationsByLanguageId;
 using Application.CQRS.Languages.Queries.GetLanguageByCode;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Presentation.Pages.Admin.Lists
 {
+    [Authorize(Roles = "Admin")]
     public class CategoriesModel : PageModel
     {
         private readonly IMediator _mediator;

@@ -13,7 +13,6 @@ namespace Infrastructure
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
-
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(PrivateInformation.ConnectionString));
 
@@ -25,13 +24,19 @@ namespace Infrastructure
                 options.Password.RequireLowercase = true;
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
-                options.Password.RequiredLength = 16;
+                options.Password.RequiredLength = 8;
+                options.User.RequireUniqueEmail = true;
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
+            services.AddScoped<SignInManager<User>>();
+            services.AddScoped<UserManager<User>>();
+            services.AddScoped<RoleManager<Role>>();
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
+
             return services;
         }
     }

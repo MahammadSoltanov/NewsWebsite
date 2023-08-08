@@ -11,28 +11,32 @@ namespace Presentation.Middleware
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public async Task Invoke(HttpContext context)
         {
-
             var endpoint = context.GetEndpoint();
 
-            if (endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null)
+            if (endpoint != null && RequiresAuthorization(endpoint))
             {
-                // Allow access to pages that don't have the [Authorize] attribute
-                await _next(context);
-                return;
-            }
-
-            var path = context.Request.Path.Value;
-
-            if (!context.User.Identity.IsAuthenticated && path.StartsWith("/Admin") && !path.StartsWith("/Admin/Authentication/Login"))
-            {
-                // User is not authenticated and trying to access a page with [Authorize]
-                context.Response.Redirect("/Admin/Authentication/Login");
-                return;
+                if (!context.User.Identity.IsAuthenticated)
+                {
+                    context.Response.Redirect("/Admin/Authentication/Login");
+                    return;
+                }
+                else
+                {
+                    // User is authenticated, proceed to the requested page
+                    await _next(context);
+                    return;
+                }
             }
 
             await _next(context);
+        }
+
+        private bool RequiresAuthorization(Endpoint endpoint)
+        {
+            // Check if the endpoint metadata contains IAuthorizeData
+            return endpoint.Metadata.GetMetadata<IAuthorizeData>() != null;
         }
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Presentation.Pages.Admin.Lists
 {
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     public class LanguagesModel : PageModel
     {
         public List<LanguageDto> Languages { get; set; }

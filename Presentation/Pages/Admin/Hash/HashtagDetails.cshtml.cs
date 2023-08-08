@@ -1,10 +1,12 @@
 using Application.Common.Models;
 using Application.CQRS.Hashtags.Queries.GetHashtagById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Presentation.Pages.Admin.Hash
 {
+    [Authorize(Roles = "Admin")]
     public class HashtagDetailsModel : PageModel
     {
         private readonly IMediator _mediator;

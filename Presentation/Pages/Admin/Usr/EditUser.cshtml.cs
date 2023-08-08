@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Presentation.Pages.Admin.Usr
 {
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin")]
     public class EditUserModel : PageModel
     {
         private readonly IMediator _mediator;

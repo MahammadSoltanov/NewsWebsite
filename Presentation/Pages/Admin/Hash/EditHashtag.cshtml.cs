@@ -5,11 +5,13 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Presentation.Pages.Admin.Hash
 {
+    [Authorize(Roles = "Admin")]
     public class EditHashtagModel : PageModel
     {
         private readonly IMediator _mediator;

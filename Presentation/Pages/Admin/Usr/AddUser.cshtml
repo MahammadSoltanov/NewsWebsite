@@ -44,12 +44,13 @@
                         <option selected disabled>Select one</option>
                         @foreach(RoleDto role in Model.Roles)
                         {
-                            <option value="@role.Id">
-                                <div>@role.Id - @role.Title</div>
+                            <option value="@role.Id" data-role-name="@role.Name">
+                                <div>@role.Id - @role.Name</div>
                             </option>
                         }
                     </select>
                 </div>
+                <input type="hidden" id="inputRoleName" asp-for="RoleName" />
                 <div class="row">
                     <div class="col-12">
                         <a asp-page="/Admin/Lists/User" class="btn btn-secondary">Cancel</a>
@@ -62,3 +63,14 @@
 
     </div>
 </section>
+
+@section Scripts 
+{
+    <script>
+        document.getElementById('inputStatus').addEventListener('change', function () {
+            var selectedOption = this.options[this.selectedIndex];
+            var roleName = selectedOption.getAttribute('data-role-name');
+            document.getElementById('inputRoleName').value = roleName;
+        });
+    </script>
+}

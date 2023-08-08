@@ -3,6 +3,17 @@
 @{
     Layout = "/Pages/Shared/_LoginLayout.cshtml";
 }
+@inject IHttpContextAccessor HttpContextAccessor
+
+@if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+{
+    <p>User is authenticated.</p>
+    <p>@HttpContext.User.Identity.Name</p>
+}
+else
+{
+    <p>User is not authenticated.</p>
+}
 
 <div class="login-box">
     <div class="card">

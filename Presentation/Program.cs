@@ -9,6 +9,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
 
+builder.Services.AddHttpContextAccessor();
+
 
 var app = builder.Build();
 
@@ -24,7 +26,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseMiddleware<AdminAuthenticationMiddleware>();
+
 
 app.UseAuthentication();
 app.UseAuthorization();

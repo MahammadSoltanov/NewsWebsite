@@ -31,20 +31,27 @@ namespace Presentation.Pages.Admin.Authentication
 
         public async Task<ActionResult> OnPostSignInAsync()
         {
-            SignInCommand signInCommand = new SignInCommand()
+            try
             {
-                Email = Email,
-                Password = Password
-            };
+                SignInCommand signInCommand = new SignInCommand()
+                {
+                    Email = Email,
+                    Password = Password
+                };
 
-            var result = await _mediator.Send(signInCommand);
+                var result = await _mediator.Send(signInCommand);
 
-            if (!result.Succeeded)
-            {                
-                return new RedirectToPageResult("/Admin/Error", new {message = result.ToString()}); 
+                if (!result.Succeeded)
+                {
+                    return new RedirectToPageResult("/Admin/Error", new { message = result.ToString() });
+                }
+
+                return new RedirectToPageResult("/Admin/Lists/Posts");
             }
-
-            return new RedirectToPageResult("/Admin/Lists/Posts");
+            catch (Exception ex)
+            {
+                return new RedirectToPageResult("/Admin/Succeed", new { message = ex.Message });
+            }
         }
     }
 }

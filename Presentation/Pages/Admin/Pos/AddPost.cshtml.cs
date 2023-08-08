@@ -9,13 +9,14 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Transactions;
 
 namespace Presentation.Pages.Admin.Pos
 {
-
+    [Authorize(Roles = "Admin")]
     public class AddPostModel : PageModel
     {
         private readonly IMediator _mediator;

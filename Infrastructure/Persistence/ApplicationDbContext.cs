@@ -139,14 +139,6 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<Role>()
                 .Property(c => c.Id)
                 .UseIdentityColumn(1, 1);
-            modelBuilder.Entity<Role>()
-                .Property(r => r.Title)
-                .HasMaxLength(50)
-                .HasColumnType("VARCHAR")
-                .IsRequired();
-            modelBuilder.Entity<Role>()
-                .HasIndex(r => r.Title)
-                .IsUnique();
 
             modelBuilder.Entity<User>()
                 .HasKey(u => u.Id);
