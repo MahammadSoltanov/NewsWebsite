@@ -54,7 +54,7 @@
                 <div class="form-group">
                     <input type="hidden" asp-for="TranslationContent" id="editorInput" />
                     <label for="inputDescription">Content</label>
-                    <div id="summernote">Editor</div>
+                    <div id="editor"></div>
                     <span asp-validation-for="TranslationContent" class="text-danger"></span>
                 </div>
                 <input type="hidden" asp-for="LanguageId" />
@@ -83,39 +83,108 @@
 
 @section Scripts
     {
-    <script type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="summernote-bs5.js"></script>
-    <script type="text/javascript" src="cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script>
-        // Initialize the Summernote editor
-        $(document).ready(function () {
-            $('#summernote').summernote({
-                callbacks: {
-                    onChange: function () {
-                        syncContent();
-                    }
-                }
-            });
-        });
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.5/purify.min.js" integrity="sha512-KqUc2WMPF/gxte9xVjVE4TIt1LMUTidO3BrcItFg0Ro24I7pGNzgcXdnWdezNY+8T0/JEmdC79MuwYn+8UdOqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://example.com/ckfinder/ckfinder.js"></script>
+    <script src="@Html.Raw("https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-upload@39.0.0/src/index.min.js")"></script>
 
-        // Function to synchronize the content between the div and the hidden input
-        function syncContent() {
-            // Get the content from the Summernote editor
-            const content = $('#summernote').summernote('code');
-            // Set the content as the value of the hidden input
-            $('#editorInput').val(content);
+    <script>
+        class MyUploadAdapter {
+            constructor(loader) {
+                this.loader = loader;
+            }
+
+            upload() {
+                return this.loader.file
+                    .then(file => new Promise((resolve, reject) => {
+                        this._initRequest();
+                        this._initListeners(resolve, reject, file);
+                        this._sendRequest(file);
+                    }));
+            }
+
+            abort() {
+                if (this.xhr) {
+                    this.xhr.abort();
+                }
+            }
+
+            _initRequest() {
+                const xhr = this.xhr = new XMLHttpRequest();
+
+                xhr.open('POST', '/Image/UploadImage', true);
+                xhr.responseType = 'json';
+            }
+
+            _initListeners(resolve, reject, file) {
+                const xhr = this.xhr;
+                const loader = this.loader;
+                const genericErrorText = `Couldn't upload file: ${file.name}.`;
+
+                xhr.addEventListener('error', () => reject(genericErrorText));
+                xhr.addEventListener('abort', () => reject());
+                xhr.addEventListener('load', () => {
+                    const response = xhr.response;
+
+                    if (!response || response.error) {
+                        return reject(response && response.error ? response.error.message : genericErrorText);
+                    }
+
+                    resolve({
+                        default: response.url
+                    });
+                });
+
+                if (xhr.upload) {
+                    xhr.upload.addEventListener('progress', evt => {
+                        if (evt.lengthComputable) {
+                            loader.uploadTotal = evt.total;
+                            loader.uploaded = evt.loaded;
+                        }
+                    });
+                }
+            }
+
+            _sendRequest(file) {
+                const data = new FormData();
+
+                data.append('upload', file);
+
+                this.xhr.send(data);
+            }
         }
 
-        // Call the function initially to set the initial content
-        syncContent();
-    </script>
+        function MyCustomUploadAdapterPlugin(editor) {
+            editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+                return new MyUploadAdapter(loader);
+            };
+        }
 
+        ClassicEditor
+            .create(document.querySelector('#editor'),
+                {
+                    extraPlugins: [MyCustomUploadAdapterPlugin],
+                })
+            .then(editor => {
+                editor.model.document.on('change:data', () => {
+                    syncContent(editor.getData());
+                });
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        function syncContent(content) {
+            const contentWithoutNbsp = content.replace(/&nbsp;/g, '');
+
+            const sanitizedContent = DOMPurify.sanitize(contentWithoutNbsp);
+            document.querySelector('#editorInput').value = sanitizedContent;
+        }
+    </script>
 }
 
 @section Links
     {
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" />
-    <link href="summernote-bs5.css" rel="stylesheet">
+
 }
 

@@ -4,6 +4,7 @@ using Application.CQRS.CategoryTranslations.Commands.CreateCategoryTranslation;
 using Application.CQRS.CategoryTranslations.Commands.UpdateCategoryTranslation;
 using Application.CQRS.Hashtags.Commands.CreateHashtag;
 using Application.CQRS.Hashtags.Commands.UpdateHashtag;
+using Application.CQRS.Images.Commands.CreateImage;
 using Application.CQRS.Languages.Commands.CreateLanguage;
 using Application.CQRS.Languages.Commands.UpdateLanguage;
 using Application.CQRS.Posts.Commands.CreatePost;
@@ -41,6 +42,7 @@ namespace Application
             services.AddScoped<IValidator<UpdateCategoryTranslationCommand>, UpdateCategoryTranslationCommandValidator>();
             services.AddScoped<IValidator<CreatePostCommand>, CreatePostCommandValidator>();
             services.AddScoped<IValidator<CreatePostTranslationCommand>, CreatePostTranslationCommandValidator>();
+            services.AddScoped<IValidator<CreateImageCommand>, CreateImageCommandValidator>();
 
             return services;
         }

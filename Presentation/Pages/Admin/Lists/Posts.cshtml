@@ -29,7 +29,7 @@
                     <tr>
                         @foreach (var property in typeof(PostTranslationDto).GetProperties())
                         {
-                            if (property.Name != "Id")
+                            if (property.Name != "Id" && property.Name != "Content")
                             {
                                 <th>@property.Name</th>
                             }
@@ -44,7 +44,7 @@
                         <tr>
                             @foreach (var property in typeof(PostTranslationDto).GetProperties())
                             {
-                                if (property.Name != "Id")
+                                if (property.Name != "Id" && property.Name != "Content")
                                 {
                                     <td>@property.GetValue(post)</td>
                                 }

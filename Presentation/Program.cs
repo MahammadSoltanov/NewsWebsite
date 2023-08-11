@@ -1,6 +1,5 @@
 using Application;
 using Infrastructure;
-using Presentation.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +9,7 @@ builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
 
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddControllers(); // Add this line for controllers
 
 
 var app = builder.Build();
@@ -27,10 +27,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapControllers();
 app.MapRazorPages();
 
 app.Run();

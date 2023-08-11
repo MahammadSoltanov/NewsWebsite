@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Common.Models;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -15,6 +16,7 @@ namespace Application.Common.Interfaces
         public DbSet<PostTranslation> PostTranslations { get; }
         public DbSet<Role> Roles { get; }
         public DbSet<User> Users { get; }
+        public DbSet<ImageModel> Images{ get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

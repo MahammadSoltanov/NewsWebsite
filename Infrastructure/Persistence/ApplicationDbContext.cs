@@ -1,5 +1,6 @@
 ﻿using Application;
 using Application.Common.Interfaces;
+using Application.Common.Models;
 using Domain.Entities;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -21,6 +22,12 @@ namespace Infrastructure.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ImageModel>()
+                .HasKey(i => i.Id);
+            modelBuilder.Entity<ImageModel>()
+                .HasIndex(i => i.Url)
+                .IsUnique();
 
             modelBuilder.Entity<Category>()
                 .HasKey(c => c.Id);
@@ -183,5 +190,6 @@ namespace Infrastructure.Persistence
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostHashtag> PostHashtags { get; set; }
         public DbSet<PostTranslation> PostTranslations { get; set; }
+        public DbSet<ImageModel> Images { get; set; }
     }
 }
