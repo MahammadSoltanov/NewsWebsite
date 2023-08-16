@@ -43,7 +43,8 @@ namespace Presentation.Pages.Admin.Authentication
 
                 if (!result.Succeeded)
                 {
-                    return new RedirectToPageResult("/Admin/Error", new { message = result.ToString() });
+                    ModelState.AddModelError(string.Empty, "You have entered an invalid username or password");
+                    return Page();
                 }
 
                 return new RedirectToPageResult("/Admin/Lists/Posts");

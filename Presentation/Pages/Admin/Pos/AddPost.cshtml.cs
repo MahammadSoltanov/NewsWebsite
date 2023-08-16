@@ -1,5 +1,6 @@
 using Application.Common.Models;
 using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationsByLanguageId;
+using Application.CQRS.Hashtags.Queries.GetHashtags;
 using Application.CQRS.Languages.Queries.GetLanguageByCode;
 using Application.CQRS.Languages.Queries.GetLanguages;
 using Application.CQRS.Posts.Commands.CreatePost;
@@ -33,9 +34,12 @@ namespace Presentation.Pages.Admin.Pos
         public List<UserDto> Users { get; set; }
         public List<CategoryTranslationDto> Categories { get; set; }
         public LanguageDto DefaultLanguage { get; set; }
+        public List<HashtagDto> Hashtags { get; set; }
         //Post info
         [BindProperty]
         public int CategoryId { get; set; }
+        [BindProperty]
+        public string TitleImageUrl { get; set; }
 
         //Translation info
         [BindProperty]
@@ -52,6 +56,7 @@ namespace Presentation.Pages.Admin.Pos
             DefaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
             LanguageId = DefaultLanguage.Id;
             Categories = await _mediator.Send(new GetCategoryTranslationsByLanguageIdQuery(LanguageId));
+            Hashtags = await _mediator.Send(new GetHashtagsQuery());
         }
 
         public async Task<ActionResult> OnPostCreateAsync()
@@ -65,6 +70,7 @@ namespace Presentation.Pages.Admin.Pos
                     CreatePostCommand createPostCommand = new CreatePostCommand()
                     {
                         CategoryId = CategoryId,
+                        TitleImageUrl = TitleImageUrl,
                     };
 
                     ValidationResult resultPost = await _validatorPost.ValidateAsync(createPostCommand);
@@ -76,6 +82,7 @@ namespace Presentation.Pages.Admin.Pos
                         DefaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
                         LanguageId = DefaultLanguage.Id;
                         Categories = await _mediator.Send(new GetCategoryTranslationsByLanguageIdQuery(LanguageId));
+                        Hashtags = await _mediator.Send(new GetHashtagsQuery());
                         scope.Dispose();
                         return Page();
                     }
@@ -100,6 +107,7 @@ namespace Presentation.Pages.Admin.Pos
                         DefaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
                         LanguageId = DefaultLanguage.Id;
                         Categories = await _mediator.Send(new GetCategoryTranslationsByLanguageIdQuery(LanguageId));
+                        Hashtags = await _mediator.Send(new GetHashtagsQuery());    
                         scope.Dispose();
                         return Page();
                     }

@@ -8,6 +8,7 @@ namespace Application.CQRS.Posts.Commands.CreatePost;
 public record CreatePostCommand : IRequest<int>
 {
     public int CategoryId { get; set; }
+    public string TitleImageUrl { get; set; }
 }
 
 public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, int>

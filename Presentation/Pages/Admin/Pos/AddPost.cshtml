@@ -3,8 +3,18 @@
 @{
     ViewBag.Title = "Add Post";
 }
-<!-- Main content -->
+<!-- Title image upload to server -->
 <section class="content">
+    <form action="/Image/UploadImage" class="imageForm">
+        <div class="form-group">
+            <label for="inputName">Post's Title Image</label>
+            <div class="dropzone" id="myDropzone">
+                <div class="dz-message" data-dz-message><span>Drop files here or click to upload.</span></div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Form for post information-->
     <form method="post">
         <div class="card card-primary">
             <div class="card-header">
@@ -16,6 +26,7 @@
                 </div>
             </div>
 
+            <input type="hidden" asp-for="TitleImageUrl" id="title-image-input" />
             <div class="card-body">
                 <div class="form-group">
                     <label for="inputName">Category ID</label>
@@ -83,9 +94,9 @@
 
 @section Scripts
     {
+    @*-----CKEditor-----*@
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.5/purify.min.js" integrity="sha512-KqUc2WMPF/gxte9xVjVE4TIt1LMUTidO3BrcItFg0Ro24I7pGNzgcXdnWdezNY+8T0/JEmdC79MuwYn+8UdOqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://example.com/ckfinder/ckfinder.js"></script>
     <script src="@Html.Raw("https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-upload@39.0.0/src/index.min.js")"></script>
 
     <script>
@@ -181,10 +192,42 @@
             document.querySelector('#editorInput').value = sanitizedContent;
         }
     </script>
+
+    @*-----Dropzone-----*@
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    
+    <script>
+        Dropzone.autoDiscover = false; // Disable auto-discovery
+
+        // Initialize Dropzone
+        var myDropzone = new Dropzone("#myDropzone", {
+            url: "/Image/UploadImage",
+            paramName: "ImageFile", 
+            maxFilesize: 5, // Maximum file size in MB
+            acceptedFiles: "image/*", // Accepted file types
+            dictDefaultMessage: "Drop files here or click to upload.",
+            autoProcessQueue: true
+        });
+
+        myDropzone.on('success', function (file, response) {
+            console.log(response)
+            if (response.success) {
+                document.querySelector('#title-image-input').value = response.url;
+                console.log(document.querySelector('#title-image-input'));
+            }
+            else {
+                alert(response.error);
+            }
+        });
+
+        myDropzone.on("addedfile", function (file) {
+            console.log("Added file");
+        });
+    </script>
 }
 
 @section Links
     {
-
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 }
 

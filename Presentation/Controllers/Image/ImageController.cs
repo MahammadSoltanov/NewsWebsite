@@ -24,18 +24,24 @@ namespace Presentation.Controllers.Image
             // Check if a file was actually uploaded
             if (uploadedFile == null || uploadedFile.Length == 0)
             {
-                return Json(new { error = "No file uploaded." });
+                var responseFile = Json(new { success = false, error = "No file uploaded." });
+                responseFile.ContentType = "application/json";
+                return responseFile;
             }
 
             // Check the file's content type (MIME type)
             if (!IsSupportedContentType(uploadedFile.ContentType))
             {
-                return Json(new { error = "Invalid file type." });
+                var responseType = Json(new { success = false, error = "Invalid file type. Only JPG, PNG and GIF is allowed" });
+                responseType.ContentType = "application/json";
+                return responseType;
             }
 
             if (uploadedFile.Length > MaxFileSizeInBytes)
             {
-                return Json(new { error = "File size exceeds the maximum limit." });
+                var responseSize = Json(new { success = false, error = "File size exceeds the maximum limit." });
+                responseSize.ContentType = "application/json";
+                return responseSize;
             }
 
             var randomComponent = Guid.NewGuid().ToString("N").Substring(0, 8); // Generate an 8-character random string
@@ -54,7 +60,9 @@ namespace Presentation.Controllers.Image
 
             await _mediator.Send(createImageCommand);
 
-            return Json(new { Url = imageUrl });
+            JsonResult response = Json(new { success = true, Url = imageUrl });
+            response.ContentType = "application/json";
+            return response;
         }
 
         private bool IsSupportedContentType(string contentType)
