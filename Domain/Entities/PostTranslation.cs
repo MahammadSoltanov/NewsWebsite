@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities
 {
-    public class PostTranslation : BaseAuditableEntity
+    public class PostTranslation : BaseEntity
     {
         public int AuthorId { get; set; }   
         public User User { get; set; }

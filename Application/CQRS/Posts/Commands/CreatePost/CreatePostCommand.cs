@@ -26,6 +26,8 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, int>
         {
             Status = "Pending",
             CategoryId = request.CategoryId,
+            InsertDate = DateTime.Now,
+            TitleImageUrl = request.TitleImageUrl,
         };
 
         entity.AddDomainEvent(new PostCreatedEvent(entity));

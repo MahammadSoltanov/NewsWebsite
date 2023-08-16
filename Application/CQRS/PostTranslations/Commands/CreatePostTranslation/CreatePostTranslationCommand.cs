@@ -31,7 +31,8 @@ public class CreatePostTranslationCommandHandler : IRequestHandler<CreatePostTra
             LanguageId = request.LanguageId,
             PostId = request.PostId,
             Title = request.Title,
-            Content = request.Content
+            Content = request.Content,
+            InsertDate = DateTime.Now,
         };
 
         entity.AddDomainEvent(new PostTranslationCreatedEvent(entity));

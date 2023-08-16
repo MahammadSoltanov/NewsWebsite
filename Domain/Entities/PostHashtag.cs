@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities
 {
-    public class PostHashtag : BaseAuditableEntity
+    public class PostHashtag : BaseEntity
     {
         public int PostId { get; set; }
         public Post Post { get; set; }

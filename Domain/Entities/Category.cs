@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities
 {
-    public class Category : BaseAuditableEntity
+    public class Category : BaseEntity
     {
         public string? Description { get; set; }
         public ICollection<Post> Posts { get; set; }

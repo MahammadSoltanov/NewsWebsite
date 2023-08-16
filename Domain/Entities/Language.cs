@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities
 {
-    public class Language : BaseAuditableEntity
+    public class Language : BaseEntity
     {
         public string Code { get; set; }
         public string Title { get; set; }

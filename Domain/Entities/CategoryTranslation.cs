@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities
 {
-    public class CategoryTranslation : BaseAuditableEntity
+    public class CategoryTranslation : BaseEntity
     {
         public int CategoryId { get; set; }
         public Category Category { get; set; }
