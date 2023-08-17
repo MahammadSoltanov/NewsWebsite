@@ -21,8 +21,6 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
     {
         var entity = new Category();
 
-        entity.AddDomainEvent(new CategoryCreatedEvent(entity));
-
         _context.Categories.Add(entity);
 
         await _context.SaveChangesAsync(cancellationToken);

@@ -33,9 +33,8 @@ public class CreatePostTranslationCommandHandler : IRequestHandler<CreatePostTra
             Title = request.Title,
             Content = request.Content,
             InsertDate = DateTime.Now,
+            Status = "Pending"
         };
-
-        entity.AddDomainEvent(new PostTranslationCreatedEvent(entity));
 
         _context.PostTranslations.Add(entity);
 

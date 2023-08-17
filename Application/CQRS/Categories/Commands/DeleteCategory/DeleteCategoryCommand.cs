@@ -36,8 +36,6 @@ public class DeleteCategoryCommandHandler : IRequestHandler<DeleteCategoryComman
             }
         }
 
-        entity.AddDomainEvent(new CategoryDeletedEvent(entity));
-
         _context.Categories.Remove(entity);
 
         await _context.SaveChangesAsync(cancellationToken);

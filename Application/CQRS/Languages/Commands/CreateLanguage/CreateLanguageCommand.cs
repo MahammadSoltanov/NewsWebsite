@@ -26,8 +26,6 @@ public class CreateLanguageCommandHandler : IRequestHandler<CreateLanguageComman
             Code = request.Code,
             Title = request.Title,
         };
-
-        entity.AddDomainEvent(new LanguageCreatedEvent(entity));
         
         _context.Languages.Add(entity);
 

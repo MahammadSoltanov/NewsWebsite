@@ -25,8 +25,6 @@ public class CreateHashtagCommandHandler : IRequestHandler<CreateHashtagCommand,
         {
             Title = request.Title,
         };
-
-        entity.AddDomainEvent(new HashtagCreatedEvent(entity));
         
         _context.Hashtags.Add(entity);
 

@@ -19,7 +19,7 @@ public record CreateUserCommand : IRequest<int>
 
 public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
 {
-    private readonly IApplicationDbContext _context;
+    private readonly IApplicationDbContext _context;    
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<Role> _roleManager;
 

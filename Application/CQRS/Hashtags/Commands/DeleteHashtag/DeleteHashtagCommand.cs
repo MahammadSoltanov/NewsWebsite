@@ -28,8 +28,6 @@ public class DeleteHashtagCommandHandler : IRequestHandler<DeleteHashtagCommand,
 
         _context.Hashtags.Remove(entity);
 
-        entity.AddDomainEvent(new HashtagDeletedEvent(entity));
-
         await _context.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;

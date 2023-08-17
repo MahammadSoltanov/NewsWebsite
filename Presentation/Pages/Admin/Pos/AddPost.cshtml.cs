@@ -6,10 +6,12 @@ using Application.CQRS.Languages.Queries.GetLanguages;
 using Application.CQRS.Posts.Commands.CreatePost;
 using Application.CQRS.PostTranslations.Commands.CreatePostTranslation;
 using Application.CQRS.Users.Queries.GetUsers;
+using Domain.Entities;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -21,17 +23,21 @@ namespace Presentation.Pages.Admin.Pos
     public class AddPostModel : PageModel
     {
         private readonly IMediator _mediator;
+        private readonly UserManager<User> _userManager;
         private readonly IValidator<CreatePostCommand> _validatorPost;
         private readonly IValidator<CreatePostTranslationCommand> _validatorPostTranslation;
 
-        public AddPostModel(IMediator mediator, IValidator<CreatePostCommand> validatorPost, IValidator<CreatePostTranslationCommand> validatorPostTranslation)
+        public AddPostModel(IMediator mediator,
+                IValidator<CreatePostCommand> validatorPost,
+                IValidator<CreatePostTranslationCommand> validatorPostTranslation,
+                UserManager<User> userManager)
         {
             _mediator = mediator;
             _validatorPost = validatorPost;
             _validatorPostTranslation = validatorPostTranslation;
+            _userManager = userManager;
         }
 
-        public List<UserDto> Users { get; set; }
         public List<CategoryTranslationDto> Categories { get; set; }
         public LanguageDto DefaultLanguage { get; set; }
         public List<HashtagDto> Hashtags { get; set; }
@@ -45,14 +51,11 @@ namespace Presentation.Pages.Admin.Pos
         [BindProperty]
         public string Title { get; set; }
         [BindProperty]
-        public int AuthorId { get; set; }
-        [BindProperty]
         public int LanguageId { get; set; }
         [BindProperty]
         public string TranslationContent { get; set; }
         public async Task OnGetAsync()
         {
-            Users = await _mediator.Send(new GetUsersQuery());
             DefaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
             LanguageId = DefaultLanguage.Id;
             Categories = await _mediator.Send(new GetCategoryTranslationsByLanguageIdQuery(LanguageId));
@@ -67,6 +70,7 @@ namespace Presentation.Pages.Admin.Pos
             {
                 try
                 {
+                    var currentUser = await _userManager.GetUserAsync(User);
                     CreatePostCommand createPostCommand = new CreatePostCommand()
                     {
                         CategoryId = CategoryId,
@@ -78,7 +82,6 @@ namespace Presentation.Pages.Admin.Pos
                     if (!resultPost.IsValid)
                     {
                         resultPost.AddToModelState(this.ModelState);
-                        Users = await _mediator.Send(new GetUsersQuery());
                         DefaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
                         LanguageId = DefaultLanguage.Id;
                         Categories = await _mediator.Send(new GetCategoryTranslationsByLanguageIdQuery(LanguageId));
@@ -95,7 +98,7 @@ namespace Presentation.Pages.Admin.Pos
                         PostId = postId,
                         Content = TranslationContent,
                         LanguageId = LanguageId,
-                        AuthorId = AuthorId,
+                        AuthorId = currentUser.Id
                     };
 
                     ValidationResult resultPostTranslation = await _validatorPostTranslation.ValidateAsync(createPostTranslationCommand);
@@ -103,11 +106,10 @@ namespace Presentation.Pages.Admin.Pos
                     if (!resultPostTranslation.IsValid)
                     {
                         resultPostTranslation.AddToModelState(this.ModelState);
-                        Users = await _mediator.Send(new GetUsersQuery());
                         DefaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
                         LanguageId = DefaultLanguage.Id;
                         Categories = await _mediator.Send(new GetCategoryTranslationsByLanguageIdQuery(LanguageId));
-                        Hashtags = await _mediator.Send(new GetHashtagsQuery());    
+                        Hashtags = await _mediator.Send(new GetHashtagsQuery());
                         scope.Dispose();
                         return Page();
                     }
@@ -122,7 +124,7 @@ namespace Presentation.Pages.Admin.Pos
 
                 scope.Complete();
             }
-                
+
             DefaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
             string _message = $"Post with Id = {postId} and " +
                 $"default {DefaultLanguage.Code} translation with " +

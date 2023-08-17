@@ -27,8 +27,6 @@ public class DeleteLanguageCommandHandler : IRequestHandler<DeleteLanguageComman
         }
 
         _context.Languages.Remove(entity);
-        
-        entity.AddDomainEvent(new LanguageDeletedEvent(entity));
 
         await _context.SaveChangesAsync(cancellationToken);
 

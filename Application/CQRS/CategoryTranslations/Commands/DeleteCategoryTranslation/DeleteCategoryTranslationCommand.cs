@@ -26,8 +26,6 @@ public class DeleteCategoryTranslationCommandHandler : IRequestHandler<DeleteCat
             throw new NotFoundException(nameof(CategoryTranslation), request.Id);
         }
 
-        entity.AddDomainEvent(new CategoryTranslationDeletedEvent(entity));
-
         _context.CategoryTranslations.Remove(entity);
 
         await _context.SaveChangesAsync(cancellationToken);

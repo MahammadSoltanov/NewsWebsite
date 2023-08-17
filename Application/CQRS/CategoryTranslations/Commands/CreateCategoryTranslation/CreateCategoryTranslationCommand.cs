@@ -32,8 +32,6 @@ public class CreateCategoryTranslationCommandHandler : IRequestHandler<CreateCat
             Status = "Pending"
         };
 
-        entity.AddDomainEvent(new CategoryTranslationCreatedEvent(entity));
-
         _context.CategoryTranslations.Add(entity);
 
         await _context.SaveChangesAsync(cancellationToken);
