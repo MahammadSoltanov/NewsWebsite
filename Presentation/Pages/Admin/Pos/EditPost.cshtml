@@ -1,12 +1,17 @@
 ﻿@page
+@using Application.Common.Models;
 @model Presentation.Pages.Admin.Pos.EditPostModel
 @{
     ViewBag.Title = "Edit post";
 }
 <section class="content">
+    <div class="form-group">
+        <label for="inputName">Current Title Image</label>
+        <img src="@Model.TitleImageUrl" />
+    </div>
     <form action="/Image/UploadImage" class="imageForm">
         <div class="form-group">
-            <label for="inputName">Post's Title Image</label>
+            <label for="inputName">Post Title Image</label>
             <div class="dropzone" id="myDropzone">
                 <div class="dz-message" data-dz-message><span>Drop files here or click to upload.</span></div>
             </div>
@@ -14,7 +19,10 @@
     </form>
 
     <!-- Form for post information-->
-    <form method="post" class="second-form" asp-page-handler="Create">
+    <form method="post" class="second-form" asp-page-handler="Update">
+        <input type="hidden" asp-for="PostId" />
+        <input type="hidden" asp-for="TranslationId" />
+        <input type="hidden" asp-for="TitleImageUrl" id="title-image-input" />
         <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">Post information</h3>
@@ -25,13 +33,12 @@
                 </div>
             </div>
 
-            <input type="hidden" asp-for="TitleImageUrl" id="title-image-input" />
             <div class="card-body">
                 <div class="form-group">
                     <label for="inputName">Category ID</label>
                     <select asp-for="CategoryId" class="form-control custom-select">
                         <option selected disabled>Select one</option>
-                        @foreach (var categoryTranslation in    Model.Categories)
+                        @foreach (var categoryTranslation in Model.Categories)
                         {
                             <option value="@categoryTranslation.CategoryId">
                                 <div> @categoryTranslation.CategoryId - @categoryTranslation.Title</div>
@@ -67,7 +74,18 @@
                     <div id="editor"></div>
                     <span asp-validation-for="TranslationContent" class="text-danger"></span>
                 </div>
-                <input type="hidden" asp-for="LanguageId" />
+                <div class="form-group">
+                    <label for="inputName">Language ID</label>
+                    <select id="inputStatus" asp-for="LanguageId" class="form-control custom-select">
+                        <option selected disabled>Select one</option>
+                        @foreach (LanguageDto language in Model.Languages)
+                        {
+                            <option value="@language.Id">
+                                <div>@language.Id - @language.Title</div>
+                            </option>
+                        }
+                    </select>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -85,11 +103,11 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.5/purify.min.js" integrity="sha512-KqUc2WMPF/gxte9xVjVE4TIt1LMUTidO3BrcItFg0Ro24I7pGNzgcXdnWdezNY+8T0/JEmdC79MuwYn+8UdOqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="@Html.Raw("https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-upload@39.0.0/src/index.min.js")"></script>
-    <script src="~/lib/ckeditor/scripts/ckeditor.js"></script>
+    <script src="~/lib/ckeditor/scripts/ckeditor.js" asp-append-version="true"></script>
 
     @*-----Dropzone-----*@
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
-    <script src="~/lib/dropzone/scripts/dropzone.js"></script>
+    <script src="~/lib/dropzone/scripts/dropzone.js" asp-append-version="true"></script>
 }
 
 @section Links

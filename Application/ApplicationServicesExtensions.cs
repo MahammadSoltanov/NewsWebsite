@@ -8,7 +8,9 @@ using Application.CQRS.Images.Commands.CreateImage;
 using Application.CQRS.Languages.Commands.CreateLanguage;
 using Application.CQRS.Languages.Commands.UpdateLanguage;
 using Application.CQRS.Posts.Commands.CreatePost;
+using Application.CQRS.Posts.Commands.UpdatePost;
 using Application.CQRS.PostTranslations.Commands.CreatePostTranslation;
+using Application.CQRS.PostTranslations.Commands.UpdatePostTranslation;
 using Application.CQRS.Users.Commands.CreateUser;
 using Application.CQRS.Users.Commands.UpdateUser;
 using AutoMapper;
@@ -41,7 +43,9 @@ namespace Application
             services.AddScoped<IValidator<CreateCategoryTranslationCommand>, CreateCategoryTranslationCommandValidator>();
             services.AddScoped<IValidator<UpdateCategoryTranslationCommand>, UpdateCategoryTranslationCommandValidator>();
             services.AddScoped<IValidator<CreatePostCommand>, CreatePostCommandValidator>();
+            services.AddScoped<IValidator<UpdatePostCommand>, UpdatePostCommandValidator>();
             services.AddScoped<IValidator<CreatePostTranslationCommand>, CreatePostTranslationCommandValidator>();
+            services.AddScoped<IValidator<UpdatePostTranslationCommand>, UpdatePostTranslationCommandValidator>();
             services.AddScoped<IValidator<CreateImageCommand>, CreateImageCommandValidator>();
 
             return services;

@@ -75,6 +75,10 @@ ClassicEditor
             extraPlugins: [MyCustomUploadAdapterPlugin],
         })
     .then(editor => {
+        const retrievedContent = document.querySelector('#editorInput').value;
+
+        editor.setData(retrievedContent);
+
         editor.model.document.on('change:data', () => {
             syncContent(editor.getData());
         });

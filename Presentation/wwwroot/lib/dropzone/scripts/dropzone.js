@@ -39,6 +39,10 @@ document.querySelector('.second-form').addEventListener('submit', async function
 
     await new Promise((resolve) => {
         myDropzone.on('queuecomplete', resolve);
+
+        setTimeout(() => {
+            resolve();
+        }, 2000);
     });
 
     document.querySelector('.second-form').submit();
