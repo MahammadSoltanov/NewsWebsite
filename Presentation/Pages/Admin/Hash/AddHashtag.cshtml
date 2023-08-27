@@ -19,7 +19,7 @@
             <form method="post" asp-page-handler="Create">
                 <div class="form-group">
                     <label for="inputName">Title</label>
-                    <input type="text" asp-for="Title" class="form-control">
+                    <input type="text" asp-for="Title" class="form-control" onkeyup="return forceLower(this);">
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
                 <div class="row">
@@ -35,3 +35,12 @@
     </div>
     <!-- /.card -->
 </section>
+
+@section Scripts{
+    <script>
+        function forceLower(strInput) 
+        {
+            strInput.value=strInput.value.toLowerCase();
+        }   ​
+    </script>
+}

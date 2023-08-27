@@ -41,9 +41,17 @@
                     </select>
                     <span asp-validation-for="CategoryId" class="text-danger"></span>
                 </div>
+
+                <div id="tag-container" class="form-group">
+                    <input type="hidden" id="tags-hidden-input" name="Tags" />
+                    <label for="inputTags">Hashtags</label>
+                    <input type="text" id="tag-input" placeholder="Type a tag and press Enter" class="form-control" maxlength="15"/>
+                    <div id="selected-tags"></div>
+                </div>
             </div>
             <!-- /.card-body -->
         </div>
+
         <br />
         <div class="card card-info">
             <div class="card-header">
@@ -86,15 +94,45 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.5/purify.min.js" integrity="sha512-KqUc2WMPF/gxte9xVjVE4TIt1LMUTidO3BrcItFg0Ro24I7pGNzgcXdnWdezNY+8T0/JEmdC79MuwYn+8UdOqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="@Html.Raw("https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-upload@39.0.0/src/index.min.js")"></script>
-    <script src="~/lib/ckeditor/scripts/ckeditor.js"></script>
+    <script src="~/lib/ckeditor/scripts/ckeditor.js" asp-append-version="true"></script>
 
     @*-----Dropzone-----*@
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
-    <script src="~/lib/dropzone/scripts/dropzone.js"></script>    
+    <script src="~/lib/dropzone/scripts/dropzone.js" asp-append-version="true"></script>
+
+    @*-----Hashtag logic-----*@
+    <script src="~/js/hashtag.js" asp-append-version="true"></script>
 }
 
 @section Links
     {
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+    <style>
+        .tag {
+            display: inline-flex;
+            margin-top: 10px;
+            margin-left: 5px;
+            align-items: center;
+            background-color: #007bff; 
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 20px; 
+            font-size: 14px;
+        }
+
+        .delete-tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background-color: #e74c3c; 
+            color: #fff; 
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            margin-left: 6px;
+            font-size: 10px;
+        }
+    </style>
 }
 

@@ -68,7 +68,8 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
 
         else
         {
-            throw new Exception(result.Errors.ToString());
+            var errorMessage = string.Join(", ", result.Errors.Select(error => error.Description));
+            throw new ApplicationException($"User creation failed: {errorMessage}");
         }
     }
 }

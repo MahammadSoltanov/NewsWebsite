@@ -21,7 +21,6 @@
   <ItemGroup>
     <Folder Include="Common\Security\" />
     <Folder Include="CQRS\Images\Queries\" />
-    <Folder Include="CQRS\PostHashtags\" />
     <Folder Include="CQRS\Users\EventHandlers\" />
   </ItemGroup>
 

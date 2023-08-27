@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Transactions;
+using Newtonsoft.Json;
 
 namespace Presentation.Pages.Admin.Pos
 {
@@ -40,7 +41,6 @@ namespace Presentation.Pages.Admin.Pos
 
         public List<CategoryTranslationDto> Categories { get; set; }
         public LanguageDto DefaultLanguage { get; set; }
-        public List<HashtagDto> Hashtags { get; set; }
         //Post info
         [BindProperty]
         public int CategoryId { get; set; }
@@ -59,11 +59,11 @@ namespace Presentation.Pages.Admin.Pos
             DefaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
             LanguageId = DefaultLanguage.Id;
             Categories = await _mediator.Send(new GetCategoryTranslationsByLanguageIdQuery(LanguageId));
-            Hashtags = await _mediator.Send(new GetHashtagsQuery());
         }
 
-        public async Task<ActionResult> OnPostCreateAsync()
+        public async Task<ActionResult> OnPostCreateAsync(List<string> tags)
         {
+            List<string> tagsList = JsonStringToList(tags[0]);
             int postId;
             int postTranslationId;
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -85,7 +85,6 @@ namespace Presentation.Pages.Admin.Pos
                         DefaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
                         LanguageId = DefaultLanguage.Id;
                         Categories = await _mediator.Send(new GetCategoryTranslationsByLanguageIdQuery(LanguageId));
-                        Hashtags = await _mediator.Send(new GetHashtagsQuery());
                         scope.Dispose();
                         return Page();
                     }
@@ -109,7 +108,6 @@ namespace Presentation.Pages.Admin.Pos
                         DefaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
                         LanguageId = DefaultLanguage.Id;
                         Categories = await _mediator.Send(new GetCategoryTranslationsByLanguageIdQuery(LanguageId));
-                        Hashtags = await _mediator.Send(new GetHashtagsQuery());
                         scope.Dispose();
                         return Page();
                     }
@@ -130,6 +128,21 @@ namespace Presentation.Pages.Admin.Pos
                 $"default {DefaultLanguage.Code} translation with " +
                 $"Id = {postTranslationId} were successfully created";
             return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Post" });
+        }
+
+        private List<string> JsonStringToList(string json)
+        {            
+            List<string> rawTags = JsonConvert.DeserializeObject<List<string>>(json);
+
+            // Clean and store tags without "×"
+            List<string> cleanedTags = new List<string>();
+            foreach (string rawTag in rawTags)
+            {
+                string cleanedTag = rawTag.TrimEnd('×');
+                cleanedTags.Add(cleanedTag);
+            }
+
+            return cleanedTags;
         }
     }
 }

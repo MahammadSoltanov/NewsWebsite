@@ -16,6 +16,8 @@ public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
             .MaximumLength(50)
             .NotEmpty()
             .EmailAddress().WithMessage("Invalid Email adress");
+        RuleFor(u => u.RoleId)
+            .NotEmpty();
         RuleFor(v => v.Password)
             .MaximumLength(16)
             .NotEmpty();

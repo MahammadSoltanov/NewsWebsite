@@ -22,6 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\hashtag.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
@@ -33,10 +37,15 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\hashtag.js" />
   </ItemGroup>
 
 </Project>

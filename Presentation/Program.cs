@@ -10,7 +10,7 @@ builder.Services.AddInfrastructureServices();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers(); // Add this line for controllers
-
+builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 
 var app = builder.Build();
 

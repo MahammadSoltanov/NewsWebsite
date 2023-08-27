@@ -45,37 +45,46 @@ namespace Presentation.Pages.Admin.Usr
             Surname = user.Surname;
             Password = user.Password;
             Email = user.Email;
+            RoleId = user.RoleId;
 
             Roles = await _mediator.Send(new GetRolesQuery());
         }
 
         public async Task<IActionResult> OnPostUpdateAsync()
         {
-            UpdateUserCommand command = new UpdateUserCommand()
+            string _message;
+            try
             {
-                Id = Id,
-                Name = Name,
-                Surname = Surname,
-                Password = Password,
-                Email = Email,
-                RoleId = RoleId,
-            };
+                UpdateUserCommand command = new UpdateUserCommand()
+                {
+                    Id = Id,
+                    Name = Name,
+                    Surname = Surname,
+                    Password = Password,
+                    Email = Email,
+                    RoleId = RoleId,
+                };
 
-            ValidationResult result = await _validator.ValidateAsync(command);
+                ValidationResult result = await _validator.ValidateAsync(command);
 
-            if (!result.IsValid)
+                if (!result.IsValid)
+                {
+                    result.AddToModelState(this.ModelState);
+                    Roles = await _mediator.Send(new GetRolesQuery());
+
+                    return Page();
+                }
+
+                await _mediator.Send(command);
+
+                _message = $"User details with Id = {Id} were successfully updated";
+                return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "User" });
+            }
+            catch (Exception ex)
             {
-                result.AddToModelState(this.ModelState);
-                Roles = await _mediator.Send(new GetRolesQuery());
-
-                return Page();
+                return new RedirectToPageResult("/Admin/Error", new { message = ex.Message, entityName = "User" });
             }
 
-            await _mediator.Send(command);
-
-            string _message = $"User details with Id = {Id} were successfully updated";
-
-            return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "User" });
         }
     }
 }

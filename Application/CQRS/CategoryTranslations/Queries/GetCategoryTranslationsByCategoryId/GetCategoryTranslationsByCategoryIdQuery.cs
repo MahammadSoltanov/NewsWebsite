@@ -22,7 +22,7 @@ public class GetCategoryTranslationsByCategoryIdQueryHandler
 
     public async Task<List<CategoryTranslationDto>> Handle(GetCategoryTranslationsByCategoryIdQuery request, CancellationToken cancellationToken)
     {
-        var translations = await _context.CategoryTranslations
+            var translations = await _context.CategoryTranslations
             .Where(ct => ct.CategoryId == request.CategoryId)
             .ToListAsync(cancellationToken);
 

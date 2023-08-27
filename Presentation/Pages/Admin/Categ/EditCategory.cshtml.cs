@@ -1,5 +1,7 @@
 using Application.Common.Models;
 using Application.CQRS.CategoryTranslations.Commands.UpdateCategoryTranslation;
+using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationByCategoryId;
+using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationById;
 using Application.CQRS.Languages.Queries.GetLanguages;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -30,12 +32,13 @@ namespace Presentation.Pages.Admin.Categ
         [BindProperty]
         public int CategoryId { get; set; }
         [BindProperty]
+        public int Id { get; set; }
+        [BindProperty]
         public List<LanguageDto> Languages { get; set; }
 
         public async Task OnGetAsync(int id)
         {
-            CategoryId = id;
-            Languages = await _mediator.Send(new GetLanguagesQuery());
+            await UpdateProperties(id);
         }
 
         public async Task<ActionResult> OnPostUpdateAsync()
@@ -51,10 +54,11 @@ namespace Presentation.Pages.Admin.Categ
                 };
 
                 ValidationResult result = await _validator.ValidateAsync(updateCategoryTranslationCommand);
-                
+
                 if (!result.IsValid)
                 {
                     result.AddToModelState(this.ModelState);
+                    await UpdateProperties(Id);
                     return Page();
                 }
             }
@@ -65,6 +69,26 @@ namespace Presentation.Pages.Admin.Categ
 
             string _message = await _mediator.Send(updateCategoryTranslationCommand);
             return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Categorie" });
+        }
+
+        private async Task<IActionResult> UpdateProperties(int id)
+        {
+            try
+            {
+                var categoryTranslation = await _mediator.Send(new GetCategoryTranslationByIdQuery(id));
+                CategoryId = categoryTranslation.CategoryId;
+                LanguageId = categoryTranslation.LanguageId;
+                Title = categoryTranslation.Title;
+                Id = id;
+
+                Languages = await _mediator.Send(new GetLanguagesQuery());
+            }
+            catch (Exception ex) 
+            {
+                return new RedirectToPageResult("/Admin/Error", new { message = ex.Message, entityName = "Category" });
+            }
+
+            return Page();
         }
     }
 }
