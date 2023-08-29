@@ -47,8 +47,14 @@
                     </select>
                     <span asp-validation-for="CategoryId" class="text-danger"></span>
                 </div>
+
+                <div id="tag-container" class="form-group">
+                    <input type="hidden" id="tags-hidden-input" name="Tags" />
+                    <label for="inputTags">Hashtags</label>
+                    <input type="text" id="tag-input" placeholder="Type a tag and press Enter" class="form-control" maxlength="15" />
+                    <div id="selected-tags"></div>
+                </div>
             </div>
-            <!-- /.card-body -->
         </div>
         <br />
         <div class="card card-info">
@@ -108,9 +114,48 @@
     @*-----Dropzone-----*@
     <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
     <script src="~/lib/dropzone/scripts/dropzone.js" asp-append-version="true"></script>
+
+    @*-----Hashtag logic-----*@
+    <script src="~/js/hashtag.js" asp-append-version="true"></script>
+
+    <script>
+        const existingTags = @Html.Raw(Json.Serialize(Model.Tags));
+
+        console.log(existingTags);
+
+        existingTags.forEach(tag => createTag(tag));
+    </script>
 }
 
 @section Links
     {
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+
+    <style>
+        .tag {
+            display: inline-flex;
+            margin-top: 10px;
+            margin-left: 5px;
+            align-items: center;
+            background-color: #007bff;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .delete-tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background-color: #e74c3c;
+            color: #fff;
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            margin-left: 6px;
+            font-size: 10px;
+        }
+    </style>
 }

@@ -4,26 +4,26 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.CQRS.PostHashtags.Commands.AddHashtags;
+namespace Application.CQRS.PostHashtags.Commands.AddPostHashtags;
 
-public record AddHashtagsCommand : IRequest<Unit>
+public record AddPostHashtagsCommand : IRequest<Unit>
 {
     public List<string> Tags { get; set; }
     public int PostId { get; set; }
 }
 
-public class AddHashtagsCommandHandler : IRequestHandler<AddHashtagsCommand, Unit>
+public class AddPostHashtagsCommandHandler : IRequestHandler<AddPostHashtagsCommand, Unit>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMediator _mediator;
 
-    public AddHashtagsCommandHandler(IApplicationDbContext context, IMediator mediator)
+    public AddPostHashtagsCommandHandler(IApplicationDbContext context, IMediator mediator)
     {
         _context = context;
         _mediator = mediator;
     }
 
-    public async Task<Unit> Handle(AddHashtagsCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(AddPostHashtagsCommand request, CancellationToken cancellationToken)
     {
         var allHashtags = await _context.Hashtags.ToListAsync(cancellationToken);
 

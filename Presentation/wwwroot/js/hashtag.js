@@ -45,12 +45,10 @@ tagInput.addEventListener('keyup', function (event) {
 
 document.querySelector('.second-form').addEventListener('submit', function (event) {
     console.log("Form submitted");
-    event.preventDefault();
     const selectedTags = Array.from(document.querySelectorAll('.tag')).map(tagElement => tagElement.textContent);
     tagsHiddenInput.value = JSON.stringify(selectedTags);
     console.log(tagsHiddenInput);
-    console.log(selectedTags);
-    tagForm.submit();
+    console.log(selectedTags);    
 });
 
 document.addEventListener('keydown', function (event) {

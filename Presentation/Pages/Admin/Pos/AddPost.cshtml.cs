@@ -1,11 +1,8 @@
 using Application.Common.Models;
 using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationsByLanguageId;
-using Application.CQRS.Hashtags.Queries.GetHashtags;
 using Application.CQRS.Languages.Queries.GetLanguageByCode;
-using Application.CQRS.Languages.Queries.GetLanguages;
 using Application.CQRS.Posts.Commands.CreatePost;
 using Application.CQRS.PostTranslations.Commands.CreatePostTranslation;
-using Application.CQRS.Users.Queries.GetUsers;
 using Domain.Entities;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -17,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Transactions;
 using Newtonsoft.Json;
+using Application.CQRS.PostHashtags.Commands.AddPostHashtags;
 
 namespace Presentation.Pages.Admin.Pos
 {
@@ -113,11 +111,22 @@ namespace Presentation.Pages.Admin.Pos
                     }
 
                     postTranslationId = await _mediator.Send(createPostTranslationCommand);
+
+                    if (tagsList.Count > 0)
+                    {
+                        AddPostHashtagsCommand addHashtagsCommand = new AddPostHashtagsCommand()
+                        {
+                            PostId = postId,
+                            Tags = tagsList
+                        };
+
+                        await _mediator.Send(addHashtagsCommand);
+                    }
                 }
                 catch (Exception ex)
                 {
                     scope.Dispose();
-                    return new RedirectToPageResult("/Admin/Error", new { message = ex.Message, entityName = "Post" });
+                    return new RedirectToPageResult("/Admin/Error", new { message = ex.InnerException, entityName = "Post" });
                 }
 
                 scope.Complete();
@@ -131,7 +140,7 @@ namespace Presentation.Pages.Admin.Pos
         }
 
         private List<string> JsonStringToList(string json)
-        {            
+        {
             List<string> rawTags = JsonConvert.DeserializeObject<List<string>>(json);
 
             // Clean and store tags without "×"

@@ -116,6 +116,8 @@ namespace Infrastructure.Persistence
                 .HasOne(ph => ph.Post)
                 .WithMany(p => p.PostHashtags)
                 .HasForeignKey(ph => ph.PostId);
+            modelBuilder.Entity<PostHashtag>()
+                .Ignore(ph => ph.Id);
 
             modelBuilder.Entity<PostTranslation>()
                 .HasKey(pt => pt.Id);
@@ -136,10 +138,7 @@ namespace Infrastructure.Persistence
                 .HasForeignKey(pt => pt.PostId);
             modelBuilder.Entity<PostTranslation>()
                 .Property(pt => pt.Content)
-                .HasColumnType("text");
-            modelBuilder.Entity<PostTranslation>()
-                .HasIndex(pt => pt.Title)
-                .IsUnique();
+                .HasColumnType("nvarchar(max)");
 
             modelBuilder.Entity<Role>()
                 .HasKey(r => r.Id);

@@ -34,12 +34,12 @@ myDropzone.on("addedfile", function (file) {
 
 document.querySelector('.second-form').addEventListener('submit', async function (event) {
     event.preventDefault();
-
+    console.log("Submitted second form")
     myDropzone.processQueue();
 
     await new Promise((resolve) => {
         myDropzone.on('queuecomplete', resolve);
-
+            console.log("Queue completed");
         setTimeout(() => {
             resolve();
         }, 2000);

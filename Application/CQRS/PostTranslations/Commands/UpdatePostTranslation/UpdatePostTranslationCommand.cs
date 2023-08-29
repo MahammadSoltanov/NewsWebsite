@@ -38,6 +38,7 @@ public class UpdatePostTranslationCommandHandler : IRequestHandler<UpdatePostTra
                 PostId = request.PostId,
                 LanguageId = request.LanguageId,
                 Title = request.Title,
+                AuthorId = request.AuthorId,
                 Content = request.TranslationContent
             };
 

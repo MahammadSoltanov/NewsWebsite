@@ -1,8 +1,11 @@
 using Application.Common.Models;
 using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationsByLanguageId;
 using Application.CQRS.Hashtags.Queries.GetHashtags;
+using Application.CQRS.Hashtags.Queries.GetHashtagsByPostId;
 using Application.CQRS.Languages.Queries.GetLanguageByCode;
 using Application.CQRS.Languages.Queries.GetLanguages;
+using Application.CQRS.PostHashtags.Commands.AddPostHashtags;
+using Application.CQRS.PostHashtags.Commands.UpdatePostHashtags;
 using Application.CQRS.Posts.Commands.UpdatePost;
 using Application.CQRS.Posts.Queries.GetPostById;
 using Application.CQRS.PostTranslations.Commands.UpdatePostTranslation;
@@ -15,6 +18,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
+using System.Diagnostics;
 using System.Transactions;
 
 namespace Presentation.Pages.Admin.Pos
@@ -39,7 +44,7 @@ namespace Presentation.Pages.Admin.Pos
         public List<LanguageDto> Languages { get; set; }
         public List<CategoryTranslationDto> Categories { get; set; }
         public LanguageDto DefaultLanguage { get; set; }
-        public List<HashtagDto> Hashtags { get; set; }
+        public List<string> Tags { get; set; }
 
         //Post info
         [BindProperty]
@@ -65,8 +70,9 @@ namespace Presentation.Pages.Admin.Pos
             await UpdateFormProperties(id);
         }
 
-        public async Task<IActionResult> OnPostUpdateAsync()
+        public async Task<IActionResult> OnPostUpdateAsync(List<string> tags)
         {
+            List<string> tagsList = JsonStringToList(tags[0]);
             string _message;
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -114,11 +120,22 @@ namespace Presentation.Pages.Admin.Pos
                     }
 
                     _message = await _mediator.Send(updatePostTranslationCommand);
+
+                    if (tagsList.Count > 0)
+                    {
+                        UpdatePostHashtagsCommand updatePostHashtagsCommand = new UpdatePostHashtagsCommand()
+                        {
+                            PostId = PostId,
+                            Tags = tagsList
+                        };
+
+                        await _mediator.Send(updatePostHashtagsCommand);
+                    }
                 }
                 catch (Exception ex)
                 {
                     scope.Dispose();
-                    return new RedirectToPageResult("/Admin/Error", new { message = ex.Message, entityName = "Post" });
+                    return new RedirectToPageResult("/Admin/Error", new { message = ex.InnerException.Message, entityName = "Post" });  
                 }
 
                 scope.Complete();
@@ -127,7 +144,7 @@ namespace Presentation.Pages.Admin.Pos
             return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Post" });
         }
 
-        public async Task UpdateFormProperties(int id)
+        private async Task UpdateFormProperties(int id)
         {
             PostTranslationDto postTranslation = await _mediator.Send(new GetPostTranslationByIdQuery(id));
             PostDto post = await _mediator.Send(new GetPostByIdQuery(postTranslation.PostId));
@@ -136,7 +153,13 @@ namespace Presentation.Pages.Admin.Pos
             LanguageId = DefaultLanguage.Id;
             Categories = await _mediator.Send(new GetCategoryTranslationsByLanguageIdQuery(LanguageId));
             Languages = await _mediator.Send(new GetLanguagesQuery());
-            Hashtags = await _mediator.Send(new GetHashtagsQuery());
+            var Hashtags = await _mediator.Send(new GetHashtagsByPostIdQuery(post.Id));
+            Tags = new List<string>();
+
+            foreach (var hashtag in Hashtags)
+            {
+                Tags.Add(hashtag.Title);
+            }
 
             PostId = post.Id;
             CategoryId = post.CategoryId;
@@ -146,6 +169,21 @@ namespace Presentation.Pages.Admin.Pos
             Title = postTranslation.Title;
             LanguageId = postTranslation.LanguageId;
             TranslationContent = postTranslation.Content;
+        }
+
+        private List<string> JsonStringToList(string json)
+        {
+            List<string> rawTags = JsonConvert.DeserializeObject<List<string>>(json);
+
+            // Clean and store tags without "×"
+            List<string> cleanedTags = new List<string>();
+            foreach (string rawTag in rawTags)
+            {
+                string cleanedTag = rawTag.TrimEnd('×');
+                cleanedTags.Add(cleanedTag);
+            }
+
+            return cleanedTags;
         }
     }
 }
