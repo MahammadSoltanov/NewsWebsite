@@ -1,7 +1,9 @@
 using Application.Common.Models;
+using Application.CQRS.Languages.Queries.GetLanguageByCode;
 using Application.CQRS.Posts.Commands.DeletePost;
 using Application.CQRS.Posts.Queries.GetPosts;
 using Application.CQRS.PostTranslations.Queries.GetPostTranslations;
+using Application.CQRS.PostTranslations.Queries.GetPostTranslationsByLanguageId;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +25,8 @@ namespace Presentation.Pages.Admin.Lists
 
         public async Task OnGetAsync()
         {
-            Posts = await _mediator.Send(new GetPostTranslationsQuery());
+            var defaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
+            Posts = await _mediator.Send(new GetPostTranslationsByLanguageIdQuery(defaultLanguage.Id));
         }
 
         public async Task<ActionResult> OnPostDeleteAsync(int Id)

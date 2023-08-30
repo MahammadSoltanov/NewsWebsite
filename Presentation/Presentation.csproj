@@ -8,16 +8,12 @@
 
   <ItemGroup>
     <Compile Remove="Pages\AdminLTE\**" />
-    <Compile Remove="Pages\Site\**" />
     <Compile Remove="wwwroot\admin-lte\**" />
     <Content Remove="Pages\AdminLTE\**" />
-    <Content Remove="Pages\Site\**" />
     <Content Remove="wwwroot\admin-lte\**" />
     <EmbeddedResource Remove="Pages\AdminLTE\**" />
-    <EmbeddedResource Remove="Pages\Site\**" />
     <EmbeddedResource Remove="wwwroot\admin-lte\**" />
     <None Remove="Pages\AdminLTE\**" />
-    <None Remove="Pages\Site\**" />
     <None Remove="wwwroot\admin-lte\**" />
   </ItemGroup>
 
