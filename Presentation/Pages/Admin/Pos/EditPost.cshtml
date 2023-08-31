@@ -18,10 +18,16 @@
         </div>
     </form>
 
+    <!-- Form for language updation-->
+    <form class="language-form" method="post" asp-page-handler="Language">
+        <input id="language-input" type="hidden" asp-for="LanguageId" />
+        <input type="hidden" asp-for="PostId"/>
+    </form>
+
     <!-- Form for post information-->
     <form method="post" class="second-form" asp-page-handler="Update">
+        <input type="hidden" id="category-input" asp-for="CategoryId"/>
         <input type="hidden" asp-for="PostId" />
-        <input type="hidden" asp-for="TranslationId" />
         <input type="hidden" asp-for="TitleImageUrl" id="title-image-input" />
         <div class="card card-primary">
             <div class="card-header">
@@ -36,7 +42,7 @@
             <div class="card-body">
                 <div class="form-group">
                     <label for="inputName">Category ID</label>
-                    <select asp-for="CategoryId" class="form-control custom-select">
+                    <select asp-for="CategoryId" id="select-category" class="form-control custom-select">
                         <option selected disabled>Select one</option>
                         @foreach (var categoryTranslation in Model.Categories)
                         {
@@ -124,6 +130,27 @@
         console.log(existingTags);
 
         existingTags.forEach(tag => createTag(tag));
+    </script>
+
+    @*----- Language updation script -----*@
+    <script>
+        var selectElement = document.querySelector("#inputStatus");
+        var formElement = document.querySelector(".language-form");
+        var inputElement = document.querySelector("#language-input");
+        var selectCategory = document.querySelector("#select-category");
+
+        selectCategory.addEventListener("change", function () {
+            document.querySelector("#category-input").value = selectCategory.value;
+        });
+
+        selectElement.addEventListener("change", function () {            
+            var selectedValue = selectElement.value;
+            console.log(selectedValue);
+            inputElement.value = selectedValue;
+            console.log(inputElement);            
+            formElement.submit();
+        });
+
     </script>
 }
 

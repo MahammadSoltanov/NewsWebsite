@@ -1,7 +1,9 @@
+using Application.Common.Exceptions;
 using Application.Common.Models;
 using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationsByLanguageId;
 using Application.CQRS.Hashtags.Queries.GetHashtags;
 using Application.CQRS.Hashtags.Queries.GetHashtagsByPostId;
+using Application.CQRS.Languages.Queries.GetLanguage;
 using Application.CQRS.Languages.Queries.GetLanguageByCode;
 using Application.CQRS.Languages.Queries.GetLanguages;
 using Application.CQRS.PostHashtags.Commands.AddPostHashtags;
@@ -10,6 +12,7 @@ using Application.CQRS.Posts.Commands.UpdatePost;
 using Application.CQRS.Posts.Queries.GetPostById;
 using Application.CQRS.PostTranslations.Commands.UpdatePostTranslation;
 using Application.CQRS.PostTranslations.Queries.GetPostTranslationById;
+using Application.CQRS.PostTranslations.Queries.GetPostTranslationsByPostId;
 using Domain.Entities;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -67,7 +70,14 @@ namespace Presentation.Pages.Admin.Pos
 
         public async Task OnGetAsync(int id)
         {
-            await UpdateFormProperties(id);
+            var defaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
+            await UpdateFormProperties(id, defaultLanguage.Id);
+        }
+
+        public async Task<IActionResult> OnPostLanguageAsync()
+        {
+            await UpdateFormProperties(PostId, LanguageId);
+            return Page();
         }
 
         public async Task<IActionResult> OnPostUpdateAsync(List<string> tags)
@@ -91,7 +101,7 @@ namespace Presentation.Pages.Admin.Pos
                     if (!postResult.IsValid)
                     {
                         postResult.AddToModelState(this.ModelState);
-                        await UpdateFormProperties(TranslationId);
+                        await UpdateFormProperties(PostId, LanguageId);
                         scope.Dispose();
                         return Page();
                     }
@@ -114,7 +124,7 @@ namespace Presentation.Pages.Admin.Pos
                     if (!postTranslationResult.IsValid)
                     {
                         postTranslationResult.AddToModelState(this.ModelState);
-                        await UpdateFormProperties(TranslationId);
+                        await UpdateFormProperties(PostId, LanguageId);
                         scope.Dispose();
                         return Page();
                     }
@@ -135,7 +145,7 @@ namespace Presentation.Pages.Admin.Pos
                 catch (Exception ex)
                 {
                     scope.Dispose();
-                    return new RedirectToPageResult("/Admin/Error", new { message = ex.InnerException.Message, entityName = "Post" });  
+                    return new RedirectToPageResult("/Admin/Error", new { message = ex.InnerException.Message, entityName = "Post" });
                 }
 
                 scope.Complete();
@@ -144,14 +154,24 @@ namespace Presentation.Pages.Admin.Pos
             return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Post" });
         }
 
-        private async Task UpdateFormProperties(int id)
+        private async Task UpdateFormProperties(int id, int languageId)
         {
-            PostTranslationDto postTranslation = await _mediator.Send(new GetPostTranslationByIdQuery(id));
-            PostDto post = await _mediator.Send(new GetPostByIdQuery(postTranslation.PostId));
+            PostDto post = await _mediator.Send(new GetPostByIdQuery(id));
 
-            DefaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
-            LanguageId = DefaultLanguage.Id;
-            Categories = await _mediator.Send(new GetCategoryTranslationsByLanguageIdQuery(LanguageId));
+            DefaultLanguage = await _mediator.Send(new GetLanguageByIdQuery(languageId));
+           
+            var translations = await _mediator.Send(new GetPostTranslationsByPostIdQuery(post.Id));
+            var postTranslation = translations.FirstOrDefault(pt => pt.LanguageId == languageId);
+
+            if (postTranslation == null)
+            {
+                postTranslation = new PostTranslationDto()
+                {
+                    LanguageId = languageId,
+                };
+            }
+
+            Categories = await _mediator.Send(new GetCategoryTranslationsByLanguageIdQuery(languageId));
             Languages = await _mediator.Send(new GetLanguagesQuery());
             var Hashtags = await _mediator.Send(new GetHashtagsByPostIdQuery(post.Id));
             Tags = new List<string>();
@@ -163,9 +183,8 @@ namespace Presentation.Pages.Admin.Pos
 
             PostId = post.Id;
             CategoryId = post.CategoryId;
-            TitleImageUrl = post.TitleImageUrl;
+            TitleImageUrl = post.TitleImageUrl;            
 
-            TranslationId = postTranslation.Id;
             Title = postTranslation.Title;
             LanguageId = postTranslation.LanguageId;
             TranslationContent = postTranslation.Content;

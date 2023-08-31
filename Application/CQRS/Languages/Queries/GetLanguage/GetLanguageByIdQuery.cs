@@ -9,7 +9,19 @@ namespace Application.CQRS.Languages.Queries.GetLanguage;
 
 public record GetLanguageByIdQuery : IRequest<LanguageDto>
 {
-    public int Id { get; init; }
+    public GetLanguageByIdQuery(int id)
+    {
+        Id = id;
+    }
+
+    public GetLanguageByIdQuery()
+    {
+        
+    }
+
+    public int Id { get; set; }
+
+    
 }
 
 public class GetLanguageByIdQueryHandler : IRequestHandler<GetLanguageByIdQuery, LanguageDto>

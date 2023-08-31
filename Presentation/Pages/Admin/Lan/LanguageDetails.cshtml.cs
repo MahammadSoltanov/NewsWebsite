@@ -17,9 +17,9 @@ namespace Presentation.Pages.Admin.Lan
         {
             _mediator = mediator;
         }
-        public async Task OnGetAsync(int Id)
+        public async Task OnGetAsync(int id)
         {
-            GetLanguageByIdQuery getLanguageByIdQuery = new GetLanguageByIdQuery() { Id = Id };
+            GetLanguageByIdQuery getLanguageByIdQuery = new GetLanguageByIdQuery(id);
             Language = await _mediator.Send(getLanguageByIdQuery);
         }
     }
