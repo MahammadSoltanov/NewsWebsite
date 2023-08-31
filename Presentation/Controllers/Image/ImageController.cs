@@ -29,14 +29,6 @@ namespace Presentation.Controllers.Image
                 return responseFile;
             }
 
-            // Check the file's content type (MIME type)
-            if (!IsSupportedContentType(uploadedFile.ContentType))
-            {
-                var responseType = Json(new { success = false, error = "Invalid file type. Only JPG, PNG and GIF is allowed" });
-                responseType.ContentType = "application/json";
-                return responseType;
-            }
-
             if (uploadedFile.Length > MaxFileSizeInBytes)
             {
                 var responseSize = Json(new { success = false, error = "File size exceeds the maximum limit." });

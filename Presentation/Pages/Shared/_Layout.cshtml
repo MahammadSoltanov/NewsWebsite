@@ -1,6 +1,4 @@
-﻿@model IndexModel;
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -55,13 +53,13 @@
                                     <ul class="dropdown">
                                         @foreach (var category in Model.CategoryTranslations)
                                         {
-                                            <li><a asp-page="/Category">@category.Title</a></li>
+                                            <li><a asp-page="/Category" asp-route-id="@category.CategoryId">@category.Title</a></li>
                                         }
                                     </ul>
                                 </li>
-                                        <li><a asp-page="/Search-Result">Search Result</a></li>
-                                        <li><a asp-page="/Blog">Blog</a></li>
-                                        <li><a asp-page="/About">About</a></li>
+                                <li><a asp-page="/Search-Result">Search Result</a></li>
+                                <li><a asp-page="/Blog">Blog</a></li>
+                                <li><a asp-page="/About">About</a></li>
                             </ul>
                         </div>
                         <div class="col-2 text-end">
@@ -79,7 +77,7 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container" style="margin-top: 1px">
         @RenderBody()
     </div>
 

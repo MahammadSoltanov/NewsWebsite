@@ -13,12 +13,12 @@
             {
                 <div class="col-md-6 col-lg-3">
                     <div class="blog-entry">
-                        <a asp-page="~/Single" class="img-link">
+                        <a asp-page="/Single" asp-route-id="@Model.PostTranslations[i].Id" class="img-link">
                             <img src="@Model.Posts[i].TitleImageUrl" alt="Image" class="img-fluid" style="width: 210px; height: 210px;">
                         </a>
                         <div class="date">@Model.PostTranslations[i].InsertDate</div>
-                        <h2><a asp-page="~/Single">@Model.PostTranslations[i].Title</a></h2>
-                        <p><a asp-page="~/Single" class="read-more">Continue Reading</a></p>
+                        <h2><a asp-page="/Single" asp-route-id="@Model.PostTranslations[i].Id">@Model.PostTranslations[i].Title</a></h2>
+                        <p><a asp-page="/Single" asp-route-id="@Model.PostTranslations[i].Id" class="read-more">Continue Reading</a></p>
                     </div>
                 </div>
             }
