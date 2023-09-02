@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Presentation.Pages
+namespace Presentation.Pages.Admin
 {
-    public class BlogModel : PageModel
+    public class UserProfileModel : PageModel
     {
         public void OnGet()
         {

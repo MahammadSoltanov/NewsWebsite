@@ -2,7 +2,6 @@
 using Application.Common.Interfaces;
 using Application.Common.Models;
 using Domain.Entities;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

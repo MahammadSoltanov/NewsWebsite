@@ -27,6 +27,7 @@ namespace Presentation.Pages.Admin.Authentication
 
         public void OnGet()
         {
+
         }
 
         public async Task<ActionResult> OnPostSignInAsync()
@@ -51,7 +52,8 @@ namespace Presentation.Pages.Admin.Authentication
             }
             catch (Exception ex)
             {
-                return new RedirectToPageResult("/Admin/Succeed", new { message = ex.Message });
+                ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                return Page();
             }
         }
     }

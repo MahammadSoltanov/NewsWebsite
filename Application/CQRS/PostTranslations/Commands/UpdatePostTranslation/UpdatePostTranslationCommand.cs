@@ -12,6 +12,7 @@ public record UpdatePostTranslationCommand : IRequest<string>
     public int AuthorId {get; set; }
     public string Title { get; set; }
     public string TranslationContent { get; set; }
+
 }
 
 public class UpdatePostTranslationCommandHandler : IRequestHandler<UpdatePostTranslationCommand, string>
