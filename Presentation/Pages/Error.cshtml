@@ -1,10 +1,20 @@
 ﻿@page
-@model ErrorModel
+@model Presentation.Pages.ErrorModel
 @{
-    ViewData["Title"] = "Error";
+    Layout = "Pages/Shared/_LoginLayout.cshtml";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<section class="content">
+    <div class="error-page">
+        <h2 class="headline text-warning"> 404</h2>
+        <div class="error-content">
+            <h3><i class="fas fa-exclamation-triangle text-warning"></i> Oops! Page not found.</h3>
+            <p>
+                We could not find the page you were looking for.
+                Meanwhile, you may <a href="/Admin/Login">log in</a> if you are not authenticated
+            </p>
+        </div>
+    </div>
+</section>
 
 

@@ -1,0 +1,17 @@
+﻿@page
+@model Presentation.Pages.Admin.LogoutModel
+@{
+    Layout = "/Pages/Shared/_LoginLayout.cshtml";
+}
+
+<section style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <form method="post" asp-page-handler="LogOut">
+        <div class="container text-center">
+            <h1>Do you really want to logout</h1>
+            <div class="row" style="justify-content: center; align-items: center">
+                <input type="submit" value="Log out" class="btn btn-success">
+                <a asp-page="/Admin/Lists/Posts" class="btn btn-danger ml-2">Cancel</a>
+            </div>
+        </div>
+    </form>
+</section>
