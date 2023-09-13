@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Presentation.Pages.Admin.Lan
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Moderator, Journalist")]
     public class AddLanguageModel : PageModel
     {
         private readonly IMediator _mediator;

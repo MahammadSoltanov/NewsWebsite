@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Presentation.Pages.Admin.Lists
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Moderator, Journalist")]
     public class UsersModel : PageModel
     {
         private readonly IMediator _mediator;

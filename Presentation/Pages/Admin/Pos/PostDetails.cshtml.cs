@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Presentation.Pages.Admin.Pos
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Moderator, Journalist")]
     public class PostDetailsModel : PageModel
     {
         private readonly IMediator _mediator;

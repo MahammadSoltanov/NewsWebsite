@@ -18,7 +18,7 @@ using Application.CQRS.PostHashtags.Commands.AddPostHashtags;
 
 namespace Presentation.Pages.Admin.Pos
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Moderator, Journalist")]
     public class AddPostModel : PageModel
     {
         private readonly IMediator _mediator;

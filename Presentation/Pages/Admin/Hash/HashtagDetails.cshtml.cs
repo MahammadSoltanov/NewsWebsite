@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Presentation.Pages.Admin.Hash
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Moderator, Journalist")]
     public class HashtagDetailsModel : PageModel
     {
         private readonly IMediator _mediator;

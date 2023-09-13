@@ -17,7 +17,7 @@ using System.Transactions;
 
 namespace Presentation.Pages.Admin.Categ
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Moderator, Journalist")]
     public class AddCategoryModel : PageModel
     {
         private readonly IMediator _mediator;

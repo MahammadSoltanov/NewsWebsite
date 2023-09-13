@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 
 namespace Presentation.Pages.Admin.Approve
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Moderator, Journalist")]
     public class PostTranslationsStatusModel : PageModel
     {
         private readonly IMediator _mediator;

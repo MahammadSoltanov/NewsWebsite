@@ -27,7 +27,7 @@ using System.Transactions;
 
 namespace Presentation.Pages.Admin.Pos
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, Moderator, Journalist")]
     public class EditPostModel : PageModel
     {
         private readonly IMediator _mediator;

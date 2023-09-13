@@ -479,3 +479,4 @@ $RECYCLE.BIN/
 *.log	
 /Infrastructure/App.config
 /Application/PrivateInformation.cs
+/Presentation/Presentation.csproj
