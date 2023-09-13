@@ -48,11 +48,13 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Unit>
             var token = await _userManager.GeneratePasswordResetTokenAsync(entity);
             var resultPassword = await _userManager.ResetPasswordAsync(entity, token, request.Password);
             
-            if (!resultPassword.Succeeded)
+                if (!resultPassword.Succeeded)
             {
                 var errorMessage = string.Join(", ", resultPassword.Errors.Select(error => error.Description));
                 throw new ApplicationException($"Password update failed: {errorMessage}");
             }
+
+            entity.Password = request.Password;
         }
         if (request.RoleId != entity.RoleId)
         {
@@ -63,6 +65,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Unit>
             if (role != null)
             {
                 await _userManager.AddToRoleAsync(entity, role.Name);
+                entity.RoleId = role.Id;
             }
             else
             {
