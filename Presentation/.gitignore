@@ -477,3 +477,7 @@ $RECYCLE.BIN/
 *.lnk
 
 /wwwroot/images/
+
+appsettings.json
+appsettings.Development.json
+secrets.json

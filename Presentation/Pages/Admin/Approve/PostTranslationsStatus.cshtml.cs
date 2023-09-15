@@ -1,6 +1,6 @@
 using Application.Common.Models;
 using Application.CQRS.Languages.Queries.GetLanguageByCode;
-using Application.CQRS.Posts.Commands.ChangePostsStatuses;
+using Application.CQRS.PostTranslations.Commands.ChangePostTranslationsStatuses;
 using Application.CQRS.PostTranslations.Queries.GetPostTranslations;
 using Application.CQRS.PostTranslations.Queries.GetPostTranslationsByLanguageId;
 using MediatR;
@@ -30,9 +30,9 @@ namespace Presentation.Pages.Admin.Approve
 
         public async Task OnPostChangeStatusAsync(string selectedvalues)
         {
-            List<PostStatusObj> selectedPosts = JsonStringToList(selectedvalues);
+            List<PostTranslationStatusObj> selectedPosts = JsonStringToList(selectedvalues);
 
-            ChangePostsStatusesCommand command = new ChangePostsStatusesCommand()
+            ChangePostTranslationsStatusesCommand command = new ChangePostTranslationsStatusesCommand()
             {
                 ChangedPosts = selectedPosts
             };
@@ -41,9 +41,9 @@ namespace Presentation.Pages.Admin.Approve
             await UpdateProperties();
         }
 
-        private List<PostStatusObj> JsonStringToList(string json)
+        private List<PostTranslationStatusObj> JsonStringToList(string json)
         {
-            List<PostStatusObj> list = JsonConvert.DeserializeObject<List<PostStatusObj>>(json);           
+            List<PostTranslationStatusObj> list = JsonConvert.DeserializeObject<List<PostTranslationStatusObj>>(json);           
             return list;
         }
 

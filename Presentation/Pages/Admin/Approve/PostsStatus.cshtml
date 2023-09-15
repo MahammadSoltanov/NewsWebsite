@@ -1,32 +1,24 @@
 ﻿@page
 @using Application.Common.Models;
-@model Presentation.Pages.Admin.Approve.PostTranslationsStatusModel
+@model Presentation.Pages.Admin.Approve.PostsStatusModel
 @{
 }
 
-<section class="content">
 
-    <!-- Default box -->
-    <div class="card">
-        <div class="card-header">
-            <button type="button" onclick="location.href='@Url.Page("/Admin/Pos/AddPost")'" class="btn btn-primary">Add Post</button>
-            <div class="card-tools">
-                <button type="button" class="btn " data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
-                <button type="button" class="btn " data-card-widget="remove" title="Remove">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-        <div class="card-body p-0">
-            <form method="post" asp-page-handler="ChangeStatus">
+
+<form method="post" asp-page-handler="ChangeStatus">
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card" style="margin: 5px">
+            
+            <div class="card-body p-0">
                 <table class="table table-striped projects">
                     <thead>
                         <tr>
                             @foreach (var property in typeof(PostTranslationDto).GetProperties())
                             {
-                                if (property.Name == "Id" || property.Name == "Title" || property.Name == "Status")
+                                if (property.Name == "PostId" || property.Name == "Title" || property.Name == "Status")
                                 {
                                     <th>@property.Name</th>
                                 }
@@ -36,18 +28,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (PostTranslationDto post in Model.Posts)
+                        @for (int i = 0; i < Model.Translations.Count; i++)
                         {
                             <tr>
                                 @foreach (var property in typeof(PostTranslationDto).GetProperties())
                                 {
-                                    if (property.Name == "Id" || property.Name == "Title" || property.Name == "Status")
+                                    if (property.Name == "PostId" || property.Name == "Title")
                                     {
-                                        <td>@property.GetValue(post)</td>
+                                        <td>@property.GetValue(Model.Translations[i])</td>
                                     }
+
+                                    if (property.Name == "Status")
+                                    {
+                                        <td>@Model.Posts[i].Status</td>
+                                    }
+
                                 }
                                 <td class="project-actions text-right">
-                                    <input type="hidden" name="id" value="@post.Id" />
+                                    <input type="hidden" name="id" value="@Model.Translations[i].PostId" />
                                     <select name="status" id="inputStatus" class="form-control custom-select">
                                         <option selected disabled>Select status</option>
                                         <option>Published</option>
@@ -62,19 +60,19 @@
                     </tbody>
                 </table>
                 <input type="hidden" name="selectedValues" id="selectedPosts" />
-                <button class="btn btn-primary btn-sm"
-                        id="buttonStatus"
-                        type="submit"
-                        style="margin: 5px 0px;">
-                    <i class="fas fa-check">
-                    </i>
-                    Change statuses
-                </button>
-            </form>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+    <button class="btn btn-primary btn-sm"
+            id="buttonStatus"
+            type="submit"
+            style="margin: 5px; font-size: 15px">
+        <i class="fas fa-check">
+        </i>
+        Change statuses
+    </button>
+</form>
 
 @section Scripts{
     <script src="~/js/status.js" asp-append-version="true"></script>
-}                                            
+}   
