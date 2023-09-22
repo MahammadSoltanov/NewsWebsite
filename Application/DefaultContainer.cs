@@ -10,7 +10,7 @@ public class DefaultContainer
     public DefaultContainer(IMediator mediator)
     {
         _mediator = mediator;
-    }
+    }    
 
     public async Task<int> GetDefaultPostLanguageId()
     {

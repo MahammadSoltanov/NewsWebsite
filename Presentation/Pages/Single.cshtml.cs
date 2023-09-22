@@ -5,6 +5,7 @@ using Application.CQRS.Languages.Queries.GetLanguageByCode;
 using Application.CQRS.Posts.Queries.GetPostById;
 using Application.CQRS.PostTranslations.Commands.IncreaseViewCount;
 using Application.CQRS.PostTranslations.Queries.GetPostTranslationById;
+using Application.CQRS.PostTranslations.Queries.GetRecentPostTranslations;
 using Application.CQRS.Users.Queries.GetUserById;
 using Domain.Entities;
 using MediatR;
@@ -25,6 +26,7 @@ namespace Presentation.Pages
         public List<CategoryTranslationDto> CategoryTranslations { get; set; }
         public UserDto Author { get; set; }
         public PostTranslationDto PostTranslation { get; set; }
+        public List<PostTranslationDto> RecentPostTranslations { get; set; }
         public PostDto Post{ get; set; }
         public List<HashtagDto> Hashtags { get; set; }
         public async Task OnGet(int id)
@@ -35,6 +37,7 @@ namespace Presentation.Pages
             Post = await _mediator.Send(new GetPostByIdQuery(PostTranslation.PostId));
             Author = await _mediator.Send(new GetUserByIdQuery(PostTranslation.AuthorId));
             Hashtags = await _mediator.Send(new GetHashtagsByPostIdQuery(Post.Id));
+            RecentPostTranslations = await _mediator.Send(new GetRecentPostTranslationsQuery());
 
             bool hasViewedPost = Request.Cookies["ViewedPost_" + id] != null;
 
@@ -49,6 +52,15 @@ namespace Presentation.Pages
                 };
                 Response.Cookies.Append("ViewedPost_" + id, "true", options);
             }
+        }
+
+        public async Task<string> GetPostTitleImageUrl(int postId)
+        {
+            var post = await _mediator.Send(new GetPostByIdQuery(postId));
+
+            string imageUrl = post.TitleImageUrl;
+
+            return imageUrl;
         }
     }
 }

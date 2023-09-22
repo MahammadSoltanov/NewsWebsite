@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Application.Common.Models;
+<!DOCTYPE html>
 <html lang="en" style="height: 100% ">
 <head>
     <meta charset="utf-8" />
@@ -88,15 +89,15 @@
                             This site is an ASP.NET Core-based platform adhering to Clean architecture principles, designed for hosting and publishing news articles.
                             Feel free to look at the source code in my GitHub under the name of NewsWebsite.(link below in social section)
                         </p>
-                    </div> 
+                    </div>
                     <div class="widget">
                         <h3>Social</h3>
-                        <ul class="list-unstyled social">                         
+                        <ul class="list-unstyled social">
                             <li><a href="https://www.linkedin.com/in/mahammad-soltanov-aa0856254/"><span class="icon-linkedin"></span></a></li>
                             <li><a href="https://github.com/MahammadSoltanov"><span class="icon-github"></span></a></li>
                         </ul>
                     </div>
-                </div> 
+                </div>
                 <div class="col-lg-4 ps-lg-5">
                     <div class="widget">
                         <h3 class="mb-4">Company</h3>
@@ -116,46 +117,30 @@
                             <li><a href="#">FAQ</a></li>
                             <li><a href="#">Creative</a></li>
                         </ul>
-                    </div> 
+                    </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="widget">
                         <h3 class="mb-4">Recent Post Entry</h3>
                         <div class="post-entry-footer">
                             <ul>
-                                <li>
-                                    <a href="">
-                                        <img src="images/img_1_sq.jpg" alt="Image placeholder" class="me-4 rounded">
-                                        <div class="text">
-                                            <h4>There’s a Cool New Way for Men to Wear Socks and Sandals</h4>
-                                            <div class="post-meta">
-                                                <span class="mr-2">March 15, 2018 </span>
+                                @foreach (PostTranslationDto translation in Model.RecentPostTranslations)
+                                {
+                                    <li>
+                                        <a asp-page="/Single" asp-route-id="@translation.Id">
+                                            @{
+                                                var titleImageUrl = await Model.GetPostTitleImageUrl(translation.PostId);
+                                            }
+                                            <img src="@titleImageUrl" alt="Image placeholder" class="me-4 rounded">
+                                            <div class="text">
+                                                <h4>@translation.Title</h4>
+                                                <div class="post-meta">
+                                                    <span class="mr-2">@translation.PublishDate</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="">
-                                        <img src="images/img_2_sq.jpg" alt="Image placeholder" class="me-4 rounded">
-                                        <div class="text">
-                                            <h4>There’s a Cool New Way for Men to Wear Socks and Sandals</h4>
-                                            <div class="post-meta">
-                                                <span class="mr-2">March 15, 2018 </span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="">
-                                        <img src="images/img_3_sq.jpg" alt="Image placeholder" class="me-4 rounded">
-                                        <div class="text">
-                                            <h4>There’s a Cool New Way for Men to Wear Socks and Sandals</h4>
-                                            <div class="post-meta">
-                                                <span class="mr-2">March 15, 2018 </span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
+                                        </a>
+                                    </li>
+                                }
                             </ul>
                         </div>
 
@@ -179,7 +164,7 @@
                 </div>
             </div>
         </div>
-    </footer> 
+    </footer>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
