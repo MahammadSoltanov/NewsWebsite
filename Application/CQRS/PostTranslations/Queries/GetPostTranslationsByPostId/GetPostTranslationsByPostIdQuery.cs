@@ -22,7 +22,7 @@ public class GetPostTranslationsByPostIdQueryHandler : IRequestHandler<GetPostTr
     public async Task<List<PostTranslationDto>> Handle(GetPostTranslationsByPostIdQuery request, CancellationToken cancellationToken)
     {
         var postTranslations = await _context.PostTranslations
-            .Where(pt => pt.PostId == request.PostId)
+            .Where(pt => pt.PostId == request.PostId && pt.Status != "Deleted")
             .ToListAsync(cancellationToken);
 
         var postTranslationDtos = _mapper.Map<List<PostTranslationDto>>(postTranslations);

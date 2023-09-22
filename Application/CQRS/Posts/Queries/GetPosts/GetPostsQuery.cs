@@ -21,7 +21,9 @@ public class GetPostsQueryHandler : IRequestHandler<GetPostsQuery, List<PostDto>
 
     public async Task<List<PostDto>> Handle(GetPostsQuery request, CancellationToken cancellationToken)
     {
-        var posts = await _context.Posts.ToListAsync(cancellationToken);
+        var posts = await _context.Posts
+            .Where(p => p.Status != "Deleted")
+            .ToListAsync(cancellationToken);
         var postDtos = _mapper.Map<List<PostDto>>(posts);
         return postDtos;
     }

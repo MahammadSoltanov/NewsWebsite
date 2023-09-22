@@ -26,7 +26,7 @@
                         <tr>
                             @foreach (var property in typeof(PostTranslationDto).GetProperties())
                             {
-                                if (property.Name == "Id" || property.Name == "Title" || property.Name == "Status")
+                                if (property.Name == "Id" || property.Name == "Title" || property.Name == "Status" || property.Name == "PostId")
                                 {
                                     <th>@property.Name</th>
                                 }
@@ -36,26 +36,42 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (PostTranslationDto post in Model.Posts)
+                        @foreach (PostTranslationDto translation in Model.Posts)
                         {
                             <tr>
                                 @foreach (var property in typeof(PostTranslationDto).GetProperties())
                                 {
-                                    if (property.Name == "Id" || property.Name == "Title" || property.Name == "Status")
+                                    if (property.Name == "Id" || property.Name == "Title" || property.Name == "Status" || property.Name == "PostId")
                                     {
-                                        <td>@property.GetValue(post)</td>
+                                        <td>@property.GetValue(translation)</td>
                                     }
                                 }
                                 <td class="project-actions text-right">
-                                    <input type="hidden" name="id" value="@post.Id" />
-                                    <select name="status" id="inputStatus" class="form-control custom-select">
-                                        <option selected disabled>Select status</option>
-                                        <option>Published</option>
-                                        <option>Pending</option>
-                                        <option>Draft</option>
-                                        <option>Deleted</option>
-                                        <option>Scheduled</option>
-                                    </select>
+                                    <input type="hidden" name="id" value="@translation.Id" />
+                                    @{
+                                        var postStatus = await Model.GetPostStatus(translation.PostId);
+                                    }
+                                    @if (postStatus == "Published" && translation.LanguageId == Model.DefaultLanguage.Id)
+                                    {
+                                        <p>The post you are trying to edit is currently in 'Published' status. The default translation cannot be modified.</p>
+                                    }
+                                    else
+                                    {
+                                        <select name="status" id="inputStatus" class="form-control custom-select">
+                                            <option selected disabled>Select status</option>
+                                            @if (postStatus == "Published")
+                                            {
+                                                <option>Published</option>
+                                            }
+                                            <option>Pending</option>
+                                            <option>Draft</option>
+                                            @if (translation.LanguageId != Model.DefaultLanguage.Id)
+                                            {
+                                                <option>Deleted</option>
+                                            }
+                                            <option>Scheduled</option>
+                                        </select>
+                                    }
                                 </td>
                             </tr>
                         }

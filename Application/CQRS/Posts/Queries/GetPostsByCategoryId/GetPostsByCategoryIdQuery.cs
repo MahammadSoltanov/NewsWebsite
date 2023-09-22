@@ -22,7 +22,7 @@ public class GetPostsByCategoryIdQueryHandler : IRequestHandler<GetPostsByCatego
     public async Task<List<PostDto>> Handle(GetPostsByCategoryIdQuery request, CancellationToken cancellationToken)
     {
         var posts = await _context.Posts
-            .Where(p => p.CategoryId == request.CategoryId)
+            .Where(p => p.CategoryId == request.CategoryId && p.Status != "Deleted")
             .ToListAsync(cancellationToken);
 
         var postDtos = _mapper.Map<List<PostDto>>(posts);

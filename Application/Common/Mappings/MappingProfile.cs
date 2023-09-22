@@ -16,5 +16,6 @@ public class MappingProfile : Profile
         CreateMap<CategoryTranslation, CategoryTranslationDto>();
         CreateMap<Post, PostDto>();
         CreateMap<PostTranslation, PostTranslationDto>();
+        CreateMap<PostTranslationDto, PostTranslation>();
     }
 }

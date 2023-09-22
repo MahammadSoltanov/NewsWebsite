@@ -6,7 +6,7 @@ namespace Application.CQRS.PostTranslations.Commands.ChangePostTranslationsStatu
 
 public record ChangePostTranslationsStatusesCommand : IRequest<Unit>
 {
-    public List<PostTranslationStatusObj> ChangedPosts { get; set; }
+    public List<PostTranslationStatusObj> ChangedTranslations { get; set; }
 }
 
 public class ChangePostTranslationsStatusesCommandHandler : IRequestHandler<ChangePostTranslationsStatusesCommand, Unit>
@@ -20,15 +20,20 @@ public class ChangePostTranslationsStatusesCommandHandler : IRequestHandler<Chan
 
     public async Task<Unit> Handle(ChangePostTranslationsStatusesCommand request, CancellationToken cancellationToken)
     {
-        var posts = await _context.PostTranslations.ToListAsync(cancellationToken);
+        var translations = await _context.PostTranslations.ToListAsync(cancellationToken);
 
-        foreach (var changedPost in request.ChangedPosts)
+        foreach (var changedPost in request.ChangedTranslations)
         {
-            foreach (var post in posts)
+            foreach (var translation in translations)
             {
-                if (post.Id == changedPost.Id)
+                if (translation.Id == changedPost.Id)
                 {
-                    post.Status = changedPost.Status;
+                    if(changedPost.Status == "Published")
+                    {
+                        translation.PublishDate = DateTime.Now;
+                    }
+
+                    translation.Status = changedPost.Status;
                 }
             }
         }
@@ -37,5 +42,6 @@ public class ChangePostTranslationsStatusesCommandHandler : IRequestHandler<Chan
 
         return Unit.Value;
     }
+
 }
 

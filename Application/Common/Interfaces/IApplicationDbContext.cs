@@ -1,7 +1,7 @@
 ﻿using Application.Common.Models;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Application.Common.Interfaces
 {
@@ -19,5 +19,6 @@ namespace Application.Common.Interfaces
         public DbSet<ImageModel> Images{ get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+        EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
     }
 }

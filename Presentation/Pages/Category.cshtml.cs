@@ -2,8 +2,11 @@ using Application.Common.Models;
 using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationByCategoryId;
 using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationsByLanguageId;
 using Application.CQRS.Languages.Queries.GetLanguageByCode;
+using Application.CQRS.Posts.Queries.GetPostById;
 using Application.CQRS.Posts.Queries.GetPostsByCategoryId;
+using Application.CQRS.Posts.Queries.GetPublishedPosts;
 using Application.CQRS.PostTranslations.Queries.GetPostTranslations;
+using Application.CQRS.PostTranslations.Queries.GetPublishedPostTranslations;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -28,8 +31,9 @@ namespace Presentation.Pages
             var defaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
             CategoryTranslations = await _mediator.Send(new GetCategoryTranslationsByLanguageIdQuery(defaultLanguage.Id));
             Category = CategoryTranslations.FirstOrDefault(ct => ct.CategoryId == id);
-            Posts = await _mediator.Send(new GetPostsByCategoryIdQuery(id));
-            var translations = await _mediator.Send(new GetPostTranslationsQuery());
+            var posts = await _mediator.Send(new GetPublishedPostsQuery());
+            Posts = posts.Where(p => p.CategoryId == Category.CategoryId).ToList();
+            var translations = await _mediator.Send(new GetPublishedPostTranslationsQuery());
 
             PostTranslations = new List<PostTranslationDto>();
             
@@ -37,7 +41,6 @@ namespace Presentation.Pages
             {
                 foreach (var post in Posts)
                 {
-
                     if(post.Id == translation.PostId && translation.LanguageId == defaultLanguage.Id)
                     {
                         PostTranslations.Add(translation);
@@ -45,6 +48,15 @@ namespace Presentation.Pages
                 }
             }
 
+        }
+
+        public async Task<string> GetPostTitleImageUrl(int postId)
+        {
+            var post = await _mediator.Send(new GetPostByIdQuery(postId));
+
+            string imageUrl = post.TitleImageUrl;
+
+            return imageUrl;
         }
     }
 }

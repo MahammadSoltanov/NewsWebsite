@@ -1,10 +1,6 @@
 using Application.Common.Models;
-using Application.CQRS.Languages.Queries.GetLanguageByCode;
 using Application.CQRS.Posts.Commands.ChangePostsStatuses;
-using Application.CQRS.Posts.Queries.GetPosts;
-using Application.CQRS.PostTranslations.Commands.ChangePostTranslationsStatuses;
-using Application.CQRS.PostTranslations.Queries.GetPostTranslations;
-using Application.CQRS.PostTranslations.Queries.GetPostTranslationsByLanguageId;
+using Application.CQRS.Posts.Queries.GetPostsForApproval;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -21,9 +17,7 @@ namespace Presentation.Pages.Admin.Approve
             _mediator = mediator;
         }
 
-
-        public List<PostDto> Posts { get; set; }
-        public List<PostTranslationDto> Translations { get; set; }
+        public List<PostDto> Posts { get; set; }       
 
         public async Task OnGetAsync()
         {
@@ -52,9 +46,7 @@ namespace Presentation.Pages.Admin.Approve
 
         private async Task UpdateProperties()
         {
-            Posts = await _mediator.Send(new GetPostsQuery());
-            var defaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
-            Translations = await _mediator.Send(new GetPostTranslationsByLanguageIdQuery(defaultLanguage.Id));
+            Posts = await _mediator.Send(new GetPostsForApprovalQuery());            
         }
     }
 }

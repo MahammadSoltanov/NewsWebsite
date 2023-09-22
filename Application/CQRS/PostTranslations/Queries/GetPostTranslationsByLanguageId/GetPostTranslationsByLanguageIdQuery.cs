@@ -24,7 +24,7 @@ public class GetPostTranslationsByLanguageIdQueryHandler : IRequestHandler<GetPo
     public async Task<List<PostTranslationDto>> Handle(GetPostTranslationsByLanguageIdQuery request, CancellationToken cancellationToken)
     {
         var postTranslations = await _context.PostTranslations
-            .Where(pt => pt.LanguageId == request.LanguageId)
+            .Where(pt => pt.LanguageId == request.LanguageId && pt.Status != "Deleted")
             .ToListAsync(cancellationToken);
 
         if(!postTranslations.Any())

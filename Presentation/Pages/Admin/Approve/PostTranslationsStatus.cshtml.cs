@@ -1,11 +1,10 @@
 using Application.Common.Models;
 using Application.CQRS.Languages.Queries.GetLanguageByCode;
+using Application.CQRS.Posts.Queries.GetPostById;
 using Application.CQRS.PostTranslations.Commands.ChangePostTranslationsStatuses;
-using Application.CQRS.PostTranslations.Queries.GetPostTranslations;
-using Application.CQRS.PostTranslations.Queries.GetPostTranslationsByLanguageId;
+using Application.CQRS.PostTranslations.Queries.GetPostTranslationsForApproval;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 
@@ -22,6 +21,7 @@ namespace Presentation.Pages.Admin.Approve
         }
 
         public List<PostTranslationDto> Posts { get; set; }
+        public LanguageDto DefaultLanguage { get; set; }    
 
         public async Task OnGetAsync()
         {
@@ -34,7 +34,7 @@ namespace Presentation.Pages.Admin.Approve
 
             ChangePostTranslationsStatusesCommand command = new ChangePostTranslationsStatusesCommand()
             {
-                ChangedPosts = selectedPosts
+                ChangedTranslations = selectedPosts
             };
 
             await _mediator.Send(command);
@@ -49,7 +49,15 @@ namespace Presentation.Pages.Admin.Approve
 
         private async Task UpdateProperties()
         {
-            Posts = await _mediator.Send(new GetPostTranslationsQuery());
+            Posts = await _mediator.Send(new GetPostTranslationsForApprovalQuery());
+            DefaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
+        }
+
+        public async Task<string> GetPostStatus(int postId)
+        {
+            var post = await _mediator.Send(new GetPostByIdQuery(postId));
+
+            return post.Status;
         }
     }
 }
