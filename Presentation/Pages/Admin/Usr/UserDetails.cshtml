@@ -1,4 +1,11 @@
 ﻿@page
+@using Domain.Entities;
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<User> UserManager;
+@{
+    var currentUser = await UserManager.GetUserAsync(User);
+    bool userIsAdmin = await UserManager.IsInRoleAsync(currentUser, "Admin");
+}
 @model Presentation.Pages.Admin.Usr.UserDetailsModel
 @{
     ViewBag.Title = "User Details";
@@ -12,13 +19,15 @@
                 Details
             </h3>
         </div>
-        <!-- /.card-header -->
         <div class="card-body">
             <dl>
                 @foreach (var property in typeof(UserDto).GetProperties())
                 {
-                    <dt>@property.Name</dt>
-                    <dd>@property.GetValue(Model.UserP)</dd>
+                    if (!(property.Name == "Password" && !userIsAdmin) && true)
+                    {
+                        <dt>@property.Name</dt>
+                        <dd>@property.GetValue(Model.UserP)</dd>
+                    }
                 }
             </dl>
         </div>

@@ -5,8 +5,8 @@
 }
 
 <form method="post" asp-page-handler="ChangeStatus">
-    <section class="content">        
-        <div class="card" style="margin: 5px">            
+    <section class="content">
+        <div class="card" style="margin: 5px">
             <div class="card-body p-0">
                 <table class="table table-striped projects">
                     <thead>
@@ -23,7 +23,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach(var post in Model.Posts)
+                        @foreach (var post in Model.Posts)
                         {
                             <tr>
                                 @foreach (var property in typeof(PostDto).GetProperties())

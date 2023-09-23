@@ -4,23 +4,21 @@
 @{
 }
 
-<section class="content">
-
-    <!-- Default box -->
-    <div class="card">
-        <div class="card-header">
-            <button type="button" onclick="location.href='@Url.Page("/Admin/Pos/AddPost")'" class="btn btn-primary">Add Post</button>
-            <div class="card-tools">
-                <button type="button" class="btn " data-card-widget="collapse" title="Collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
-                <button type="button" class="btn " data-card-widget="remove" title="Remove">
-                    <i class="fas fa-times"></i>
-                </button>
+<form method="post" asp-page-handler="ChangeStatus">
+    <section class="content">
+        <div class="card">
+            <div class="card-header">
+                <button type="button" onclick="location.href='@Url.Page("/Admin/Pos/AddPost")'" class="btn btn-primary">Add Post</button>
+                <div class="card-tools">
+                    <button type="button" class="btn " data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn " data-card-widget="remove" title="Remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
             </div>
-        </div>
-        <div class="card-body p-0">
-            <form method="post" asp-page-handler="ChangeStatus">
+            <div class="card-body p-0">
                 <table class="table table-striped projects">
                     <thead>
                         <tr>
@@ -78,18 +76,18 @@
                     </tbody>
                 </table>
                 <input type="hidden" name="selectedValues" id="selectedPosts" />
-                <button class="btn btn-primary btn-sm"
-                        id="buttonStatus"
-                        type="submit"
-                        style="margin: 5px 0px;">
-                    <i class="fas fa-check">
-                    </i>
-                    Change statuses
-                </button>
-            </form>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+    <button class="btn btn-primary btn-sm"
+            id="buttonStatus"
+            type="submit"
+            style="margin: 5px; font-size: 15px">
+        <i class="fas fa-check">
+        </i>
+        Change statuses
+    </button>
+</form>
 
 @section Scripts{
     <script src="~/js/status.js" asp-append-version="true"></script>

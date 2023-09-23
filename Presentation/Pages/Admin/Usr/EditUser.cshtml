@@ -1,6 +1,9 @@
 ﻿@page
-@using Application.Common.Models;
 @model Presentation.Pages.Admin.Usr.EditUserModel
+@using Application.Common.Models;
+@using Domain.Entities;
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<User> UserManager;
 @{
     ViewBag.Title = "Edit User";
 }
@@ -29,11 +32,17 @@
                     <input type="text" asp-for="Surname" class="form-control">
                     <span asp-validation-for="Surname" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label for="inputName">Password</label>
-                    <input type="password" asp-for="Password" class="form-control">
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
+                @{
+                    var currentUser = await UserManager.GetUserAsync(User);
+                    if (await UserManager.IsInRoleAsync(currentUser, "Admin"))
+                    {
+                        <div class="form-group">
+                            <label for="inputName">Password</label>
+                            <input type="text" asp-for="Password" class="form-control">
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                    }
+                }
                 <div class="form-group">
                     <label for="inputName">Email</label>
                     <input type="email" asp-for="Email" class="form-control">

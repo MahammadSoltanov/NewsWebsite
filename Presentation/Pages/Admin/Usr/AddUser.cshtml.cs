@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Presentation.Pages.Admin.Usr
 {
-    [Authorize(Roles = "Admin, Moderator, Journalist")]
+    [Authorize(Roles = "Admin")]
     public class AddUserModel : PageModel
     {
         private readonly IMediator _mediator;

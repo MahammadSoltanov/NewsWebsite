@@ -2,16 +2,21 @@
 @model Presentation.Pages.Admin.Lists.UsersModel
 @{
     ViewBag.Title = "Users";
+    var currentUser = await UserManager.GetUserAsync(User);
+    bool userIsAdmin = await UserManager.IsInRoleAsync(currentUser, "Admin");
 }
 @using Application.Common.Models;
+@using Domain.Entities;
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<User> UserManager;
 
-<!-- Main content -->
 <section class="content">
-
-    <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <button type="button" onclick="location.href='@Url.Page("/Admin/Usr/AddUser")'" class="btn btn-primary">Add User</button>
+            @if (userIsAdmin)
+            {
+                <button type="button" onclick="location.href='@Url.Page("/Admin/Usr/AddUser")'" class="btn btn-primary">Add User</button>
+            }
             <div class="card-tools">
                 <button type="button" class="btn " data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
@@ -27,7 +32,7 @@
                     <tr>
                         @foreach (var property in typeof(UserDto).GetProperties())
                         {
-                            if (property.Name != "Id")
+                            @if (property.Name != "Id" && !(property.Name == "Password" && !userIsAdmin))
                             {
                                 <th>@property.Name</th>
                             }
@@ -37,12 +42,13 @@
                     </tr>
                 </thead>
                 <tbody>
+
                     @foreach (var user in Model.Users)
                     {
                         <tr>
                             @foreach (var property in typeof(UserDto).GetProperties())
                             {
-                                if (property.Name != "Id")
+                                @if (property.Name != "Id" && !(property.Name == "Password" && !userIsAdmin))
                                 {
                                     <td>@property.GetValue(user)</td>
                                 }
@@ -56,20 +62,25 @@
                                         </i>
                                         View
                                     </a>
-                                    <a class="btn btn-info btn-sm"
-                                       asp-page="/Admin/Usr/EditUser"
-                                       asp-route-id="@user.Id">
-                                        <i class="fas fa-pencil-alt">
-                                        </i>
-                                        Edit
-                                    </a>
-                                    <button class="btn btn-danger btn-sm"
-                                            type="submit"
-                                            asp-page-handler="Delete"
-                                            asp-route-id="@user.Id">
-                                        <i class="fas fa-trash"></i>
-                                        Delete
-                                    </button>
+                                    @{
+                                        if (userIsAdmin)
+                                        {
+                                            <a class="btn btn-info btn-sm"
+                                               asp-page="/Admin/Usr/EditUser"
+                                               asp-route-id="@user.Id">
+                                                <i class="fas fa-pencil-alt">
+                                                </i>
+                                                Edit
+                                            </a>
+                                            <button class="btn btn-danger btn-sm"
+                                                    type="submit"
+                                                    asp-page-handler="Delete"
+                                                    asp-route-id="@user.Id">
+                                                <i class="fas fa-trash"></i>
+                                                Delete
+                                            </button>
+                                        }
+                                    }
                                 </form>
                             </td>
                         </tr>
@@ -77,28 +88,5 @@
                 </tbody>
             </table>
         </div>
-        <!-- /.card-body -->
     </div>
-    <!-- /.card -->
-
 </section>
-
-@section Scripts
-    {
-    <!-- jQuery -->
-    <script src="~/lib/admin-lte/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="~/lib/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- AdminLTE User-->
-    <script src="~/lib/admin-lte/dist/js/adminlte.min.js"></script>
-    <!-- AdminLTE Userdemo purposes -->
-    <script src="~/lib/admin-lte/dist/js/demo.js"></script>
-}
-
-@section Links
-    {
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="~/lib/admin-lte/plugins/fontawesome-free/css/all.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="~/lib/admin-lte/dist/css/adminlte.min.css">
-}

@@ -1,13 +1,15 @@
 ﻿@page
+@using Domain.Entities;
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<User> UserManager;
 @model Presentation.Pages.Admin.Lists.CategoriesModel
 @{
     ViewBag.Title = "Categories";
+    var currentUser = await UserManager.GetUserAsync(User);
+    bool userIsAdmin = await UserManager.IsInRoleAsync(currentUser, "Admin");
 }
 @using Application.Common.Models;
-<!-- Main content -->
 <section class="content">
-
-    <!-- Default box -->
     <div class="card">
         <div class="card-header">
             <button type="button" onclick="location.href='@Url.Page("/Admin/Categ/AddCategory")'" class="btn btn-primary">Add Category</button>
@@ -62,6 +64,9 @@
                                         <i class="fas fa-pencil-alt"></i>
                                         Edit
                                     </a>
+
+                                    @if (userIsAdmin)
+                                    {
                                     <button class="btn btn-danger btn-sm"
                                             type="submit"
                                             asp-page-handler="Delete"
@@ -70,6 +75,7 @@
                                         </i>
                                         Delete
                                     </button>
+                                    }
                                 </form>
                             </td>
                         </tr>
@@ -78,28 +84,5 @@
                 </tbody>
             </table>
         </div>
-        <!-- /.card-body -->
     </div>
-    <!-- /.card -->
-
 </section>
-
-@section Scripts
-    {
-    <!-- jQuery -->
-    <script src="~/lib/admin-lte/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="~/lib/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="~/lib/admin-lte/dist/js/adminlte.min.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="~/lib/admin-lte/dist/js/demo.js"></script>
-}
-
-@section Links
-    {
-    <!-- Font Awesome -->
-    <link rel="stylesheet" asp-page="/lib/admin-lte/plugins/fontawesome-free/css/all.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" asp-page="/lib/admin-lte/dist/css/adminlte.min.css">
-}
