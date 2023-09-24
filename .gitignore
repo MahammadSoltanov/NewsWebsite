@@ -480,3 +480,4 @@ $RECYCLE.BIN/
 /Infrastructure/App.config
 /Application/PrivateInformation.cs
 /Presentation/Presentation.csproj
+/Presentation/appsettings.json

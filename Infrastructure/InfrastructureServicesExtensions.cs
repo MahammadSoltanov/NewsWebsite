@@ -5,16 +5,19 @@ using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure
 {
     public static class InfrastructureServicesExtensions
     {
-        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
+        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
+            var connectionString = configuration.GetConnectionString("LocalConnection");
+
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(PrivateInformation.ConnectionString));
+                    options.UseSqlServer(connectionString));
 
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 

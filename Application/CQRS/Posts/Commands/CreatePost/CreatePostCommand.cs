@@ -34,6 +34,6 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, int>
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return entity.Id;
+        return entity.Id; 
     }
 }
