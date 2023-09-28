@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Serilog;
 
 namespace Presentation.Pages.Admin.Authentication
 {
@@ -52,7 +53,8 @@ namespace Presentation.Pages.Admin.Authentication
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                Log.Error(ex, "Something went wrong on logging in\n" + ex.StackTrace);
+                ModelState.AddModelError(string.Empty, "Something went wrong during the operation, please check your data and try again.");                
                 return Page();
             }
         }

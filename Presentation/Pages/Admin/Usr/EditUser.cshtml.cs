@@ -9,6 +9,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Serilog;
 
 namespace Presentation.Pages.Admin.Usr
 {
@@ -78,11 +79,12 @@ namespace Presentation.Pages.Admin.Usr
                 await _mediator.Send(command);
 
                 _message = $"User details with Id = {Id} were successfully updated";
-                return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "User" });
+                return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Users" });
             }
             catch (Exception ex)
             {
-                return new RedirectToPageResult("/Admin/Error", new { message = ex.Message, entityName = "User" });
+                Log.Error(ex, "Something went wrong on updating User information\n" +  ex.StackTrace);
+                return new RedirectToPageResult("/Admin/Error", new { message = "Something went wrong during the operation, please try again or contact the support team.", entityName = "Users" });
             }
 
         }

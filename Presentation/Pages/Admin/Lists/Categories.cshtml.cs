@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Serilog;
 
 namespace Presentation.Pages.Admin.Lists
 {
@@ -39,12 +40,13 @@ namespace Presentation.Pages.Admin.Lists
             }
             catch (Exception ex)
             {
-                return new RedirectToPageResult("/Admin/Error", new { message = ex.Message, entityName = "Categorie" });
+                Log.Error(ex, "Something went wrong on deleting category\n" + ex.StackTrace);
+                return new RedirectToPageResult("/Admin/Error", new { message = "Something went wrong during the operation, please try again or contact the support team.", entityName = "Categories" });
             }
 
             string _message = $"Category with Id = {id} and all related translations were deleted";
 
-            return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Categorie" });
+            return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Categories" });
         }
     }
 }

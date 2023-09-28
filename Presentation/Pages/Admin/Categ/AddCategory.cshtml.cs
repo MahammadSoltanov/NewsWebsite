@@ -13,6 +13,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Serilog;
 using System.Transactions;
 
 namespace Presentation.Pages.Admin.Categ
@@ -89,14 +90,15 @@ namespace Presentation.Pages.Admin.Categ
                 catch (Exception ex) 
                 {
                     scope.Dispose();
-                    return new RedirectToPageResult("/Admin/Error", new {message =  ex.Message, entityName = "Categorie"});
+                    Log.Error(ex, "Something went wrong on category creation\n" + ex.StackTrace);
+                    return new RedirectToPageResult("/Admin/Error", new { message = "Something went wrong during the operation, please try again or contact the support team.", entityName = "Categories" });
                 }
 
                 scope.Complete();
             }
 
             string _message = $"Category with Id = {id} was successfully created with default {DefaultLanguage.Code} transaltion";
-            return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Categorie" });
+            return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Categories" });
         }
     }
 }

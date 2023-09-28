@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Transactions;
 using Newtonsoft.Json;
 using Application.CQRS.PostHashtags.Commands.AddPostHashtags;
+using Serilog;
 
 namespace Presentation.Pages.Admin.Pos
 {
@@ -54,9 +55,7 @@ namespace Presentation.Pages.Admin.Pos
         public string TranslationContent { get; set; }
         public async Task OnGetAsync()
         {
-            DefaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
-            LanguageId = DefaultLanguage.Id;
-            Categories = await _mediator.Send(new GetCategoryTranslationsByLanguageIdQuery(LanguageId));
+            await UpdateProperties();
         }
 
         public async Task<ActionResult> OnPostCreateAsync(List<string> tags)
@@ -80,9 +79,7 @@ namespace Presentation.Pages.Admin.Pos
                     if (!resultPost.IsValid)
                     {
                         resultPost.AddToModelState(this.ModelState);
-                        DefaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
-                        LanguageId = DefaultLanguage.Id;
-                        Categories = await _mediator.Send(new GetCategoryTranslationsByLanguageIdQuery(LanguageId));
+                        await UpdateProperties();
                         scope.Dispose();
                         return Page();
                     }
@@ -102,10 +99,8 @@ namespace Presentation.Pages.Admin.Pos
 
                     if (!resultPostTranslation.IsValid)
                     {
-                        resultPostTranslation.AddToModelState(this.ModelState);
-                        DefaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
-                        LanguageId = DefaultLanguage.Id;
-                        Categories = await _mediator.Send(new GetCategoryTranslationsByLanguageIdQuery(LanguageId));
+                        resultPostTranslation.AddToModelState(this.ModelState);                        
+                        await UpdateProperties();
                         scope.Dispose();
                         return Page();
                     }
@@ -126,7 +121,8 @@ namespace Presentation.Pages.Admin.Pos
                 catch (Exception ex)
                 {
                     scope.Dispose();
-                    return new RedirectToPageResult("/Admin/Error", new { message = ex.InnerException, entityName = "Post" });
+                    Log.Error(ex, "An unexpected error occurred on post creation" + ex.StackTrace);
+                    return new RedirectToPageResult("/Admin/Error", new { message = "Something went wrong during the operation. Please try again or contact the support team.", entityName = "Posts" });
                 }
 
                 scope.Complete();
@@ -136,7 +132,7 @@ namespace Presentation.Pages.Admin.Pos
             string _message = $"Post with Id = {postId} and " +
                 $"default {DefaultLanguage.Code} translation with " +
                 $"Id = {postTranslationId} were successfully created";
-            return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Post" });
+            return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Posts" });
         }
 
         private List<string> JsonStringToList(string json)
@@ -152,6 +148,13 @@ namespace Presentation.Pages.Admin.Pos
             }
 
             return cleanedTags;
+        }
+
+        private async Task UpdateProperties()
+        {
+            DefaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
+            LanguageId = DefaultLanguage.Id;
+            Categories = await _mediator.Send(new GetCategoryTranslationsByLanguageIdQuery(LanguageId));
         }
     }
 }

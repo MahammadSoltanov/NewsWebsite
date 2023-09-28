@@ -29,7 +29,7 @@ namespace Presentation.Pages.Admin.Lists
 
             string _message = $"Language with Id = {Id} was successfully deleted";
 
-            return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Language" });
+            return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Languages" });
         }
     }
 }

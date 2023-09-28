@@ -44,7 +44,7 @@ namespace Presentation.Pages.Admin.Hash
 
             string _message = $"Hashtag with Id = {id} was successfully created";
 
-            return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Hashtag" });
+            return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Hashtags" });
 
         }
     }

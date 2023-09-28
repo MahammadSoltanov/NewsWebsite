@@ -1,8 +1,9 @@
 ﻿using Application.Common.Interfaces;
 using AutoMapper;
+using FluentValidation.Internal;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
+using System.Transactions;
 
 namespace Application.CQRS.Posts.Commands.ChangePostsStatuses;
 
@@ -36,23 +37,36 @@ public class ChangePostsStatusesCommandHandler : IRequestHandler<ChangePostsStat
             {
                 if (post.Id == changedPost.Id)
                 {
-                    if (changedPost.Status == "Deleted")
+                    using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                     {
-                        await HandleDeletion(changedPost.Id, cancellationToken);
-                    }
+                        try
+                        {
+                            if (changedPost.Status == "Deleted")
+                            {
+                                await HandleDeletion(changedPost.Id, cancellationToken);
+                            }
 
-                    if (changedPost.Status == "Published")
-                    {
-                        post.PublishDate = DateTime.Now;
-                        await HandlePublishment(changedPost.Id, cancellationToken);
-                    }
+                            if (changedPost.Status == "Published")
+                            {
+                                post.PublishDate = DateTime.Now;
+                                await HandlePublishment(changedPost.Id, cancellationToken);
+                            }   
 
-                    else
-                    {
-                        await HandleDefault(changedPost.Id, changedPost.Status, cancellationToken);
-                    }
+                            else
+                            {
+                                await HandleDefault(changedPost.Id, changedPost.Status, cancellationToken);
+                            }
 
-                    post.Status = changedPost.Status;
+                            post.Status = changedPost.Status;
+                        }
+                        catch (Exception)
+                        {
+                            scope.Dispose();
+                            throw;
+                        }
+
+                        scope.Complete();
+                    }
                 }
             }
         }
@@ -112,8 +126,8 @@ public class ChangePostsStatusesCommandHandler : IRequestHandler<ChangePostsStat
         if (translations != null)
         {
             var translation = translations.FirstOrDefault(pt => pt.PostId == postId);
-            
-            if(translation != null)
+
+            if (translation != null)
             {
                 translation.Status = newStatus;
             }

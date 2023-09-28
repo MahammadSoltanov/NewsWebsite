@@ -55,11 +55,13 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<CategoryTranslation>()
                 .HasOne(ct => ct.Category)
                 .WithMany(c => c.CategoryTranslations)
-                .HasForeignKey(ct => ct.CategoryId);
+                .HasForeignKey(ct => ct.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<CategoryTranslation>()
                 .HasOne(ct => ct.Language)
                 .WithMany(l => l.CategoryTranslations)
-                .HasForeignKey(ct => ct.LanguageId);
+                .HasForeignKey(ct => ct.LanguageId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Hashtag>()
                 .HasKey(h => h.Id);
@@ -98,7 +100,8 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<Post>()
                 .HasOne(p => p.Category)
                 .WithMany(c => c.Posts)
-                .HasForeignKey(p => p.CategoryId);
+                .HasForeignKey(p => p.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Post>()
                 .Property(p => p.Status)
                 .IsRequired()
@@ -110,11 +113,13 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<PostHashtag>()
                 .HasOne(ph => ph.Hashtag)
                 .WithMany(h => h.PostHashtags)
-                .HasForeignKey(ph => ph.HashtagId);
+                .HasForeignKey(ph => ph.HashtagId)
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<PostHashtag>()
                 .HasOne(ph => ph.Post)
                 .WithMany(p => p.PostHashtags)
-                .HasForeignKey(ph => ph.PostId);
+                .HasForeignKey(ph => ph.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<PostHashtag>()
                 .Ignore(ph => ph.Id);
 
@@ -126,15 +131,18 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<PostTranslation>()
                 .HasOne(pt => pt.User)
                 .WithMany(u => u.PostTranslations)
-                .HasForeignKey(pt => pt.AuthorId);
+                .HasForeignKey(pt => pt.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<PostTranslation>()
                 .HasOne(pt => pt.Language)
                 .WithMany(l => l.PostTranslations)
-                .HasForeignKey(pt => pt.LanguageId);
+                .HasForeignKey(pt => pt.LanguageId)
+                .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<PostTranslation>()
                 .HasOne(pt => pt.Post)
                 .WithMany(p => p.PostTranslations)
-                .HasForeignKey(pt => pt.PostId);
+                .HasForeignKey(pt => pt.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<PostTranslation>()
                 .Property(pt => pt.Content)
                 .HasColumnType("nvarchar(max)");
@@ -154,7 +162,7 @@ namespace Infrastructure.Persistence
                 .HasOne(u => u.Role)
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.RoleId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<User>()
                 .Property(u => u.Name)

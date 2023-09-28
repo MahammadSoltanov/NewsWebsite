@@ -51,7 +51,7 @@ namespace Presentation.Pages.Admin.Lan
 
             int id = await _mediator.Send(createLanguageCommand);
             string _message = $"Language with ID = {id} was successfully created";
-            return RedirectToPage("/Admin/Succeed", new { message = _message, entityName = "Language" });
+            return RedirectToPage("/Admin/Succeed", new { message = _message, entityName = "Languages" });
         }
     }
 }

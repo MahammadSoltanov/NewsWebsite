@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
+using Serilog;
 using System.Diagnostics;
 using System.Transactions;
 
@@ -145,13 +146,14 @@ namespace Presentation.Pages.Admin.Pos
                 catch (Exception ex)
                 {
                     scope.Dispose();
-                    return new RedirectToPageResult("/Admin/Error", new { message = ex.InnerException.Message, entityName = "Post" });
+                    Log.Error(ex, "Something went wrong on editing post information\n" + ex.StackTrace);
+                    return new RedirectToPageResult("/Admin/Error", new { message = "Something went wrong during the operation. Please try again or contact the support team", entityName = "Posts" });
                 }
 
                 scope.Complete();
             }
 
-            return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Post" });
+            return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Posts" });
         }
 
         private async Task UpdateFormProperties(int id, int languageId)

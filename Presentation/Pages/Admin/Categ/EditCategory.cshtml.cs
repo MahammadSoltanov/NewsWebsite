@@ -10,6 +10,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Serilog;
 
 namespace Presentation.Pages.Admin.Categ
 {
@@ -64,11 +65,12 @@ namespace Presentation.Pages.Admin.Categ
             }
             catch (Exception ex)
             {
-                return new RedirectToPageResult("/Admin/Error", new { message = ex.Message, entityName = "Categorie" });
+                Log.Error(ex, "Something went wrong on updating category information\n" + ex.StackTrace);
+                return new RedirectToPageResult("/Admin/Error", new { message = "Something went wrong during the operation, please try again or contact the support team.", entityName = "Categories" });
             }
 
             string _message = await _mediator.Send(updateCategoryTranslationCommand);
-            return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Categorie" });
+            return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Categories" });
         }
 
         private async Task<IActionResult> UpdateProperties(int id)
@@ -85,7 +87,8 @@ namespace Presentation.Pages.Admin.Categ
             }
             catch (Exception ex) 
             {
-                return new RedirectToPageResult("/Admin/Error", new { message = ex.Message, entityName = "Category" });
+                Log.Error(ex, "Something went wrong on updating page properties\n" + ex.StackTrace);
+                return new RedirectToPageResult("/Admin/Error", new { message = "Something went wrong during the operation, please try again or contact the support team.", entityName = "Categories" });
             }
 
             return Page();

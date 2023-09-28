@@ -5,6 +5,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
+using Serilog;
+using System.Data.Common;
 
 namespace Presentation.Pages.Admin.Approve
 {
@@ -33,7 +35,23 @@ namespace Presentation.Pages.Admin.Approve
                 ChangedPosts = selectedPosts
             };
 
-            await _mediator.Send(command);
+            try
+            {
+                await _mediator.Send(command);
+
+            }
+            catch (DbException dbEx)
+            {
+                Log.Error(dbEx, "An error occured during the database operation" + dbEx.StackTrace);
+                return new RedirectToPageResult("/Admin/Error", new { message = "An unexpected error occured during the operation. Please try again or contact the support team.", entityName = "Posts"});   
+            }
+            catch (Exception ex) 
+            {
+                Log.Error(ex, "An unexpected error occured on post status updation");
+
+                return new RedirectToPageResult("/Admin/Error", new { message = "An unexpected error occured during the operation. Please try again or contact the support team." });
+            }
+
             await UpdateProperties();
             return Page();
         }

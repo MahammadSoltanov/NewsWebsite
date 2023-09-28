@@ -29,7 +29,7 @@ namespace Presentation.Pages.Admin.Lists
             await _mediator.Send(new DeleteHashtagCommand(Id));
             string _message = $"Hashtag with Id = {Id} was successfully deleted";
             
-            return new RedirectToPageResult("/Admin/Succeed", new {message = _message, entityName = "Hashtag"});
+            return new RedirectToPageResult("/Admin/Succeed", new {message = _message, entityName = "Hashtags"});
         }
     }
 }

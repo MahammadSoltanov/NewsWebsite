@@ -15,6 +15,7 @@ using Application.CQRS.Users.Commands.CreateUser;
 using Application.CQRS.Users.Commands.UpdateUser;
 using AutoMapper;
 using FluentValidation;
+using Serilog;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,7 +25,12 @@ namespace Application
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services) 
         {
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationServicesExtensions).Assembly));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationServicesExtensions).Assembly));            
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();    
+
 
             var mappingConfiguration = new MapperConfiguration(cfg =>
             {

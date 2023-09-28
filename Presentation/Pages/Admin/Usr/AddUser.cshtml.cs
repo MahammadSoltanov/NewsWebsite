@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Serilog;
 
 namespace Presentation.Pages.Admin.Usr
 {
@@ -69,12 +70,13 @@ namespace Presentation.Pages.Admin.Usr
 
                 int id = await _mediator.Send(createUserCommand);
                 string _message = $"User with Id = {id} was successfully created";
-                return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "User" });
+                return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Users" });
             }
 
             catch (Exception ex)
             {
-                return new RedirectToPageResult("/Admin/Error", new { message = ex.Message, entityName = "User" });
+                Log.Error(ex, "Something went wrong on creating user\n" + ex.StackTrace);
+                return new RedirectToPageResult("/Admin/Error", new { message = "Something went wrong during the operation, please try again or contact the support team.", entityName = "Users" });
             }
         }
     }

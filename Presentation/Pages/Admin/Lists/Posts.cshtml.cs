@@ -1,13 +1,12 @@
 using Application.Common.Models;
 using Application.CQRS.Languages.Queries.GetLanguageByCode;
 using Application.CQRS.Posts.Commands.DeletePost;
-using Application.CQRS.Posts.Queries.GetPosts;
-using Application.CQRS.PostTranslations.Queries.GetPostTranslations;
 using Application.CQRS.PostTranslations.Queries.GetPostTranslationsByLanguageId;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Serilog;
 
 namespace Presentation.Pages.Admin.Lists
 {
@@ -39,11 +38,12 @@ namespace Presentation.Pages.Admin.Lists
             }
             catch (Exception ex)
             {
-                return new RedirectToPageResult("/Admin/Error", new { message = ex.Message, entityName = "Post" });
+                Log.Error(ex, "Something went wrong on deleting post\n" + ex.StackTrace);
+                return new RedirectToPageResult("/Admin/Error", new { message = "Something went wrong during the operation, please try again or contact the support team.", entityName = "Posts" });
             }
 
 
-            return new RedirectToPageResult("/Admin/Succeed", new { message = $"Entity with Id = {Id} and all related translations were successfully deleted", entityName = "Post" });
+            return new RedirectToPageResult("/Admin/Succeed", new { message = $"Entity with Id = {Id} and all related translations were successfully deleted", entityName = "Posts" });
         }
     }
 }

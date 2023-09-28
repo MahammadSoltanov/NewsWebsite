@@ -28,7 +28,7 @@ namespace Presentation.Pages.Admin.Lists
         {
             await _mediator.Send(new DeleteUserCommand(Id));
             string message = $"User with Id = {Id} was successfully deleted";
-            return new RedirectToPageResult("/Admin/Succeed", new { message = message, entityName = "User" });
+            return new RedirectToPageResult("/Admin/Succeed", new { message = message, entityName = "Users" });
         }
     }
 }

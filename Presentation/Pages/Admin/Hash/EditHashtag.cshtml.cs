@@ -52,7 +52,7 @@ namespace Presentation.Pages.Admin.Hash
 
             await _mediator.Send(command);
             string _message = $"Hashtag with Id = {command.Id} was updated successfully";
-            return new RedirectToPageResult("/Admin/Succeed", new {message = _message, entityName = "Hashtag"});
+            return new RedirectToPageResult("/Admin/Succeed", new {message = _message, entityName = "Hashtags"});
         }
     }
 }

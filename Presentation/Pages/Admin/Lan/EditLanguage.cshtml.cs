@@ -60,7 +60,7 @@ namespace Presentation.Pages.Admin.Lan
 
             await _mediator.Send(updateLanguageCommand);
             string _message = $"Language with Id = {Id} was successfully updated";
-            return new RedirectToPageResult("/Admin/Succeed",  new { message = _message, entityName = "Language"});
+            return new RedirectToPageResult("/Admin/Succeed",  new { message = _message, entityName = "Languages"});
         }
 
 
