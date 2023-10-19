@@ -12,6 +12,7 @@ public record ChangePostTranslationsStatusesCommand : IRequest<Unit>
 public class ChangePostTranslationsStatusesCommandHandler : IRequestHandler<ChangePostTranslationsStatusesCommand, Unit>
 {
     private readonly IApplicationDbContext _context;
+    private const string PublishedStatus = "Published";
 
     public ChangePostTranslationsStatusesCommandHandler(IApplicationDbContext context)
     {
@@ -28,7 +29,7 @@ public class ChangePostTranslationsStatusesCommandHandler : IRequestHandler<Chan
             {
                 if (translation.Id == changedPost.Id)
                 {
-                    if(changedPost.Status == "Published")
+                    if(changedPost.Status == PublishedStatus)
                     {
                         translation.PublishDate = DateTime.Now;
                     }
