@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
-using Domain.Events.Posts;
 using MediatR;
 
 namespace Application.CQRS.Posts.Commands.CreatePost;
@@ -34,6 +33,6 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, int>
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return entity.Id; 
+        return entity.Id;
     }
 }

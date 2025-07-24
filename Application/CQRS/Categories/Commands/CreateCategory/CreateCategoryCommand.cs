@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
-using Domain.Events.Categories;
 using MediatR;
 
 namespace Application.CQRS.Categories.Commands.CreateCategory;

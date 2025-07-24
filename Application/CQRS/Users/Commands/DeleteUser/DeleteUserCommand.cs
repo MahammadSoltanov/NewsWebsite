@@ -1,7 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
-using Domain.Events.Users;
 using MediatR;
 
 namespace Application.CQRS.Users.Commands.DeleteUser;
@@ -21,12 +20,12 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Unit>
     {
         var entity = await _context.Users
             .FindAsync(new object[] { request.Id }, cancellationToken);
-        
-        if(entity == null) 
+
+        if (entity == null)
         {
             throw new NotFoundException(nameof(User), request.Id);
         }
-        
+
         _context.Users.Remove(entity);
 
         await _context.SaveChangesAsync(cancellationToken);

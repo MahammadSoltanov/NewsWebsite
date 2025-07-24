@@ -1,7 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
-using Domain.Events.Users;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -19,7 +18,7 @@ public record CreateUserCommand : IRequest<int>
 
 public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
 {
-    private readonly IApplicationDbContext _context;    
+    private readonly IApplicationDbContext _context;
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<Role> _roleManager;
 
@@ -39,7 +38,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
             UserName = request.Email,
             Password = request.Password,
             RoleId = request.RoleId,
-            SecurityStamp = Guid.NewGuid().ToString() // Set a new security stamp value
+            SecurityStamp = Guid.NewGuid().ToString()
         };
 
         var result = await _userManager.CreateAsync(user, request.Password);
@@ -53,7 +52,6 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
                 var resultRole = await _userManager.AddToRoleAsync(user, role.Name);
                 if (!resultRole.Succeeded)
                 {
-                    // Handle role assignment error
                 }
             }
 

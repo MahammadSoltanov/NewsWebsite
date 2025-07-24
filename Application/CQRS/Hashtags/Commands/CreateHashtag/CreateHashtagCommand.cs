@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
-using Domain.Events.Hashtags;
 using MediatR;
 
 namespace Application.CQRS.Hashtags.Commands.CreateHashtag;
@@ -25,7 +24,7 @@ public class CreateHashtagCommandHandler : IRequestHandler<CreateHashtagCommand,
         {
             Title = request.Title,
         };
-        
+
         _context.Hashtags.Add(entity);
 
         await _context.SaveChangesAsync(cancellationToken);

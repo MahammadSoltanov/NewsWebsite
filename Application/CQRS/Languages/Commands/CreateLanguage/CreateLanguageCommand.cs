@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
-using Domain.Events.Languages;
 using MediatR;
 
 namespace Application.CQRS.Languages.Commands.CreateLanguage;
@@ -26,11 +25,11 @@ public class CreateLanguageCommandHandler : IRequestHandler<CreateLanguageComman
             Code = request.Code,
             Title = request.Title,
         };
-        
+
         _context.Languages.Add(entity);
 
         await _context.SaveChangesAsync(cancellationToken);
-        
+
         return entity.Id;
     }
 }

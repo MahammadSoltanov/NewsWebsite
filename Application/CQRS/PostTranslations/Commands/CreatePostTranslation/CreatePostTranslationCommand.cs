@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
-using Domain.Events.PostTranslations;
 using MediatR;
 
 namespace Application.CQRS.PostTranslations.Commands.CreatePostTranslation;

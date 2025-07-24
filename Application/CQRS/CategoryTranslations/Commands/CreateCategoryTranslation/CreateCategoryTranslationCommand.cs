@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
-using Domain.Events.CategoryTranslations;
 using MediatR;
 
 namespace Application.CQRS.CategoryTranslations.Commands.CreateCategoryTranslation;
@@ -13,7 +12,7 @@ public record CreateCategoryTranslationCommand : IRequest<int>
 }
 
 public class CreateCategoryTranslationCommandHandler : IRequestHandler<CreateCategoryTranslationCommand, int>
-{    
+{
     private readonly IApplicationDbContext _context;
 
     public CreateCategoryTranslationCommandHandler(IApplicationDbContext context)
@@ -21,7 +20,7 @@ public class CreateCategoryTranslationCommandHandler : IRequestHandler<CreateCat
         _context = context;
     }
 
-    public async Task<int> Handle(CreateCategoryTranslationCommand request,  CancellationToken cancellationToken)
+    public async Task<int> Handle(CreateCategoryTranslationCommand request, CancellationToken cancellationToken)
     {
         var entity = new CategoryTranslation()
         {

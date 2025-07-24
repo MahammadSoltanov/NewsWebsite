@@ -1,7 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
-using Domain.Events.Languages;
 using MediatR;
 
 namespace Application.CQRS.Languages.Commands.DeleteLanguage;
@@ -21,7 +20,7 @@ public class DeleteLanguageCommandHandler : IRequestHandler<DeleteLanguageComman
         var entity = await _context.Languages
             .FindAsync(new object[] { request.Id }, cancellationToken);
 
-        if(entity == null) 
+        if (entity == null)
         {
             throw new NotFoundException(nameof(Language), request.Id);
         }

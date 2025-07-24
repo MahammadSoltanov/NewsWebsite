@@ -1,7 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
-using Domain.Events.CategoryTranslations;
 using MediatR;
 
 namespace Application.CQRS.CategoryTranslations.Commands.DeleteCategoryTranslation;
@@ -19,9 +18,9 @@ public class DeleteCategoryTranslationCommandHandler : IRequestHandler<DeleteCat
 
     public async Task<Unit> Handle(DeleteCategoryTranslationCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.CategoryTranslations.FindAsync(new object[] {request.Id}, cancellationToken);
+        var entity = await _context.CategoryTranslations.FindAsync(new object[] { request.Id }, cancellationToken);
 
-        if (entity == null) 
+        if (entity == null)
         {
             throw new NotFoundException(nameof(CategoryTranslation), request.Id);
         }
