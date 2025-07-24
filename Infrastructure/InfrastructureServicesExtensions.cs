@@ -1,5 +1,4 @@
-﻿using Application;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Domain.Entities;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -33,12 +32,16 @@ namespace Infrastructure
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
+
+
             services.AddScoped<SignInManager<User>>();
             services.AddScoped<UserManager<User>>();
             services.AddScoped<RoleManager<Role>>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
+
+            services.AddScoped<DataSeeder>();
 
             return services;
         }
