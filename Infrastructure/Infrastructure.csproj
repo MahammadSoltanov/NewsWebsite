@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -7,10 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="Files\" />
-    <Folder Include="Identity\" />
-    <Folder Include="Services\" />
+    <Compile Remove="Common\**" />
+    <Compile Remove="Files\**" />
+    <Compile Remove="Identity\**" />
+    <Compile Remove="Services\**" />
+    <EmbeddedResource Remove="Common\**" />
+    <EmbeddedResource Remove="Files\**" />
+    <EmbeddedResource Remove="Identity\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Common\**" />
+    <None Remove="Files\**" />
+    <None Remove="Identity\**" />
+    <None Remove="Services\**" />
   </ItemGroup>
 
   <ItemGroup>
