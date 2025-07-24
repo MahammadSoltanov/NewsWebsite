@@ -1,7 +1,6 @@
 ﻿using Application.CQRS.Images.Commands.CreateImage;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Presentation.Controllers.Image
 {
@@ -47,7 +46,7 @@ namespace Presentation.Controllers.Image
 
             // Create a new ImageModel instance with the image URL
             var imageUrl = Url.Content("~/images/" + uniqueFilename);
-            
+
             CreateImageCommand createImageCommand = new CreateImageCommand() { Url = imageUrl };
 
             await _mediator.Send(createImageCommand);
@@ -55,13 +54,6 @@ namespace Presentation.Controllers.Image
             JsonResult response = Json(new { success = true, Url = imageUrl });
             response.ContentType = "application/json";
             return response;
-        }
-
-        private bool IsSupportedContentType(string contentType)
-        {
-            var allowedContentTypes = new[] { "image/jpeg", "image/png", "image/gif" };
-
-            return allowedContentTypes.Contains(contentType);
         }
     }
 }
