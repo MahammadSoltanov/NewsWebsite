@@ -1,5 +1,7 @@
 using Application;
 using Infrastructure;
+using Infrastructure.Persistence;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,19 @@ var configuration = new ConfigurationBuilder()
 builder.Services.AddRazorPages();
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(configuration);
+
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
+
+builder.Services.ConfigureApplicationCookie(opts =>
+{
+    opts.LoginPath = "/Admin/Authentication/Login";
+    opts.AccessDeniedPath = "/Admin/Authentication/Login";
+});
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers(); // Add this line for controllers
@@ -28,6 +43,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -38,5 +55,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapRazorPages();
+
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+    await seeder.SeedAsync();
+}
 
 app.Run();
