@@ -1,8 +1,6 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using AutoMapper;
-using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,11 +24,6 @@ public class GetPostTranslationsByLanguageIdQueryHandler : IRequestHandler<GetPo
         var postTranslations = await _context.PostTranslations
             .Where(pt => pt.LanguageId == request.LanguageId && pt.Status != "Deleted")
             .ToListAsync(cancellationToken);
-
-        if(!postTranslations.Any())
-        {
-            throw new NotFoundException(nameof(PostTranslation), request.LanguageId);
-        }
 
         var postTranslationDtos = _mapper.Map<List<PostTranslationDto>>(postTranslations);
 
