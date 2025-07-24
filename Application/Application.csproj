@@ -1,28 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="CQRS\Users\Queries\NewFolder1\**" />
-    <Compile Remove="CQRS\Users\Queries\NewFolder2\**" />
-    <Compile Remove="CQRS\Users\Queries\NewFolder3\**" />
-    <EmbeddedResource Remove="CQRS\Users\Queries\NewFolder1\**" />
-    <EmbeddedResource Remove="CQRS\Users\Queries\NewFolder2\**" />
-    <EmbeddedResource Remove="CQRS\Users\Queries\NewFolder3\**" />
-    <None Remove="CQRS\Users\Queries\NewFolder1\**" />
-    <None Remove="CQRS\Users\Queries\NewFolder2\**" />
-    <None Remove="CQRS\Users\Queries\NewFolder3\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Common\Security\" />
-    <Folder Include="CQRS\Images\Queries\" />
-    <Folder Include="CQRS\Users\EventHandlers\" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
