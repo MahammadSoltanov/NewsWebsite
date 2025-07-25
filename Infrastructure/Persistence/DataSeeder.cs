@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.Constants;
+using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -22,6 +23,7 @@ public class DataSeeder
 
     public async Task SeedAsync()
     {
+        await SeedRoles();
         await SeedRootUser();
         await SeedLanguages();
     }
@@ -45,18 +47,11 @@ public class DataSeeder
 
     private async Task SeedRootUser()
     {
-        const string adminRoleName = "Admin";
         const string adminEmail = "admin@example.com";
         const string adminPassword = "P@assw0rd!123";
 
-        if (!await _roleManager.RoleExistsAsync(adminRoleName))
-        {
-            await _roleManager.CreateAsync(new Role { Name = adminRoleName });
-        }
-
-
         var adminUser = await _userManager.FindByEmailAsync(adminEmail);
-        var adminRole = await _roleManager.FindByNameAsync(adminRoleName);
+        var adminRole = await _roleManager.FindByNameAsync(UserRole.Admin);
 
         if (adminUser is null)
         {
@@ -74,7 +69,7 @@ public class DataSeeder
 
             if (createResult.Succeeded)
             {
-                await _userManager.AddToRoleAsync(user, adminRoleName);
+                await _userManager.AddToRoleAsync(user, adminRole.Name);
                 await _context.SaveChangesAsync();
             }
             else
@@ -84,6 +79,18 @@ public class DataSeeder
                   string.Join(", ", createResult.Errors)
                 );
             }
+        }
+    }
+
+    private async Task SeedRoles()
+    {
+        if (!await _context.Roles.AnyAsync())
+        {
+            await _roleManager.CreateAsync(new Role { Name = UserRole.Admin });
+            await _roleManager.CreateAsync(new Role { Name = UserRole.Moderator });
+            await _roleManager.CreateAsync(new Role { Name = UserRole.Journalist });
+
+            await _context.SaveChangesAsync();
         }
     }
 
