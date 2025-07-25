@@ -8,7 +8,7 @@ namespace Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationBy
 
 public record GetCategoryTranslationsByCategoryIdQuery(int CategoryId) : IRequest<List<CategoryTranslationDto>>;
 
-public class GetCategoryTranslationsByCategoryIdQueryHandler 
+public class GetCategoryTranslationsByCategoryIdQueryHandler
     : IRequestHandler<GetCategoryTranslationsByCategoryIdQuery, List<CategoryTranslationDto>>
 {
     private readonly IApplicationDbContext _context;
@@ -22,12 +22,12 @@ public class GetCategoryTranslationsByCategoryIdQueryHandler
 
     public async Task<List<CategoryTranslationDto>> Handle(GetCategoryTranslationsByCategoryIdQuery request, CancellationToken cancellationToken)
     {
-            var translations = await _context.CategoryTranslations
-            .Where(ct => ct.CategoryId == request.CategoryId)
-            .ToListAsync(cancellationToken);
+        var translations = await _context.CategoryTranslations
+        .Where(ct => ct.CategoryId == request.CategoryId)
+        .ToListAsync(cancellationToken);
 
         var translationDtos = _mapper.Map<List<CategoryTranslationDto>>(translations);
-        
+
         return translationDtos;
     }
 }
