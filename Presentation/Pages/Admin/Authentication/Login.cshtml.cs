@@ -1,8 +1,6 @@
 using Application.Common.Behaviours.SignIn;
-using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Serilog;
@@ -13,35 +11,39 @@ namespace Presentation.Pages.Admin.Authentication
     public class LoginModel : PageModel
     {
         private readonly IMediator _mediator;
-        private readonly SignInManager<User> _signInManager;
 
-        public LoginModel(IMediator mediator, SignInManager<User> signInManager)
+        public LoginModel(IMediator mediator)
         {
             _mediator = mediator;
-            _signInManager = signInManager;
         }
 
         [BindProperty]
         public string Email { get; set; }
+
         [BindProperty]
         public string Password { get; set; }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                return RedirectToPage("/Admin/Lists/Posts");
+            }
 
+            return Page();
         }
 
-        public async Task<ActionResult> OnPostSignInAsync()
+        public async Task<IActionResult> OnPostSignInAsync()
         {
             try
             {
-                SignInCommand signInCommand = new SignInCommand()
+                var command = new SignInCommand
                 {
                     Email = Email,
                     Password = Password
                 };
 
-                var result = await _mediator.Send(signInCommand);
+                var result = await _mediator.Send(command);
 
                 if (!result.Succeeded)
                 {
@@ -49,12 +51,12 @@ namespace Presentation.Pages.Admin.Authentication
                     return Page();
                 }
 
-                return new RedirectToPageResult("/Admin/Lists/Posts");
+                return RedirectToPage("/Admin/Lists/Posts");
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Something went wrong on logging in\n" + ex.StackTrace);
-                ModelState.AddModelError(string.Empty, "Something went wrong during the operation, please check your data and try again.");                
+                Log.Error(ex, "Error during login", ex);
+                ModelState.AddModelError(string.Empty, "Something went wrong. Please try again.");
                 return Page();
             }
         }
