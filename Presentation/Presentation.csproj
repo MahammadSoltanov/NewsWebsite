@@ -7,6 +7,9 @@
 		<UserSecretsId>9d54f89b-c786-4d20-b28e-920dccdfa09d</UserSecretsId>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<EmbeddedResource Include="wwwroot\**\*" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0">

@@ -20,7 +20,6 @@ namespace Presentation.Controllers.Image
         {
             var uploadedFile = Request.Form.Files[0];
 
-            // Check if a file was actually uploaded
             if (uploadedFile == null || uploadedFile.Length == 0)
             {
                 var responseFile = Json(new { success = false, error = "No file uploaded." });
@@ -35,8 +34,11 @@ namespace Presentation.Controllers.Image
                 return responseSize;
             }
 
-            var randomComponent = Guid.NewGuid().ToString("N").Substring(0, 8); // Generate an 8-character random string
+            var randomComponent = Guid.NewGuid().ToString("N").Substring(0, 8);
             var uniqueFilename = $"{randomComponent}_{uploadedFile.FileName}";
+
+            var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+            Directory.CreateDirectory(imagesFolder);
 
             var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", uniqueFilename);
             using (var stream = new FileStream(imagePath, FileMode.Create))
@@ -44,7 +46,6 @@ namespace Presentation.Controllers.Image
                 uploadedFile.CopyTo(stream);
             }
 
-            // Create a new ImageModel instance with the image URL
             var imageUrl = Url.Content("~/images/" + uniqueFilename);
 
             CreateImageCommand createImageCommand = new CreateImageCommand() { Url = imageUrl };
