@@ -5,28 +5,34 @@
     ViewBag.Title = "Edit post";
 }
 <section class="content">
-    <div class="form-group">
-        <label for="inputName">Current Title Image</label>
-        <img src="@Model.TitleImageUrl" />
-    </div>
     <form action="/Image/UploadImage" class="imageForm">
-        <div class="form-group">
-            <label for="inputName">Post Title Image</label>
-            <div class="dropzone" id="myDropzone">
-                <div class="dz-message" data-dz-message><span>Drop files here or click to upload.</span></div>
+        <h2>Title Image</h2>
+
+        <div class="image-upload-container">
+            <div class="dropzone image-uploader"
+                 id="myDropzone">
+                <div class="dz-message" data-dz-message>
+                    <span>Upload or change your title image here</span>
+                </div>
             </div>
+                        
+            <div class="image-preview">
+                <img class="title-image"
+                     src="@Model.TitleImageUrl"
+                     alt="Title image preview" />
+            </div>                        
         </div>
     </form>
 
     <!-- Form for language updation-->
     <form class="language-form" method="post" asp-page-handler="Language">
         <input id="language-input" type="hidden" asp-for="LanguageId" />
-        <input type="hidden" asp-for="PostId"/>
+        <input type="hidden" asp-for="PostId" />
     </form>
 
     <!-- Form for post information-->
     <form method="post" class="second-form" asp-page-handler="Update">
-        <input type="hidden" id="category-input" asp-for="CategoryId"/>
+        <input type="hidden" id="category-input" asp-for="CategoryId" />
         <input type="hidden" asp-for="PostId" />
         <input type="hidden" asp-for="TitleImageUrl" id="title-image-input" />
         <div class="card card-primary">
@@ -65,7 +71,7 @@
         <br />
         <div class="card card-info">
             <div class="card-header">
-                <h3 class="card-title">Default @Model.DefaultLanguage.Code translation</h3>
+                <h3 class="card-title">Default @Model.DefaultLanguage.Title translation</h3>
 
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -110,7 +116,7 @@
 </section>
 
 @section Scripts
-    {
+{
     @*-----CKEditor-----*@
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.5/purify.min.js" integrity="sha512-KqUc2WMPF/gxte9xVjVE4TIt1LMUTidO3BrcItFg0Ro24I7pGNzgcXdnWdezNY+8T0/JEmdC79MuwYn+8UdOqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -143,11 +149,11 @@
             document.querySelector("#category-input").value = selectCategory.value;
         });
 
-        selectElement.addEventListener("change", function () {            
+        selectElement.addEventListener("change", function () {
             var selectedValue = selectElement.value;
             console.log(selectedValue);
             inputElement.value = selectedValue;
-            console.log(inputElement);            
+            console.log(inputElement);
             formElement.submit();
         });
 
@@ -155,7 +161,7 @@
 }
 
 @section Links
-    {
+{
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 
     <style>

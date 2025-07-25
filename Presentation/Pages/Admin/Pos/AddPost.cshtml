@@ -5,12 +5,17 @@
 }
 <!-- Title image upload to server -->
 <section class="content">
-    <form action="/Image/UploadImage" class="image-form">
-        <div class="form-group">
-            <label for="inputName">Post's Title Image</label>
-            <div class="dropzone" id="myDropzone">
-                <div class="dz-message" data-dz-message><span>Drop files here or click to upload.</span></div>
+    <form action="/Image/UploadImage" class="imageForm">
+        <h2>Title Image</h2>
+
+        <div class="image-upload-container">
+            <div class="dropzone image-uploader"
+                 id="myDropzone">
+                <div class="dz-message" data-dz-message>
+                    <span>Upload or change your title image here</span>
+                </div>
             </div>
+
         </div>
     </form>
 

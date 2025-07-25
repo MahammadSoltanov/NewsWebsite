@@ -1,21 +1,41 @@
-﻿Dropzone.autoDiscover = false; // Disable auto-discovery
+﻿Dropzone.autoDiscover = false;
 
-// Initialize Dropzone
 var myDropzone = new Dropzone("#myDropzone", {
     url: "/Image/UploadImage",
     paramName: "ImageFile",
+    autoProcessQueue: false,    
     maxFiles: 1,
-    maxFilesize: 5, // Maximum file size in MB
-    acceptedFiles: "image/*",
-    dictDefaultMessage: "Drop files here or click to upload.",
-    autoProcessQueue: false,
+    maxFilesize: 5,             
+    acceptedFiles: "image/*",    
+    addRemoveLinks: true,       
+    dictRemoveFile: "Remove",   
 });
 
-myDropzone.on('success', function (file, response) {
-    console.log(response)
+myDropzone.on("thumbnail", function (file) {    
+    var progressEl = file.previewElement.querySelector("[data-dz-uploadprogress]");
+
+    //if (progressEl) {
+    //    progressEl.backgrounColor = "green";
+    //    progressEl.color = "green";
+    //    for (let p = 0; p <= 100; p++) {
+    //        setTimeout(() => {
+    //            progressEl.style.width = p + "%";
+    //        }, p * 20);
+    //}
+
+    this.emit("dz-processing", file);
+    this.emit("dz-success", file);
+    this.emit("dz-complete", file);
+
+    const parentEl = progressEl.parentElement;
+    if (parentEl) {
+        parentEl.style.width = "0px";
+    }
+});
+
+myDropzone.on('success', function (file, response) {    
     if (response.success) {
-        document.querySelector('#title-image-input').value = response.url;
-        console.log(document.querySelector('#title-image-input'));
+        document.querySelector('#title-image-input').value = response.url;        
     }
     else {
         alert(response.error);
@@ -34,12 +54,10 @@ myDropzone.on("addedfile", function (file) {
 
 document.querySelector('.second-form').addEventListener('submit', async function (event) {
     event.preventDefault();
-    console.log("Submitted second form")
     myDropzone.processQueue();
 
     await new Promise((resolve) => {
-        myDropzone.on('queuecomplete', resolve);
-            console.log("Queue completed");
+        myDropzone.on('queuecomplete', resolve);            
         setTimeout(() => {
             resolve();
         }, 2000);
