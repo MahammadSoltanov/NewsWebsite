@@ -8,7 +8,7 @@ A simple beginner-level News Website built with ASP.NET Core and Razor Pages, de
 
 - Clean architecture (layered: Domain, Application, Infrastructure, UI)
 - Admin panel with full CRUD functionality
-- File upload and download support
+- File upload support
 - Multilingual content
 - Razor Pages with consistent routing
 - Basic authentication system (admin only)
