@@ -1,14 +1,15 @@
 using Application.Common.Models;
 using Application.CQRS.CategoryTranslations.Commands.ChangeCategoryStatuses;
 using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslations;
-using Application.CQRS.PostTranslations.Commands.ChangePostTranslationsStatuses;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
+using Presentation.Constants;
 
 namespace Presentation.Pages.Admin.Approve
 {
+    [Authorize(Roles = RoleAccessLevels.AdminAndModerator)]
     public class CategoryTranslationsStatusModel : PageModel
     {
         private readonly IMediator _mediator;
@@ -48,7 +49,7 @@ namespace Presentation.Pages.Admin.Approve
         {
             Translations = await _mediator.Send(new GetCategoryTranslationsQuery());
         }
-        
+
 
     }
 }

@@ -13,7 +13,7 @@ using Serilog;
 
 namespace Presentation.Pages.Admin.Usr
 {
-    [Authorize(Roles = RoleAccessLevels.AdminOnly)]
+    [Authorize(Roles = RoleAccessLevels.AdminAndModerator)]
     public class AddUserModel : PageModel
     {
         private readonly IMediator _mediator;

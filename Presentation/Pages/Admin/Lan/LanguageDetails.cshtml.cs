@@ -7,7 +7,7 @@ using Presentation.Constants;
 
 namespace Presentation.Pages.Admin.Lan
 {
-    [Authorize(Roles = RoleAccessLevels.AllRoles)]
+    [Authorize(Roles = RoleAccessLevels.AdminOnly)]
     public class LanguageDetailsModel : PageModel
     {
         public LanguageDto Language { get; set; }

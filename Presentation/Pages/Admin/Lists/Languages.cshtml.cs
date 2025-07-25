@@ -9,7 +9,7 @@ using Presentation.Constants;
 
 namespace Presentation.Pages.Admin.Lists
 {
-    [Authorize(Roles = RoleAccessLevels.AllRoles)]
+    [Authorize(Roles = RoleAccessLevels.AdminOnly)]
     public class LanguagesModel : PageModel
     {
         public List<LanguageDto> Languages { get; set; }

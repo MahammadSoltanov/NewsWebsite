@@ -7,7 +7,7 @@ using Presentation.Constants;
 
 namespace Presentation.Pages.Admin.Categ
 {
-    [Authorize(Roles = RoleAccessLevels.AllRoles)]
+    [Authorize(Roles = RoleAccessLevels.AdminAndModerator)]
     public class CategoryDetailsModel : PageModel
     {
         private readonly IMediator _mediator;

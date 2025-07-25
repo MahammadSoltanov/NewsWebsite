@@ -12,7 +12,7 @@ using Presentation.Constants;
 
 namespace Presentation.Pages.Admin.Lan
 {
-    [Authorize(Roles = RoleAccessLevels.AllRoles)]
+    [Authorize(Roles = RoleAccessLevels.AdminOnly)]
     public class EditLanguageModel : PageModel
     {
         private readonly IMediator _mediator;

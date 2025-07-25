@@ -14,7 +14,7 @@ using Serilog;
 
 namespace Presentation.Pages.Admin.Usr
 {
-    [Authorize(Roles = RoleAccessLevels.AllRoles)]
+    [Authorize(Roles = RoleAccessLevels.AdminAndModerator)]
     public class EditUserModel : PageModel
     {
         private readonly IMediator _mediator;

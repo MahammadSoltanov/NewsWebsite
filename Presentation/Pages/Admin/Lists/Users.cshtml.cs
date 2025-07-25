@@ -9,7 +9,7 @@ using Presentation.Constants;
 
 namespace Presentation.Pages.Admin.Lists
 {
-    [Authorize(Roles = RoleAccessLevels.AllRoles)]
+    [Authorize(Roles = RoleAccessLevels.AdminAndModerator)]
     public class UsersModel : PageModel
     {
         private readonly IMediator _mediator;

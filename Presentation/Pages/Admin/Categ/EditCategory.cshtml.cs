@@ -14,7 +14,7 @@ using Serilog;
 
 namespace Presentation.Pages.Admin.Categ
 {
-    [Authorize(Roles = RoleAccessLevels.AllRoles)]
+    [Authorize(Roles = RoleAccessLevels.AdminAndModerator)]
     public class EditCategoryModel : PageModel
     {
         private readonly IMediator _mediator;
