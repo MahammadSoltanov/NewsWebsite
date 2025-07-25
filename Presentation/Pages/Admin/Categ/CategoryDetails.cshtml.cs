@@ -3,10 +3,11 @@ using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationByCate
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Presentation.Constants;
 
 namespace Presentation.Pages.Admin.Categ
 {
-    [Authorize(Roles = "Admin, Moderator, Journalist")]
+    [Authorize(Roles = RoleAccessLevels.AllRoles)]
     public class CategoryDetailsModel : PageModel
     {
         private readonly IMediator _mediator;
@@ -16,7 +17,7 @@ namespace Presentation.Pages.Admin.Categ
             _mediator = mediator;
         }
 
-        public List<CategoryTranslationDto> Translations{ get; set; }
+        public List<CategoryTranslationDto> Translations { get; set; }
         public int CategoryId { get; set; }
 
         public async Task OnGetAsync(int id)

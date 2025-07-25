@@ -9,11 +9,12 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Presentation.Constants;
 using Serilog;
 
 namespace Presentation.Pages.Admin.Usr
 {
-    [Authorize(Roles = "Admin, Moderator, Journalist")]
+    [Authorize(Roles = RoleAccessLevels.AllRoles)]
     public class EditUserModel : PageModel
     {
         private readonly IMediator _mediator;
@@ -83,7 +84,7 @@ namespace Presentation.Pages.Admin.Usr
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "Something went wrong on updating User information\n" +  ex.StackTrace);
+                Log.Error(ex, "Something went wrong on updating User information\n" + ex.StackTrace);
                 return new RedirectToPageResult("/Admin/Error", new { message = "Something went wrong during the operation, please try again or contact the support team.", entityName = "Users" });
             }
 

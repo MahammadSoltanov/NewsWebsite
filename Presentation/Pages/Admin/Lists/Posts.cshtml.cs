@@ -6,11 +6,12 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Presentation.Constants;
 using Serilog;
 
 namespace Presentation.Pages.Admin.Lists
 {
-    [Authorize(Roles = "Admin, Moderator, Journalist")]
+    [Authorize(Roles = RoleAccessLevels.AllRoles)]
     public class PostsModel : PageModel
     {
         private readonly IMediator _mediator;

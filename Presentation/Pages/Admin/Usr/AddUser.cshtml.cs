@@ -1,20 +1,19 @@
 using Application.Common.Models;
 using Application.CQRS.Roles.Queries.GetRoles;
 using Application.CQRS.Users.Commands.CreateUser;
-using Domain.Entities;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Presentation.Constants;
 using Serilog;
 
 namespace Presentation.Pages.Admin.Usr
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = RoleAccessLevels.AdminOnly)]
     public class AddUserModel : PageModel
     {
         private readonly IMediator _mediator;

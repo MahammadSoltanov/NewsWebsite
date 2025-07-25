@@ -2,15 +2,14 @@ using Application.Common.Models;
 using Application.CQRS.Languages.Queries.GetLanguages;
 using Application.CQRS.Posts.Queries.GetPostById;
 using Application.CQRS.PostTranslations.Queries.GetPostTranslationsByPostId;
-using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Presentation.Constants;
 
 namespace Presentation.Pages.Admin.Pos
 {
-    [Authorize(Roles = "Admin, Moderator, Journalist")]
+    [Authorize(Roles = RoleAccessLevels.AllRoles)]
     public class PostDetailsModel : PageModel
     {
         private readonly IMediator _mediator;

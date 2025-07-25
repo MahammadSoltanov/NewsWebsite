@@ -1,6 +1,5 @@
 using Application.Common.Models;
 using Application.CQRS.CategoryTranslations.Commands.UpdateCategoryTranslation;
-using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationByCategoryId;
 using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationById;
 using Application.CQRS.Languages.Queries.GetLanguages;
 using FluentValidation;
@@ -10,11 +9,12 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Presentation.Constants;
 using Serilog;
 
 namespace Presentation.Pages.Admin.Categ
 {
-    [Authorize(Roles = "Admin, Moderator, Journalist")]
+    [Authorize(Roles = RoleAccessLevels.AllRoles)]
     public class EditCategoryModel : PageModel
     {
         private readonly IMediator _mediator;
@@ -85,7 +85,7 @@ namespace Presentation.Pages.Admin.Categ
 
                 Languages = await _mediator.Send(new GetLanguagesQuery());
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Log.Error(ex, "Something went wrong on updating page properties\n" + ex.StackTrace);
                 return new RedirectToPageResult("/Admin/Error", new { message = "Something went wrong during the operation, please try again or contact the support team.", entityName = "Categories" });

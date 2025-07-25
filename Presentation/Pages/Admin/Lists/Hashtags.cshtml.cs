@@ -5,10 +5,11 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Presentation.Constants;
 
 namespace Presentation.Pages.Admin.Lists
 {
-    [Authorize(Roles = "Admin, Moderator, Journalist")]
+    [Authorize(Roles = RoleAccessLevels.AllRoles)]
     public class HashtagsModel : PageModel
     {
         private readonly IMediator _mediator;
@@ -28,8 +29,8 @@ namespace Presentation.Pages.Admin.Lists
         {
             await _mediator.Send(new DeleteHashtagCommand(Id));
             string _message = $"Hashtag with Id = {Id} was successfully deleted";
-            
-            return new RedirectToPageResult("/Admin/Succeed", new {message = _message, entityName = "Hashtags"});
+
+            return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Hashtags" });
         }
     }
 }

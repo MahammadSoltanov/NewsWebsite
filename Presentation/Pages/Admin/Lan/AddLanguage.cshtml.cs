@@ -6,10 +6,11 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Presentation.Constants;
 
 namespace Presentation.Pages.Admin.Lan
 {
-    [Authorize(Roles = "Admin, Moderator, Journalist")]
+    [Authorize(Roles = RoleAccessLevels.AllRoles)]
     public class AddLanguageModel : PageModel
     {
         private readonly IMediator _mediator;
@@ -41,7 +42,7 @@ namespace Presentation.Pages.Admin.Lan
 
             ValidationResult result = await _validator.ValidateAsync(createLanguageCommand);
 
-            if(!result.IsValid) 
+            if (!result.IsValid)
             {
                 result.AddToModelState(this.ModelState);
 

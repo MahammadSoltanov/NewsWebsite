@@ -8,10 +8,11 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Presentation.Constants;
 
 namespace Presentation.Pages.Admin.Hash
 {
-    [Authorize(Roles = "Admin, Moderator, Journalist")]
+    [Authorize(Roles = RoleAccessLevels.AllRoles)]
     public class EditHashtagModel : PageModel
     {
         private readonly IMediator _mediator;
@@ -27,7 +28,7 @@ namespace Presentation.Pages.Admin.Hash
         [BindProperty]
         public string Title { get; set; }
 
-        
+
         public async Task OnGetAsync(int id)
         {
             HashtagDto hashtag = await _mediator.Send(new GetHashtagByIdQuery(id));
@@ -52,7 +53,7 @@ namespace Presentation.Pages.Admin.Hash
 
             await _mediator.Send(command);
             string _message = $"Hashtag with Id = {command.Id} was updated successfully";
-            return new RedirectToPageResult("/Admin/Succeed", new {message = _message, entityName = "Hashtags"});
+            return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Hashtags" });
         }
     }
 }

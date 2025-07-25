@@ -7,10 +7,11 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
+using Presentation.Constants;
 
 namespace Presentation.Pages.Admin.Approve
 {
-    [Authorize(Roles = "Admin, Moderator, Journalist")]
+    [Authorize(Roles = RoleAccessLevels.AllRoles)]
     public class PostTranslationsStatusModel : PageModel
     {
         private readonly IMediator _mediator;
@@ -21,7 +22,7 @@ namespace Presentation.Pages.Admin.Approve
         }
 
         public List<PostTranslationDto> Posts { get; set; }
-        public LanguageDto DefaultLanguage { get; set; }    
+        public LanguageDto DefaultLanguage { get; set; }
 
         public async Task OnGetAsync()
         {
@@ -43,7 +44,7 @@ namespace Presentation.Pages.Admin.Approve
 
         private List<PostTranslationStatusObj> JsonStringToList(string json)
         {
-            List<PostTranslationStatusObj> list = JsonConvert.DeserializeObject<List<PostTranslationStatusObj>>(json);           
+            List<PostTranslationStatusObj> list = JsonConvert.DeserializeObject<List<PostTranslationStatusObj>>(json);
             return list;
         }
 

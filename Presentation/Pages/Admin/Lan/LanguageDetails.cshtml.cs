@@ -1,14 +1,13 @@
 using Application.Common.Models;
 using Application.CQRS.Languages.Queries.GetLanguage;
-using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Presentation.Constants;
 
 namespace Presentation.Pages.Admin.Lan
 {
-    [Authorize(Roles = "Admin, Moderator, Journalist")]
+    [Authorize(Roles = RoleAccessLevels.AllRoles)]
     public class LanguageDetailsModel : PageModel
     {
         public LanguageDto Language { get; set; }

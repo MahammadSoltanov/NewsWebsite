@@ -1,5 +1,4 @@
 using Application.Common.Models;
-using Application.CQRS.Languages.Commands.CreateLanguage;
 using Application.CQRS.Languages.Commands.UpdateLanguage;
 using Application.CQRS.Languages.Queries.GetLanguage;
 using FluentValidation;
@@ -9,22 +8,23 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Presentation.Constants;
 
 namespace Presentation.Pages.Admin.Lan
 {
-    [Authorize(Roles = "Admin, Moderator, Journalist")]
+    [Authorize(Roles = RoleAccessLevels.AllRoles)]
     public class EditLanguageModel : PageModel
     {
         private readonly IMediator _mediator;
         private readonly IValidator<UpdateLanguageCommand> _validator;
 
         [BindProperty]
-        public string Title { get; set; }        
+        public string Title { get; set; }
         [BindProperty]
-        public string Code { get; set; }        
+        public string Code { get; set; }
         [BindProperty]
-        public int Id{ get; set; }        
-        
+        public int Id { get; set; }
+
         public EditLanguageModel(IMediator mediator, IValidator<UpdateLanguageCommand> validator)
         {
             _mediator = mediator;
@@ -60,7 +60,7 @@ namespace Presentation.Pages.Admin.Lan
 
             await _mediator.Send(updateLanguageCommand);
             string _message = $"Language with Id = {Id} was successfully updated";
-            return new RedirectToPageResult("/Admin/Succeed",  new { message = _message, entityName = "Languages"});
+            return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Languages" });
         }
 
 

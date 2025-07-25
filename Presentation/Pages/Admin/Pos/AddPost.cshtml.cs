@@ -1,6 +1,7 @@
 using Application.Common.Models;
 using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationsByLanguageId;
 using Application.CQRS.Languages.Queries.GetLanguageByCode;
+using Application.CQRS.PostHashtags.Commands.AddPostHashtags;
 using Application.CQRS.Posts.Commands.CreatePost;
 using Application.CQRS.PostTranslations.Commands.CreatePostTranslation;
 using Domain.Entities;
@@ -8,18 +9,18 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Transactions;
 using Newtonsoft.Json;
-using Application.CQRS.PostHashtags.Commands.AddPostHashtags;
+using Presentation.Constants;
 using Serilog;
+using System.Transactions;
 
 namespace Presentation.Pages.Admin.Pos
 {
-    [Authorize(Roles = "Admin, Moderator, Journalist")]
+    [Authorize(Roles = RoleAccessLevels.AllRoles)]
     public class AddPostModel : PageModel
     {
         private readonly IMediator _mediator;
@@ -99,7 +100,7 @@ namespace Presentation.Pages.Admin.Pos
 
                     if (!resultPostTranslation.IsValid)
                     {
-                        resultPostTranslation.AddToModelState(this.ModelState);                        
+                        resultPostTranslation.AddToModelState(this.ModelState);
                         await UpdateProperties();
                         scope.Dispose();
                         return Page();

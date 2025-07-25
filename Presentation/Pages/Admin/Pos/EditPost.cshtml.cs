@@ -1,17 +1,13 @@
-using Application.Common.Exceptions;
 using Application.Common.Models;
 using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationsByLanguageId;
-using Application.CQRS.Hashtags.Queries.GetHashtags;
 using Application.CQRS.Hashtags.Queries.GetHashtagsByPostId;
 using Application.CQRS.Languages.Queries.GetLanguage;
 using Application.CQRS.Languages.Queries.GetLanguageByCode;
 using Application.CQRS.Languages.Queries.GetLanguages;
-using Application.CQRS.PostHashtags.Commands.AddPostHashtags;
 using Application.CQRS.PostHashtags.Commands.UpdatePostHashtags;
 using Application.CQRS.Posts.Commands.UpdatePost;
 using Application.CQRS.Posts.Queries.GetPostById;
 using Application.CQRS.PostTranslations.Commands.UpdatePostTranslation;
-using Application.CQRS.PostTranslations.Queries.GetPostTranslationById;
 using Application.CQRS.PostTranslations.Queries.GetPostTranslationsByPostId;
 using Domain.Entities;
 using FluentValidation;
@@ -22,13 +18,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
+using Presentation.Constants;
 using Serilog;
-using System.Diagnostics;
 using System.Transactions;
 
 namespace Presentation.Pages.Admin.Pos
 {
-    [Authorize(Roles = "Admin, Moderator, Journalist")]
+    [Authorize(Roles = RoleAccessLevels.AllRoles)]
     public class EditPostModel : PageModel
     {
         private readonly IMediator _mediator;
@@ -161,7 +157,7 @@ namespace Presentation.Pages.Admin.Pos
             PostDto post = await _mediator.Send(new GetPostByIdQuery(id));
 
             DefaultLanguage = await _mediator.Send(new GetLanguageByIdQuery(languageId));
-           
+
             var translations = await _mediator.Send(new GetPostTranslationsByPostIdQuery(post.Id));
             var postTranslation = translations.FirstOrDefault(pt => pt.LanguageId == languageId);
 
@@ -185,7 +181,7 @@ namespace Presentation.Pages.Admin.Pos
 
             PostId = post.Id;
             CategoryId = post.CategoryId;
-            TitleImageUrl = post.TitleImageUrl;            
+            TitleImageUrl = post.TitleImageUrl;
 
             Title = postTranslation.Title;
             LanguageId = postTranslation.LanguageId;

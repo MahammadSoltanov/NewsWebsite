@@ -1,11 +1,7 @@
-using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.CQRS.Categories.Commands.CreateCategory;
 using Application.CQRS.CategoryTranslations.Commands.CreateCategoryTranslation;
-using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationByCategoryId;
 using Application.CQRS.Languages.Queries.GetLanguageByCode;
-using Application.CQRS.Languages.Queries.GetLanguages;
-using Domain.Entities;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FluentValidation.Results;
@@ -13,12 +9,13 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Presentation.Constants;
 using Serilog;
 using System.Transactions;
 
 namespace Presentation.Pages.Admin.Categ
 {
-    [Authorize(Roles = "Admin, Moderator, Journalist")]
+    [Authorize(Roles = RoleAccessLevels.AllRoles)]
     public class AddCategoryModel : PageModel
     {
         private readonly IMediator _mediator;
@@ -87,7 +84,7 @@ namespace Presentation.Pages.Admin.Categ
                     }
                 }
 
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     scope.Dispose();
                     Log.Error(ex, "Something went wrong on category creation\n" + ex.StackTrace);

@@ -1,18 +1,17 @@
 using Application.Common.Models;
 using Application.CQRS.Categories.Commands.DeleteCategory;
-using Application.CQRS.Categories.Queries.GetCategories;
-using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslations;
 using Application.CQRS.CategoryTranslations.Queries.GetCategoryTranslationsByLanguageId;
 using Application.CQRS.Languages.Queries.GetLanguageByCode;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Presentation.Constants;
 using Serilog;
 
 namespace Presentation.Pages.Admin.Lists
 {
-    [Authorize(Roles = "Admin, Moderator, Journalist")]
+    [Authorize(Roles = RoleAccessLevels.AllRoles)]
     public class CategoriesModel : PageModel
     {
         private readonly IMediator _mediator;

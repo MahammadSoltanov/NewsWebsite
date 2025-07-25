@@ -1,7 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using AutoMapper;
-using Domain.Entities;
+using Domain.Constants;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,8 +22,12 @@ public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, List<UserDto>
 
     public async Task<List<UserDto>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
     {
-        var users = await _context.Users.ToListAsync(cancellationToken);
+        var users = await _context.Users
+            .Where(u => u.Role.Name != UserRole.Admin)
+            .ToListAsync(cancellationToken);
+
         var usersDto = _mapper.Map<List<UserDto>>(users);
+
         return usersDto;
     }
 }
