@@ -1,3 +1,4 @@
+
 html {
     font-size: 14px;
 }
@@ -59,4 +60,13 @@ section.content {
 .image-uploader .dz-message span {        
     font-size: 30px !important;        
     color: #555;
+}
+
+
+.main-container{
+    min-height: 1000px !important;
+}
+
+.site-footer{
+    max-height: 500px;
 }

@@ -94,7 +94,7 @@ namespace Presentation.Pages.Admin.Categ
                 scope.Complete();
             }
 
-            string _message = $"Category with Id = {id} was successfully created with default {DefaultLanguage.Code} transaltion";
+            string _message = $"Category with Id = {id} was successfully created with default {DefaultLanguage.Title} transaltion";
             return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Categories" });
         }
     }

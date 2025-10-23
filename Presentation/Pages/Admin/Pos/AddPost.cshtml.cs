@@ -131,7 +131,7 @@ namespace Presentation.Pages.Admin.Pos
 
             DefaultLanguage = await _mediator.Send(new GetLanguageByCodeQuery(DefaultStrings.DefaultLanguageCode));
             string _message = $"Post with Id = {postId} and " +
-                $"default {DefaultLanguage.Code} translation with " +
+                $"default {DefaultLanguage.Title} translation with " +
                 $"Id = {postTranslationId} were successfully created";
             return new RedirectToPageResult("/Admin/Succeed", new { message = _message, entityName = "Posts" });
         }

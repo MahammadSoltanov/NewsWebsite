@@ -1,5 +1,4 @@
-﻿using Application;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -187,6 +186,16 @@ namespace Infrastructure.Persistence
             modelBuilder.Entity<User>()
                 .HasIndex(p => p.Email)
                 .IsUnique();
+
+
+            modelBuilder.Entity<Post>()
+                .HasQueryFilter(p => p.Status != "Deleted");
+
+            modelBuilder.Entity<PostTranslation>()
+                .HasQueryFilter(pt => pt.Status != "Deleted");
+
+            modelBuilder.Entity<CategoryTranslation>()
+                .HasQueryFilter(ct => ct.Status != "Deleted");
         }
 
         public DbSet<Category> Categories { get; set; }
