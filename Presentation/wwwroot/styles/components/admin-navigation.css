@@ -1,0 +1,11 @@
+﻿.nav-link{
+    display: grid;
+    grid-template-columns: 0.1fr 0.9fr;
+    width: 100%;
+    align-items: center;
+}
+
+.nav-item{
+    width: 100%;
+    align-items: center;
+}
