@@ -5,9 +5,8 @@
 
 @{
     var currentUser = await UserManager.GetUserAsync(User);
-    bool userIsAdmin = await UserManager.IsInRoleAsync(currentUser, UserRole.Admin);
-    bool userIsModerator = await UserManager.IsInRoleAsync(currentUser, UserRole.Moderator);
-    bool userIsAdminOrModerator = userIsAdmin || userIsModerator;
+    bool isUserAdmin = await UserManager.IsInRoleAsync(currentUser, UserRole.Admin);
+    bool isUserModerator = await UserManager.IsInRoleAsync(currentUser, UserRole.Moderator);    
     var userName = currentUser.Name;
     var userSurname = currentUser.Surname;
 }
@@ -17,6 +16,8 @@
     <meta name="viewport" content="width=device-width" />
     <meta charset="utf-8" />
     <title>@ViewBag.Title</title>
+    
+    @* Lib *@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="~/lib/admin-lte/plugins/fontawesome-free/css/all.min.css">
@@ -28,7 +29,10 @@
     <link rel="stylesheet" href="~/lib/admin-lte/plugins/dropzone/min/dropzone.min.css" />
     <link rel="stylesheet" href="~/lib/admin-lte/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    @* Custom *@
+    <link rel="stylesheet" href="~/styles/global.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/styles/components/admin-navigation.css" asp-append-version="true" />
 </head>
 <body>
 
@@ -80,7 +84,15 @@
                     </div>
                 </div>
 
-                @await Component.InvokeAsync("AdminSidebar", new { isAdmin = userIsAdmin, isModerator = userIsAdminOrModerator })
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column"
+                        data-widget="treeview"
+                        role="menu"
+                        data-accordion="false">                        
+                        @await Component.InvokeAsync("AdminSidebarMenuItem", new { isAdmin = isUserAdmin, isModerator = isUserModerator})
+                    </ul>
+                </nav>
+
             </div>
         </aside>
         <div class="content-wrapper">

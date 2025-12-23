@@ -3,11 +3,11 @@ using Presentation.Models.Navigation;
 
 namespace Presentation.ViewComponents;
 
-public class AdminSidebarViewComponent : ViewComponent
+public class AdminSidebarMenuItemViewComponent : ViewComponent
 {
     public IViewComponentResult Invoke(bool isAdmin, bool isModerator)
     {
-        var items = new List<AdminMenuItem>
+        var items = new List<AdminSidebarMenuItem>
         {
             new()
             {

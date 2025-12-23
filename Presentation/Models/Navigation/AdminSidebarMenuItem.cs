@@ -1,5 +1,5 @@
 ﻿namespace Presentation.Models.Navigation;
-public sealed class AdminMenuItem
+public sealed class AdminSidebarMenuItem
 {
     public string Title { get; init; }
     public string Url { get; init; }

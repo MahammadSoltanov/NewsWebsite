@@ -1,0 +1,12 @@
+﻿@using Presentation.Models.Navigation
+@model IEnumerable<AdminSidebarMenuItem>
+
+@foreach (var item in Model)
+{
+    <li class="nav-item">
+        <a href="@item.Url" class="nav-link">
+            @Html.Raw(item.IconHtml)
+            <p>@item.Title</p>
+        </a>
+    </li>
+}
