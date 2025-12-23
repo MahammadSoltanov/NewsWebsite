@@ -15,7 +15,7 @@
         <div class="card-header">
             @if (userIsAdmin)
             {
-                <button type="button" onclick="location.href='@Url.Page("/Admin/Usr/AddUser")'" class="btn btn-primary">Add User</button>
+                <button type="button" onclick="location.href='@Url.Page("/Admin/Users/Add")'" class="btn btn-primary">Add User</button>
             }
             <div class="card-tools">
                 <button type="button" class="btn " data-card-widget="collapse" title="Collapse">
@@ -56,7 +56,7 @@
                             <td class="project-actions text-right">
                                 <form method="post">
                                     <a class="btn btn-primary btn-sm"
-                                       asp-page="/Admin/Usr/UserDetails"
+                                       asp-page="/Admin/Users/Details"
                                        asp-route-id="@user.Id">
                                         <i class="fas fa-folder">
                                         </i>
@@ -66,7 +66,7 @@
                                         if (userIsAdmin)
                                         {
                                             <a class="btn btn-info btn-sm"
-                                               asp-page="/Admin/Usr/EditUser"
+                                               asp-page="/Admin/Users/Edit"
                                                asp-route-id="@user.Id">
                                                 <i class="fas fa-pencil-alt">
                                                 </i>
