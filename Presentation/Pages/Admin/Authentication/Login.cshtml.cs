@@ -27,7 +27,7 @@ namespace Presentation.Pages.Admin.Authentication
         {
             if (User.Identity?.IsAuthenticated == true)
             {
-                return RedirectToPage("/Admin/Posts");
+                return RedirectToPage("/Admin/Posts/Index");
             }
 
             return Page();
@@ -51,7 +51,7 @@ namespace Presentation.Pages.Admin.Authentication
                     return Page();
                 }
 
-                return RedirectToPage("/Admin/Posts");
+                return RedirectToPage("/Admin/Posts/Index");
             }
             catch (Exception ex)
             {
