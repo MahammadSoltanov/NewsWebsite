@@ -1,20 +1,17 @@
 using Application;
 using Infrastructure;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Models;
 using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var configuration = new ConfigurationBuilder()
-    .SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
-    .AddEnvironmentVariables()
-    .Build();
-
 builder.Services.AddRazorPages();
 builder.Services.AddApplicationServices();
-builder.Services.AddInfrastructureServices(configuration);
+builder.Services.AddInfrastructureServices(builder.Configuration);
+
+builder.Services.Configure<SeedAdminOptions>(
+    builder.Configuration.GetSection("SeedAdmin"));
 
 builder.Services.AddAuthorization(options =>
 {
@@ -42,8 +39,6 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
-
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

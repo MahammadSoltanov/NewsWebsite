@@ -1,7 +1,9 @@
 ﻿using Domain.Constants;
 using Domain.Entities;
+using Infrastructure.Persistence.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace Infrastructure.Persistence;
@@ -10,15 +12,21 @@ public class DataSeeder
     private readonly ApplicationDbContext _context;
     private readonly RoleManager<Role> _roleManager;
     private readonly UserManager<User> _userManager;
+    private readonly SeedAdminOptions _seedAdmin;
 
     private readonly string _baseDirectory = AppContext.BaseDirectory;
     private readonly string _seedPath = Path.Combine("Persistence", "Seed");
 
-    public DataSeeder(ApplicationDbContext context, RoleManager<Role> roleManager, UserManager<User> userManager)
+    public DataSeeder(
+       ApplicationDbContext context,
+       RoleManager<Role> roleManager,
+       UserManager<User> userManager,
+       IOptions<SeedAdminOptions> seedAdminOptions)
     {
         _context = context;
         _roleManager = roleManager;
         _userManager = userManager;
+        _seedAdmin = seedAdminOptions.Value;
     }
 
     public async Task SeedAsync()
@@ -47,40 +55,37 @@ public class DataSeeder
 
     private async Task SeedRootUser()
     {
-        const string adminEmail = "admin@example.com";
-        const string adminPassword = "P@assw0rd!123";
-
-        var adminUser = await _userManager.FindByEmailAsync(adminEmail);
-        var adminRole = await _roleManager.FindByNameAsync(UserRole.Admin);
-
-        if (adminUser is null)
+        var adminRole = await _roleManager.FindByNameAsync(_seedAdmin.Role);
+        if (adminRole is null)
         {
-            var user = new User()
-            {
-                Name = "System",
-                Surname = "Admin",
-                UserName = adminEmail,
-                Password = adminPassword,
-                RoleId = adminRole.Id,
-                SecurityStamp = Guid.NewGuid().ToString()
-            };
-
-            var createResult = await _userManager.CreateAsync(user, adminPassword);
-
-            if (createResult.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(user, adminRole.Name);
-                await _context.SaveChangesAsync();
-            }
-            else
-            {
-                throw new Exception(
-                  "Failed to create admin user: " +
-                  string.Join(", ", createResult.Errors)
-                );
-            }
+            throw new Exception($"Role '{_seedAdmin.Role}' not found.");
         }
+
+        var adminUser = await _userManager.FindByEmailAsync(_seedAdmin.Email);
+        if (adminUser is not null)
+        {
+            return;
+        }
+
+        var user = new User
+        {
+            Name = "System",
+            Surname = "Admin",
+            Email = _seedAdmin.Email,
+            UserName = _seedAdmin.UserName,
+            SecurityStamp = Guid.NewGuid().ToString()
+        };
+
+        var result = await _userManager.CreateAsync(user, _seedAdmin.Password);
+
+        if (!result.Succeeded)
+        {
+            throw new Exception("Failed to create admin user: " + string.Join(", ", result.Errors.Select(e => e.Description)));
+        }
+
+        await _userManager.AddToRoleAsync(user, adminRole.Name);
     }
+
 
     private async Task SeedRoles()
     {
