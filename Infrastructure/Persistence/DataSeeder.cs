@@ -67,6 +67,7 @@ public class DataSeeder
             return;
         }
 
+        Console.WriteLine(" ---> Seeding Root User... ");
         var user = new User
         {
             Name = "System",
