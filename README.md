@@ -1,6 +1,6 @@
 # 📰 News Website with Admin Panel
 
-A simple beginner-level News Website built with ASP.NET Core and Razor Pages, designed to support multi-language content and admin panel management. Created as a learning project to practice clean architecture and real-world UI/UX flow.
+News Website built with ASP.NET Core and Razor Pages, designed to support multi-language content and admin panel management. Created as a learning project to practice clean architecture and real-world UI/UX flow.
 
 ---
 
